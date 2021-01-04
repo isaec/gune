@@ -1,0 +1,24 @@
+{
+  "name": "gune",
+  "version": "0.0.1",
+  "description": "gune gune gune",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaec/gune.git"
+  },
+  "author": "isaacr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isaec/gune/issues"
+  },
+  "homepage": "https://github.com/isaec/gune#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "rot-js": "^2.1.5",
+    "socket.io": "^3.0.4"
+  }
+}
