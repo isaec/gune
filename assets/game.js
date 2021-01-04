@@ -1,29 +1,27 @@
-import ROT from "./rot.min.js"
-
 // Check if rot.js can work on this browser
 if (!ROT.isSupported()) {
-    alert("The rot.js library isn't supported by your browser.");
+    alert("the rot.js library isn't supported by your browser. close the page, or many errors shall befall you.")
 }
 
-console.log("i live")
-alert("alive!")
 
-// Create a display 80 characters wide and 20 characters tall
-var display = new ROT.Display({width:80, height:20});
-var container = display.getContainer();
+// Create a display
+let display = new ROT.Display({width:60, height:30})
+let container = display.getContainer()
 // Add the container to our HTML page
-document.body.appendChild(container);
+document.body.appendChild(container)
 
-var foreground, background, colors;
-for (var i = 0; i < 15; i++) {
-    // Calculate the foreground color, getting progressively darker
-    // and the background color, getting progressively lighter.
-    foreground = ROT.Color.toRGB([255 - (i*20),
-                                  255 - (i*20),
-                                  255 - (i*20)]);
-    background = ROT.Color.toRGB([i*20, i*20, i*20]);
-    // Create the color format specifier.
-    colors = "%c{" + foreground + "}%b{" + background + "}";
-    // Draw the text at col 2 and row i
-    display.drawText(2, i, colors + "Hello, world!");
-}
+//little demo to make sure all works
+let foreground, background, colors
+for (let x = 0; x <= 180; x++){
+    for (let y = 0, ascii = x; y <= 80; y++, ascii++){
+        foreground = ROT.Color.toRGB([
+            Math.max(0,Math.min(16,x))*Math.max(0,Math.min(128,y)),
+            Math.max(0,Math.min(64,x))*Math.max(0,Math.min(64,y)),
+            Math.max(0,Math.min(128,x))*Math.max(0,Math.min(16,y))])
+        background = ROT.Color.toRGB([
+            Math.random()*Math.min(256,2*x),
+            Math.random()*Math.min(256,3*y),
+            Math.random()*Math.min(256,x+y)])
+        colors = "%c{" + foreground + "}%b{" + background + "}"
+        display.drawText(x,y,colors+String.fromCharCode(ascii),1)
+}}
