@@ -11,12 +11,13 @@ app.get('/',function(req, res) {
 
 
 app.use('/client',express.static(__dirname + '/client'))
-app.use('/assets',express.static(__dirname + '/assets'))
+app.use('/src',express.static(__dirname + '/src'))
+app.use('/dist',express.static(__dirname + '/dist'))
 
-app.get("*", function(req, res) {
-    console.log("file requested not found")
-    res.redirect("/client/error.html")
-})
+// app.get("*", function(req, res) {
+//     console.log("file requested not found")
+//     res.redirect("/client/error.html")
+// })
  
 console.log("Server started.")
  
