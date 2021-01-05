@@ -4,9 +4,18 @@
 
 body {
     background-color: rgb(39, 39, 39);
-    margin: 10;
-    height: 100%;
+    text-align: center;
     }
+.noscript {
+    background-color: white;
+    text-align: center;
+}
+
+@font-face {
+    font-family: "metrickal";
+    src: url(../src/Metrickal-Regular.otf) format("otf");
+}
+
 
 </style>
 
@@ -15,6 +24,9 @@ body {
         <title>gune</title>
     </head>
     <body>
-        <script src="../dist/game.js"></script>
+        <noscript><h1 class="noscript">how do you expect this to work without javascript?</h1></noscript>
+        
+        <script src="../dist/index.js"></script>
+
     </body>
 </html>

@@ -1,10 +1,22 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'production',
-    entry: './src/game.js',
+    mode: 'development',
+    entry: './src/index.js',
     output: {
-      filename: 'game.js',
+      filename: 'index.js',
       publicPath: 'dist'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+              },
+              {    
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: "file-loader"
+              },
+        ]
     }
-  }
+}

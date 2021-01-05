@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --mode=production",
     "watch": "webpack --progress --watch",
-    "server": "node main.js"
+    "server": "node main.js",
+    "dev": "(npm run watch & node main.js)"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,10 @@
     "socket.io": "^3.0.4"
   },
   "devDependencies": {
+    "css-loader": "^5.0.1",
     "cssnano": "^4.1.10",
+    "file-loader": "^6.2.0",
+    "style-loader": "^2.0.0",
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.1"
   }
