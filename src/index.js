@@ -1,30 +1,25 @@
 import * as rot from "rot-js"
 
-const constants = {
-    MAP_WIDTH: 80,
-    MAP_HEIGHT: 45
+
+
+const display = new rot.Display({
+    width: 60, 
+    height: 35,
+    fontSize:25,
+    fontFamily:"metrickal, monospace",
+    forceSquareRatio:true,
+    })
+
+const gameFigure = document.createElement("FIGURE")
+document.body.appendChild(gameFigure)
+gameFigure.id = "gameFigure"
+console.log(gameFigure.fontFamily)
+gameFigure.appendChild(display.getContainer())
+
+let offset = 0
+function draw() {
+    for(let x=0;x<60;x++)for(let y=0;y<35;y++)display.draw(x,y,String.fromCharCode(offset+ y + x))
+    offset++
 }
 
-class Engine {
-    constructor() {
-        //make a rot.js canvas, and make it a property
-        this.mapDisplay = new rot.Display({
-            width: constants.MAP_WIDTH,
-            height: constants.MAP_HEIGHT,
-            fontFamily: "metrickal"
-        })
-        document.body.appendChild(this.mapDisplay.getContainer())
-
-        for(let x = 0; x < 25; x++){
-            for(let y = 0; y < 25; y++){
-                this.mapDisplay.draw(x,y,String.fromCharCode(60+x+y))
-            }
-        }
-    }
-}
-
-
-window.addEventListener("DOMContentLoaded", () => {
-    const engine = new Engine()
-    window.ENGINE = engine
-})
+setInterval(draw,100)
