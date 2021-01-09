@@ -1,30 +1,25 @@
-//const express = require('express')
-//const app = express()
-
 const uWS = require('uWebSockets.js')
 const fs = require("fs")
-const uuid = require("uuidv4")
+const { v4: uuidv4 } = require("uuid")
+let playerName = require("./server/playerName")
 const port = 4141
 
-//const server = require('http').createServer(app)
 const { StringDecoder } = require('string_decoder')
-const decoder = new StringDecoder('utf8')
+const decoder = new TextDecoder('utf-8')
 
-// app.get('/',function(req, res) {
-//  res.sendFile(__dirname + '/client/index.html')
-// })
-
-
-// app.use('/client',express.static(__dirname + '/client'))
-// app.use('/src',express.static(__dirname + '/src'))
-// app.use('/dist',express.static(__dirname + '/dist'))
+const MESSAGE_ENUM = Object.freeze({
+    SELF_CONNECTED: "SELF_CONNECTED",
+    CLIENT_CONNECTED: "CLIENT_CONNECTED",
+    CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
+    CLIENT_MESSAGE: "CLIENT_MESSAGE"
+})
 
 const app = uWS.App()
 
 
 
-const addFile = (app, urlPath, filePath) => {
-    if(filePath==="=") filePath=urlPath
+const addFile = (app, urlPath, filePath=urlPath) => {
+    //if(filePath==="=") filePath=urlPath
     app.get(urlPath, (res,req) => {
         let file = fs.readFileSync(__dirname+filePath, function (err, data) {
             if (err) {
@@ -38,24 +33,50 @@ const addFile = (app, urlPath, filePath) => {
 }
 
 addFile(app, "/", "/client/index.html")
-addFile(app, "/dist/index.js", "=")
-addFile(app, "/src/Metrickal-Regular.otf", "=")
+addFile(app, "/dist/index.js")
+addFile(app, "/src/Metrickal-Regular.otf")
 
-// app.get("*", function(req, res) {
-//     console.log("file requested not found")
-//     res.redirect("/client/error.html")
-// })
- 
-
+let SOCKETS = []
 
 app.ws("/ws", {
     compression: 0,
     maxPayloadLength: 16 * 1024 * 1024,
     idleTimeout: 300,
 
-    open: (ws, req) => console.log("open"),
-    message: ws => console.log("message"),
-    close: (ws, code, message) => console.log("closed a ws"),
+    open: (ws, req) => {
+        ws.id = uuidv4()
+        ws.username = playerName.randomName()
+        //subscribe the socket to relevent topics
+        ws.subscribe(MESSAGE_ENUM.CLIENT_CONNECTED)
+        ws.subscribe(MESSAGE_ENUM.CLIENT_DISCONNECTED)
+        ws.subscribe(MESSAGE_ENUM.CLIENT_MESSAGE)
+        //add the socket to sockets after creation
+        SOCKETS.push(ws)
+        console.log("\x1b[32m"+"opened"+"\x1b[0m"+" a %o",ws)
+        //let the socket know its name and uuid
+        let selfMsg = {
+            type: MESSAGE_ENUM.SELF_CONNECTED,
+            body: {
+            id: ws.id,
+            name: ws.username
+            }
+        }
+
+        //let all users know that a new client connected
+        let pubMsg = {
+            type: MESSAGE_ENUM.CLIENT_CONNECTED,
+            body: {
+                id: ws.id,
+                name: ws.username
+            }
+        }
+
+        ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
+        app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
+
+    },
+    message: (ws, msg) => console.log("message: %o",msg),
+    close: (ws, code, message) => console.log("\x1b[31m"+"closed"+"\x1b[0m"+" a %o",ws),
 
 
 }).listen(port, token => {

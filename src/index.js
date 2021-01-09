@@ -20,11 +20,15 @@ canvas.focus()
 
 
 function handleKeyDown(event){
-    console.log(event)
+    connection.send(String(event))
 }
 
 
-connection.onopen = () => console.log("socket connected")
+connection.onopen = () => console.log("socket connected (onopen)")
+connection.onclose = () => {
+    //alert("websocket has closed\n0_0")
+    console.log("websocket closed.")
+}
 connection.onmessage = message => console.log(message.data)
 
 connection.onerror = error => {
