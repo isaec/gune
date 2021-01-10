@@ -34,10 +34,10 @@ const screen = new render.Screen(display)
 
 function handleKeys(keyCode){
     const actions = {
-        [rot.KEYS.VK_RIGHT]: () => ['move', +1, 0],
-        [rot.KEYS.VK_LEFT]:  () => ['move', -1, 0],
-        [rot.KEYS.VK_DOWN]:  () => ['move', 0, +1],
-        [rot.KEYS.VK_UP]:    () => ['move', 0, -1],
+        [rot.KEYS.VK_RIGHT]: () => {return {type:'move', data:[+1, 0]}},
+        [rot.KEYS.VK_LEFT]:  () => {return {type:'move', data:[-1, 0]}},
+        [rot.KEYS.VK_DOWN]:  () => {return {type:'move', data:[0, +1]}},
+        [rot.KEYS.VK_UP]:    () => {return {type:'move', data:[0, -1]}},
     }
     let action = actions[keyCode]
     return action ? action(): undefined
@@ -46,7 +46,7 @@ function handleKeys(keyCode){
 function handleKeyDown(event){
     let action = handleKeys(event.keyCode)
     if (action){
-        if(action[0] === "move"){
+        if(action.type === "move"){
             connection.send(JSON.stringify({
                 type: MESSAGE_ENUM.CLIENT_ACTION,
                 body: action,
@@ -65,7 +65,6 @@ connection.onmessage = msg => {
     switch(srvMsg.type){
 
         case MESSAGE_ENUM.SERVER_ACTION: {
-            console.log("worldstate is",srvMsg.body.world)
             screen.render(srvMsg.body.world)
             break
         }

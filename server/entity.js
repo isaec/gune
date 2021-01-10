@@ -3,7 +3,7 @@ module.exports.World = function() {
     this.entities = new Array()
     this.createEntity = function(type, x, y, name=false) {
         if(!name) name = type + ++this.createEntity.id
-        let entity = {name,type,x,y}
+        let entity = {name:name,type:type,x:x,y:y}
         this.entities.push(entity)
         return entity
     }

@@ -93,12 +93,14 @@ app.ws("/ws", {
         switch(clientMsg.type){
 
             case MESSAGE_ENUM.CLIENT_ALIVE: {
-                console.log("%s is alive",ws.username) 
                 break
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                console.log("we gotta move smth smh my head")
+                //console.log("move by %o",clientMsg.body.data)
+                world.entities[0].x+=clientMsg.body.data[0]
+                world.entities[0].y+=clientMsg.body.data[1]
+                
                 app.publish(MESSAGE_ENUM.SERVER_ACTION, 
                     JSON.stringify({
                     type: MESSAGE_ENUM.SERVER_ACTION,
