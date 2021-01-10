@@ -1,7 +1,7 @@
 const uWS = require('uWebSockets.js')
 const fs = require("fs")
 const { v4: uuidv4 } = require("uuid")
-let playerName = require("./server/playerName")
+const playerName = require("./server/playerName")
 const port = 4141
 
 const { StringDecoder } = require('string_decoder')
@@ -52,6 +52,7 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.CLIENT_CONNECTED)
         ws.subscribe(MESSAGE_ENUM.CLIENT_DISCONNECTED)
         ws.subscribe(MESSAGE_ENUM.CLIENT_MESSAGE)
+        ws.subscribe(MESSAGE_ENUM.SERVER_ACTION)
         //add the socket to sockets after creation
         SOCKETS.push(ws)
         console.log("\x1b[32m"+"opened"+"\x1b[0m"+" %o",ws)
@@ -79,7 +80,28 @@ app.ws("/ws", {
     },
     message: (ws, msg, isBinary) => {
         let clientMsg = JSON.parse(decoder.decode(msg))
-        console.log("%o says %o",ws.username,clientMsg)
+        switch(clientMsg.type){
+
+            case MESSAGE_ENUM.CLIENT_ALIVE: {
+                console.log("%s is alive",ws.username) 
+                break
+            }
+
+            case MESSAGE_ENUM.CLIENT_ACTION: {
+                console.log("we gotta move smth smh my head")
+                app.publish(MESSAGE_ENUM.SERVER_ACTION, 
+                    JSON.stringify({
+                    type: MESSAGE_ENUM.SERVER_ACTION,
+                    body: {
+                        
+                    }
+                }))
+                break
+            }
+
+            default: console.log("%o says %o",ws.username,clientMsg)
+        }
+        
     },
     close: (ws, code, message) => {
         SOCKETS.find((socket, index) => {

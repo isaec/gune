@@ -1,6 +1,7 @@
 import * as rot from "rot-js"
 const url = "ws://localhost:4141/ws"
 const connection = new WebSocket(url)
+const decoder = new TextDecoder('utf-8')
 
 const display = new rot.Display({
     width: 60, 
@@ -8,7 +9,17 @@ const display = new rot.Display({
     fontSize:20,
     fontFamily:"metrickal, monospace",
     forceSquareRatio:true,
-    })
+})
+
+const MESSAGE_ENUM = Object.freeze({
+    SELF_CONNECTED: "SELF_CONNECTED",
+    CLIENT_CONNECTED: "CLIENT_CONNECTED",
+    CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
+    CLIENT_MESSAGE: "CLIENT_MESSAGE",
+    CLIENT_ACTION: "CLIENT_ACTION",
+    CLIENT_ALIVE: "CLIENT_ALIVE",
+    SERVER_ACTION: "SERVER_ACTION"
+})
 
 const gameFigure = document.getElementById("gameFigure")
 gameFigure.appendChild(display.getContainer())
@@ -34,7 +45,10 @@ function handleKeyDown(event){
     let action = handleKeys(event.keyCode)
     if (action){
         if(action[0] === "move"){
-            connection.send(JSON.stringify(action))
+            connection.send(JSON.stringify({
+                type: MESSAGE_ENUM.CLIENT_ACTION,
+                body: action,
+            }))
         }
     }
 }
@@ -44,10 +58,29 @@ connection.onclose = () => {
     console.log("websocket closed.")
     setTimeout(location.reload.bind(window.location),500)
 }
-connection.onmessage = message => console.log(message.data)
+connection.onmessage = msg => {
+    const srvMsg = JSON.parse(msg.data)
+    switch(srvMsg.type){
+
+        case MESSAGE_ENUM.SERVER_ACTION: {
+            console.log("somthing big happened?")
+            break
+        }
+
+        default: console.log(srvMsg)
+    }
+    
+}
 
 connection.onerror = error => {
     console.log(`WebSocket error: ${error}`)
 }
 
-setInterval(console.log("ping"), 100)
+window.setInterval(function(){
+    connection.send(JSON.stringify( {
+        type: MESSAGE_ENUM.CLIENT_ALIVE,
+        body: {
+        
+        }
+    }))
+}, 1000*60)
