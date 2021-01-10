@@ -19,15 +19,30 @@ canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
 
-function handleKeyDown(event){
-    connection.send(String(event))
+function handleKeys(keyCode){
+    const actions = {
+        [rot.KEYS.VK_RIGHT]: () => ['move', +1, 0],
+        [rot.KEYS.VK_LEFT]:  () => ['move', -1, 0],
+        [rot.KEYS.VK_DOWN]:  () => ['move', 0, +1],
+        [rot.KEYS.VK_UP]:    () => ['move', 0, -1],
+    }
+    let action = actions[keyCode]
+    return action ? action(): undefined
 }
 
+function handleKeyDown(event){
+    let action = handleKeys(event.keyCode)
+    if (action){
+        if(action[0] === "move"){
+            connection.send(JSON.stringify(action))
+        }
+    }
+}
 
 connection.onopen = () => console.log("socket connected (onopen)")
 connection.onclose = () => {
-    //alert("websocket has closed\n0_0")
     console.log("websocket closed.")
+    setTimeout(location.reload.bind(window.location),500)
 }
 connection.onmessage = message => console.log(message.data)
 
