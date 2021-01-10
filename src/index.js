@@ -1,4 +1,5 @@
 import * as rot from "rot-js"
+const render = require("/src/render.js")
 const url = "ws://localhost:4141/ws"
 const connection = new WebSocket(url)
 const decoder = new TextDecoder('utf-8')
@@ -29,6 +30,7 @@ canvas.addEventListener('keydown', handleKeyDown)
 canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
+const screen = new render.Screen(display)
 
 function handleKeys(keyCode){
     const actions = {
@@ -64,6 +66,7 @@ connection.onmessage = msg => {
 
         case MESSAGE_ENUM.SERVER_ACTION: {
             console.log("worldstate is",srvMsg.body.world)
+            screen.render(srvMsg.body.world)
             break
         }
 
