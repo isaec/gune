@@ -44,7 +44,6 @@ addFile(app, "/favicon.ico","/src/favicon.ico")
 
 let world = new ent.World()
 world.createEntity("player",10,10)
-console.log("worldstate",world.entities)
 
 //end gamecode setup block
 

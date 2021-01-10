@@ -63,8 +63,7 @@ connection.onmessage = msg => {
     switch(srvMsg.type){
 
         case MESSAGE_ENUM.SERVER_ACTION: {
-            console.log(srvMsg)
-            console.log("worldstate is",srvMsg.body.world.entities)
+            console.log("worldstate is",srvMsg.body.world)
             break
         }
 

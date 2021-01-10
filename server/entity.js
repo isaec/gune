@@ -1,10 +1,10 @@
 module.exports.World = function() {
     this.map = "wip lol"
-    this.entities = new Map()
-    this.createEntity = function(type, x, y) {
-        let id = ++this.createEntity.id
-        let entity = {id,type,x,y}
-        this.entities.set(id, entity)
+    this.entities = new Array()
+    this.createEntity = function(type, x, y, name=false) {
+        if(!name) name = type + ++this.createEntity.id
+        let entity = {name,type,x,y}
+        this.entities.push(entity)
         return entity
     }
     this.createEntity.id = 0
