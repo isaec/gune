@@ -7,6 +7,8 @@ const port = 4141
 const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
+const ent = require("./server/entity")
+
 const MESSAGE_ENUM = Object.freeze({
     SELF_CONNECTED: "SELF_CONNECTED",
     CLIENT_CONNECTED: "CLIENT_CONNECTED",
@@ -37,6 +39,15 @@ addFile(app, "/", "/client/index.html")
 addFile(app, "/dist/index.js")
 addFile(app, "/src/Metrickal-Regular.otf")
 addFile(app, "/favicon.ico","/src/favicon.ico")
+
+//gamecode setup block
+
+let world = new ent.World()
+world.createEntity("player",10,10)
+console.log("worldstate",world.entities)
+
+//end gamecode setup block
+
 
 let SOCKETS = []
 
@@ -93,7 +104,7 @@ app.ws("/ws", {
                     JSON.stringify({
                     type: MESSAGE_ENUM.SERVER_ACTION,
                     body: {
-                        
+                        world: world
                     }
                 }))
                 break
