@@ -13,6 +13,7 @@ const MESSAGE_ENUM = Object.freeze({
     CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
     CLIENT_MESSAGE: "CLIENT_MESSAGE",
     CLIENT_ACTION: "CLIENT_ACTION",
+    CLIENT_ALIVE: "CLIENT_ALIVE",
     SERVER_ACTION: "SERVER_ACTION"
 })
 
@@ -35,6 +36,7 @@ const addFile = (app, urlPath, filePath=urlPath) => {
 addFile(app, "/", "/client/index.html")
 addFile(app, "/dist/index.js")
 addFile(app, "/src/Metrickal-Regular.otf")
+addFile(app, "/favicon.ico","/src/favicon.ico")
 
 let SOCKETS = []
 
@@ -52,7 +54,7 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.CLIENT_MESSAGE)
         //add the socket to sockets after creation
         SOCKETS.push(ws)
-        console.log("\x1b[32m"+"opened"+"\x1b[0m"+" a %o",ws)
+        console.log("\x1b[32m"+"opened"+"\x1b[0m"+" %o",ws)
         //let the socket know its name and uuid
         let selfMsg = {
             type: MESSAGE_ENUM.SELF_CONNECTED,
@@ -83,7 +85,7 @@ app.ws("/ws", {
         SOCKETS.find((socket, index) => {
             if (socket && socket.id === ws.id) SOCKETS.splice(index, 1)
         })
-        console.log("\x1b[31m"+"closed"+"\x1b[0m"+" a %o",ws)
+        console.log("\x1b[31m"+"closed"+"\x1b[0m"+" %o",ws)
 
         let pubMsg = {
             type: MESSAGE_ENUM.CLIENT_DISCONNECTED,

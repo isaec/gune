@@ -48,4 +48,6 @@ connection.onmessage = message => console.log(message.data)
 
 connection.onerror = error => {
     console.log(`WebSocket error: ${error}`)
-  }
+}
+
+setInterval(console.log("ping"), 100)
