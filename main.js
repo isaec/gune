@@ -7,7 +7,7 @@ const port = 4141
 const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
-const ent = require("./server/entity")
+const wrld = require("./server/world")
 
 const MESSAGE_ENUM = Object.freeze({
     SELF_CONNECTED: "SELF_CONNECTED",
@@ -42,8 +42,8 @@ addFile(app, "/favicon.ico","/src/favicon.ico")
 
 //gamecode setup block
 
-let world = new ent.World()
-world.createEntity("player",10,10)
+let world = new wrld.World()
+world.createEntity("troll",10,10)
 
 //end gamecode setup block
 
@@ -84,6 +84,10 @@ app.ws("/ws", {
             }
         }
 
+        world.createEntity("player",10,10,ws.id) //make the new player for the uuid
+
+        world.updateClients(app) //update the world for the clients
+
         ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
         app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
 
@@ -97,17 +101,15 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                //console.log("move by %o",clientMsg.body.data)
-                world.entities[0].x+=clientMsg.body.data[0]
-                world.entities[0].y+=clientMsg.body.data[1]
-                
-                app.publish(MESSAGE_ENUM.SERVER_ACTION, 
-                    JSON.stringify({
-                    type: MESSAGE_ENUM.SERVER_ACTION,
-                    body: {
-                        world: world
+                for(let entity of world.entities){
+                    if(entity.id === ws.id){
+                        entity.x+=clientMsg.body.data[0]
+                        entity.y+=clientMsg.body.data[1]
+                        break
                     }
-                }))
+                }
+                
+                world.updateClients(app)
                 break
             }
 
