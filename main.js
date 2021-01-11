@@ -101,12 +101,11 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                for(let entity of world.entities){
-                    if(entity.id === ws.id){
-                        entity.x+=clientMsg.body.data[0]
-                        entity.y+=clientMsg.body.data[1]
-                        break
-                    }
+
+                let [i, entity] = world.getEntity(ws.id)
+                if(entity){
+                    entity.x+=clientMsg.body.data[0]
+                    entity.y+=clientMsg.body.data[1]
                 }
                 
                 world.updateClients(app)
@@ -121,6 +120,13 @@ app.ws("/ws", {
         SOCKETS.find((socket, index) => {
             if (socket && socket.id === ws.id) SOCKETS.splice(index, 1)
         })
+        const [index, entity] = world.getEntity(ws.id)
+        if (entity) {
+            world.entities.splice(index, 1)
+            world.updateClients(app)
+        }
+
+        
         console.log("\x1b[31m"+"closed"+"\x1b[0m"+" %o",ws)
 
         let pubMsg = {
@@ -131,7 +137,9 @@ app.ws("/ws", {
             }
         }
 
-        app.publish(MESSAGE_ENUM.CLIENT_DISCONNECTED, JSON.stringify(pubMsg)) //let the clients know
+        //let the clients know about the disconnect
+
+        app.publish(MESSAGE_ENUM.CLIENT_DISCONNECTED, JSON.stringify(pubMsg)) 
 
     },
 
