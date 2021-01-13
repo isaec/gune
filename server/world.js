@@ -1,8 +1,8 @@
 const { v4: uuidv4 } = require("uuid")
+const gamemap = require("./gamemap.js")
 
 module.exports.World = function() {
-    this.makeMap = () => {return "test"}
-    this.map = this.makeMap()
+    this.map = new gamemap.Map(60,35)
     this.entities = new Array()
     this.getEntity = function(uuid){
         for(const [index, entity] of this.entities.entries()){

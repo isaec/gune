@@ -50,8 +50,9 @@ world.createEntity("troll",10,10)
 
 let SOCKETS = []
 
+
 app.ws("/ws", {
-    compression: 0,
+    compression: uWS.SHARED_COMPRESSOR,
     maxPayloadLength: 16 * 1024 * 1024,
     idleTimeout: 60*3,
 

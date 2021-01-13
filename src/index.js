@@ -52,7 +52,10 @@ function handleKeyDown(event){
                 body: action,
             }))
         }
+    } else {
+        //console.log("unhandled event %o",event)
     }
+    event.preventDefault()
 }
 
 connection.onopen = () => console.log("socket connected (onopen)")

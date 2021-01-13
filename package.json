@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/isaec/gune#readme",
   "dependencies": {
+    "@theoxiong/numjs": "0.0.2",
     "express": "^4.17.1",
     "postcss": "^8.2.4",
     "rot-js": "^2.1.5",
