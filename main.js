@@ -22,9 +22,9 @@ const MESSAGE_ENUM = Object.freeze({
 const app = uWS.App()
 
 
-const addFile = (app, urlPath, filePath=urlPath) => {
-    app.get(urlPath, (res,req) => {
-        let file = fs.readFileSync(__dirname+filePath, function (err, data) {
+const addFile = (app, urlPath, filePath = urlPath) => {
+    app.get(urlPath, (res, req) => {
+        let file = fs.readFileSync(__dirname + filePath, function (err, data) {
             if (err) {
                 res.end(`Error getting the file: ${err}.`)
             } else {
@@ -38,12 +38,12 @@ const addFile = (app, urlPath, filePath=urlPath) => {
 addFile(app, "/", "/client/index.html")
 addFile(app, "/dist/index.js")
 addFile(app, "/src/Metrickal-Regular.otf")
-addFile(app, "/favicon.ico","/src/favicon.ico")
+addFile(app, "/favicon.ico", "/src/favicon.ico")
 
 //gamecode setup block
 
 let world = new wrld.World()
-world.createEntity("troll",10,10)
+world.createEntity("troll", 10, 10)
 
 //end gamecode setup block
 
@@ -54,7 +54,7 @@ let SOCKETS = []
 app.ws("/ws", {
     compression: uWS.SHARED_COMPRESSOR,
     maxPayloadLength: 16 * 1024 * 1024,
-    idleTimeout: 60*3,
+    idleTimeout: 60 * 3,
 
     open: (ws, req) => {
         ws.id = uuidv4()
@@ -66,13 +66,13 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.SERVER_ACTION)
         //add the socket to sockets after creation
         SOCKETS.push(ws)
-        console.log("\x1b[32m"+"opened"+"\x1b[0m"+" %o",ws)
+        console.log("\x1b[32m" + "opened" + "\x1b[0m" + " %o", ws)
         //let the socket know its name and uuid
         let selfMsg = {
             type: MESSAGE_ENUM.SELF_CONNECTED,
             body: {
-            id: ws.id,
-            name: ws.username
+                id: ws.id,
+                name: ws.username
             }
         }
 
@@ -85,7 +85,7 @@ app.ws("/ws", {
             }
         }
 
-        world.createEntity("player",10,10,ws.id) //make the new player for the uuid
+        world.createEntity("player", 10, 10, ws.id) //make the new player for the uuid
 
         world.updateClients(app) //update the world for the clients
 
@@ -95,7 +95,7 @@ app.ws("/ws", {
     },
     message: (ws, msg, isBinary) => {
         let clientMsg = JSON.parse(decoder.decode(msg))
-        switch(clientMsg.type){
+        switch (clientMsg.type) {
 
             case MESSAGE_ENUM.CLIENT_ALIVE: {
                 break
@@ -104,18 +104,18 @@ app.ws("/ws", {
             case MESSAGE_ENUM.CLIENT_ACTION: {
 
                 let [i, entity] = world.getEntity(ws.id)
-                if(entity){
-                    entity.x+=clientMsg.body.data[0]
-                    entity.y+=clientMsg.body.data[1]
+                if (entity) {
+                    entity.x += clientMsg.body.data[0]
+                    entity.y += clientMsg.body.data[1]
                 }
-                
+
                 world.updateClients(app)
                 break
             }
 
-            default: console.log("%o says %o",ws.username,clientMsg)
+            default: console.log("%o says %o", ws.username, clientMsg)
         }
-        
+
     },
     close: (ws, code, message) => {
         SOCKETS.find((socket, index) => {
@@ -127,8 +127,8 @@ app.ws("/ws", {
             world.updateClients(app)
         }
 
-        
-        console.log("\x1b[31m"+"closed"+"\x1b[0m"+" %o",ws)
+
+        console.log("\x1b[31m" + "closed" + "\x1b[0m" + " %o", ws)
 
         let pubMsg = {
             type: MESSAGE_ENUM.CLIENT_DISCONNECTED,
@@ -140,16 +140,16 @@ app.ws("/ws", {
 
         //let the clients know about the disconnect
 
-        app.publish(MESSAGE_ENUM.CLIENT_DISCONNECTED, JSON.stringify(pubMsg)) 
+        app.publish(MESSAGE_ENUM.CLIENT_DISCONNECTED, JSON.stringify(pubMsg))
 
     },
 
 
 }).listen(port, token => {
     token ?
-    console.log(`Listening to port ${port}`) :
-    console.log(`Failed to listen to port ${port}`)
+        console.log(`Listening to port ${port}`) :
+        console.log(`Failed to listen to port ${port}`)
 })
 
 console.log("Server started.")
- 
+
