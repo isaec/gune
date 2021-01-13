@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --mode=production",
+    "debugbuild":"webpack --mode=development --devtool=source-map",
     "watch": "webpack --progress --watch",
     "server": "node main.js",
     "devserver": "nodemon main.js"

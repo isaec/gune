@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require("uuid")
+
 const gamemap = require("./gamemap.js")
 
 module.exports.World = function () {
@@ -12,12 +12,7 @@ module.exports.World = function () {
         }
         return null
     }
-    this.createEntity = function (type, x, y, uuid = false) {
-        if (!uuid) uuid = uuidv4()
-        let entity = { id: uuid, type: type, x: x, y: y }
-        this.entities.push(entity)
-        return entity
-    }
+    this.add = function(entity){this.entities.push(entity)}
     this.updateClients = function (app) {
         app.publish("SERVER_ACTION"/*MESSAGE_ENUM.SERVER_ACTION*/,
             JSON.stringify({

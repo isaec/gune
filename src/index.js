@@ -4,12 +4,14 @@ const url = "ws://localhost:4141/ws"
 const connection = new WebSocket(url)
 const decoder = new TextDecoder('utf-8')
 
+let uuid, world
+
 const display = new rot.Display({
-    width: 60, 
+    width: 60,
     height: 35,
-    fontSize:20,
-    fontFamily:"metrickal, monospace",
-    forceSquareRatio:true,
+    fontSize: 20,
+    fontFamily: "metrickal, monospace",
+    forceSquareRatio: true,
 })
 
 const MESSAGE_ENUM = Object.freeze({
@@ -32,28 +34,45 @@ canvas.focus()
 
 const screen = new render.Screen(display)
 
-function handleKeys(keyCode){
+function handleKeys(keyCode) {
     const actions = {
-        [rot.KEYS.VK_RIGHT]: () => {return {type:'move', data:[+1, 0]}},
-        [rot.KEYS.VK_LEFT]:  () => {return {type:'move', data:[-1, 0]}},
-        [rot.KEYS.VK_DOWN]:  () => {return {type:'move', data:[0, +1]}},
-        [rot.KEYS.VK_UP]:    () => {return {type:'move', data:[0, -1]}},
+        [rot.KEYS.VK_RIGHT]:
+            () => { return { type: 'move', data: [+1, 0] } },
+        [rot.KEYS.VK_LEFT]:
+            () => { return { type: 'move', data: [-1, 0] } },
+        [rot.KEYS.VK_DOWN]:
+            () => { return { type: 'move', data: [0, +1] } },
+        [rot.KEYS.VK_UP]:
+            () => { return { type: 'move', data: [0, -1] } },
     }
     let action = actions[keyCode]
-    return action ? action(): undefined
+    return action ? action() : undefined
 }
 
-function handleKeyDown(event){
+function handleKeyDown(event) {
     let action = handleKeys(event.keyCode)
-    if (action){
-        if(action.type === "move"){
-            connection.send(JSON.stringify({
-                type: MESSAGE_ENUM.CLIENT_ACTION,
-                body: action,
-            }))
+    if (action) {
+        if (action.type === "move") {
+            const player = (() => {
+                for (const entity of world.entities) {
+                    if (entity.id === uuid) {
+                        return entity
+                    }
+                }
+                alert("this should not have happened.")
+                return null
+            })()
+            const dx = action.data[0], dy = action.data[1]
+            const newX = player.x + dx, newY = player.y + dy
+            if (world.map.tiles[newY][newX] === 0) {
+                connection.send(JSON.stringify({
+                    type: MESSAGE_ENUM.CLIENT_ACTION,
+                    body: action,
+                }))
+            }
         }
     } else {
-        //console.log("unhandled event %o",event)
+        //console.log("unhandled event %o", event)
     }
     event.preventDefault()
 }
@@ -61,31 +80,37 @@ function handleKeyDown(event){
 connection.onopen = () => console.log("socket connected (onopen)")
 connection.onclose = () => {
     console.log("websocket closed.")
-    setTimeout(location.reload.bind(window.location),500)
+    setTimeout(location.reload.bind(window.location), 500)
 }
 connection.onmessage = msg => {
     const srvMsg = JSON.parse(msg.data)
-    switch(srvMsg.type){
+    switch (srvMsg.type) {
 
         case MESSAGE_ENUM.SERVER_ACTION: {
-            screen.render(srvMsg.body.world)
+            world = srvMsg.body.world
+            screen.render(world)
+            break
+        }
+
+        case MESSAGE_ENUM.SELF_CONNECTED: {
+            uuid = srvMsg.body.id
             break
         }
 
         default: console.log(srvMsg)
     }
-    
+
 }
 
 connection.onerror = error => {
     console.log(`WebSocket error: ${error}`)
 }
 
-window.setInterval(function(){
-    connection.send(JSON.stringify( {
+window.setInterval(function () {
+    connection.send(JSON.stringify({
         type: MESSAGE_ENUM.CLIENT_ALIVE,
         body: {
-        
+
         }
     }))
-}, 1000*60)
+}, 1000 * 60)

@@ -16,7 +16,6 @@ module.exports.Screen = function (display) {
 
         //draw the world
         const map = world.map
-        console.log(map.tiles)
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
                 if (map.tiles[y][x]) {

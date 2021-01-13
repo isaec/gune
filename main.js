@@ -8,6 +8,7 @@ const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
 const wrld = require("./server/world")
+const entity = require("./server/entity")
 
 const MESSAGE_ENUM = Object.freeze({
     SELF_CONNECTED: "SELF_CONNECTED",
@@ -43,7 +44,6 @@ addFile(app, "/favicon.ico", "/src/favicon.ico")
 //gamecode setup block
 
 let world = new wrld.World()
-world.createEntity("troll", 10, 10)
 
 //end gamecode setup block
 
@@ -85,7 +85,7 @@ app.ws("/ws", {
             }
         }
 
-        world.createEntity("player", 10, 10, ws.id) //make the new player for the uuid
+        world.add(new entity.Entity("player", 10, 10, ws.id)) //make the new player for the uuid
 
         world.updateClients(app) //update the world for the clients
 
