@@ -16,12 +16,13 @@ module.exports.Screen = function (display) {
 
         //draw the world
         const map = world.map
+        console.log(map.tiles)
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
-                if (map.tiles[x][y]) {
-                    display.draw(x, y, "#", "hsl(60, 10%, 40%)", "gray")
+                if (map.tiles[y][x]) {
+                    display.draw(x, y, "#", "darkorange", "darkred")
                 } else {
-                    display.draw(x, y, ".", "hsl(60, 50%, 50%)", "black")
+                    display.draw(x, y, ".", "crimson", "black")
                 }
             }
         }
