@@ -34,8 +34,6 @@ canvas.focus()
 
 const screen = new render.Screen(display)
 
-let downBool = false
-canvas.addEventListener("keyup", () => {downBool = false})
 
 function handleKeys(keyCode) {
     const actions = {
@@ -54,8 +52,7 @@ function handleKeys(keyCode) {
 
 function handleKeyDown(event) {
     let action = handleKeys(event.keyCode)
-    if (action && !downBool) {
-        downBool = true
+    if (action) {
         if (action.type === "move") {
             const player = (() => {
                 for (const entity of world.entities) {
