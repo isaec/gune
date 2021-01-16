@@ -9,6 +9,7 @@
     "debugbuild":"webpack --mode=development --devtool=source-map",
     "watch": "webpack --progress --watch",
     "server": "node main.js",
+    "start": "node main.js",
     "devserver": "nodemon main.js"
   },
   "repository": {
