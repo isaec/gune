@@ -70,6 +70,11 @@ function handleKeyDown(event) {
                     type: MESSAGE_ENUM.CLIENT_ACTION,
                     body: action,
                 }))
+                //render the change on clientside pre approval
+                //this should make movement feel more responsive
+                player.x += dx
+                player.y += dy
+                screen.render(world)
             }
         }
     } else {
