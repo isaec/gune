@@ -32,7 +32,7 @@ canvas.addEventListener('keydown', handleKeyDown)
 canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
-const screen = new render.Screen(display)
+const screen = new render.Screen(display, uuid)
 
 //stupid fix to redraw world when font is ready
 window.addEventListener("load", () => {screen.render(world)})
@@ -75,7 +75,7 @@ function handleKeyDown(event) {
                 //render the change on clientside pre approval
                 //this should make movement feel more responsive
                 //however, it adds rubberbanding when other moves are
-                //hanled by server first.
+                //handled by server first.
                 // player.x += dx
                 // player.y += dy
                 // screen.render(world)
@@ -104,6 +104,7 @@ connection.onmessage = msg => {
 
         case MESSAGE_ENUM.SELF_CONNECTED: {
             uuid = srvMsg.body.id
+            screen.uuid = uuid
             break
         }
 
