@@ -37,6 +37,7 @@ const addFile = (app, urlPath, filePath = urlPath) => {
 }
 
 addFile(app, "/", "/client/index.html")
+addFile(app, "/client/main.css")
 addFile(app, "/dist/index.js")
 addFile(app, "/src/Metrickal-Regular.otf")
 addFile(app, "/favicon.ico", "/src/favicon.ico")

@@ -34,6 +34,8 @@ canvas.focus()
 
 const screen = new render.Screen(display)
 
+//stupid fix to redraw world when font is ready
+window.addEventListener("load", () => {screen.render(world)})
 
 function handleKeys(keyCode) {
     const actions = {
