@@ -1,6 +1,6 @@
 import * as rot from "rot-js"
 const render = require("/src/render.js")
-const url = "ws://localhost:4141/ws"
+const url = location.origin.replace(/^http/, 'ws')+"/ws"
 const connection = new WebSocket(url)
 const decoder = new TextDecoder('utf-8')
 

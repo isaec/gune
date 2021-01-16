@@ -2,7 +2,7 @@ const uWS = require('uWebSockets.js')
 const fs = require("fs")
 const { v4: uuidv4 } = require("uuid")
 const playerName = require("./server/playerName")
-const port = 4141
+const port = parseInt(process.env.PORT,10) || 4141
 
 const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
