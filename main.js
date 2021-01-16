@@ -2,7 +2,7 @@ const uWS = require('uWebSockets.js')
 const fs = require("fs")
 const { v4: uuidv4 } = require("uuid")
 const playerName = require("./server/playerName")
-const port = parseInt(process.env.PORT,10) || 4141
+const port = parseInt(process.env.PORT, 10) || 4141
 
 const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
@@ -106,9 +106,22 @@ app.ws("/ws", {
             case MESSAGE_ENUM.CLIENT_ACTION: {
 
                 let [i, entity] = world.getEntity(ws.id)
+                
                 if (entity) {
-                    entity.x += clientMsg.body.data[0]
-                    entity.y += clientMsg.body.data[1]
+
+                    let newX = entity.x + clientMsg.body.data[0],
+                    newY = entity.y + clientMsg.body.data[1]
+
+                    //if the move is valid
+                    if(world.map.tiles[newY][newX] === 0){
+
+                        //move the player
+                        entity.x += clientMsg.body.data[0]
+                        entity.y += clientMsg.body.data[1]
+                        
+                    }
+
+                    
                 }
 
                 world.updateClients(app)
