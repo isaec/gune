@@ -74,9 +74,11 @@ function handleKeyDown(event) {
                 }))
                 //render the change on clientside pre approval
                 //this should make movement feel more responsive
-                player.x += dx
-                player.y += dy
-                screen.render(world)
+                //however, it adds rubberbanding when other moves are
+                //hanled by server first.
+                // player.x += dx
+                // player.y += dy
+                // screen.render(world)
             }
         }
     } else {
