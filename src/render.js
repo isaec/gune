@@ -3,16 +3,14 @@ const rot = require("rot-js")
 module.exports.Screen = function (display, uuid) {
     this.display = display
     this.uuid = uuid
-    this.drawEntity = function (entity) {
+    this.entityGlyph = function (entityType) {
         const visuals = {
             player: ['@', "hsl(60, 100%, 50%)"],
             troll: ['T', "hsl(120, 60%, 50%)"],
             orc: ['o', "hsl(100, 30%, 50%)"],
         }
 
-        const [ch, fg, bg] = visuals[entity.type]
-
-        this.display.draw(entity.x, entity.y, ch, fg, bg);
+        return visuals[entityType]
     }
 
     this.getPlayer = (world) => {
@@ -43,6 +41,8 @@ module.exports.Screen = function (display, uuid) {
             ) return false
             return world.map.tiles[y][x] === 0
         })
+
+        //values from 0.0 to 1.0
         let lightMap = Array.from({length:map.width}, () => [])
         const player = this.getPlayer(world)
         if(player){
@@ -51,15 +51,16 @@ module.exports.Screen = function (display, uuid) {
             })
         }
 
-
-        const colors = {
-            [false]: {[false]: "rgb(50, 50, 150)", [true]: "rgb(0, 0, 100)"},
-            [true]: {[false]: "rgb(200, 180, 50)", [true]: "rgb(130, 110, 50)"}
+        //values of [char, fg, and optional bg]
+        let glyphMap = Array.from({length:map.width}, () => [])
+        for (let entity of world.entities.values()){
+            glyphMap[entity.y][entity.x] = this.entityGlyph(entity.type)
         }
 
-        const visuals = {
-            [true]: "#",
-            [false]: "."
+
+        const mapColors = {
+            [false]: {[false]: "rgb(50, 50, 150)", [true]: "rgb(0, 0, 100)"},
+            [true]: {[false]: "rgb(200, 180, 50)", [true]: "rgb(130, 110, 50)"}
         }
 
 
@@ -68,15 +69,25 @@ module.exports.Screen = function (display, uuid) {
             for (let x = 0; x < map.width; x++) {
                 const lit = lightMap[y][x] > 0.0,
                 wall = map.tiles[y][x] !== 0
-                const color = colors[lit][wall]
-                const visual = visuals[wall]
-                display.draw(x,y,visual,"black",color)
+
+                let ch = " ",
+                fg = "black",
+                bg = mapColors[lit][wall],
+                glyph = glyphMap[y][x]
+
+                if(glyph) {
+                    ch = lit? glyph[0] : ch
+                    fg = glyph[1]
+                    bg = glyph[2] || bg
+                }
+
+                display.draw(x,y,ch,fg,bg)
             }
         }
 
         //draw the entities
         for (const entity of world.entities) {
-            this.drawEntity(entity)
+            this.drawEntity(entity.type)
         }
     }
 }
