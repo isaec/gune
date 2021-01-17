@@ -7,9 +7,9 @@ module.exports.Screen = function (display, uuid) {
     this.uuid = uuid
     this.entityGlyph = function (entityType) {
         const visuals = {
-            player: { ch: '@', fg: "hsl(60, 100%, 50%)" },
-            troll: { ch: 'T', fg: "hsl(120, 60%, 50%)" },
-            orc: { ch: 'o', fg: "hsl(100, 30%, 50%)" },
+            player: { ch: '@', fg: new Color(5, 5, 2) },
+            troll: { ch: 'T', fg: new Color(2, 5, 2) },
+            orc: { ch: 'o', fg: new Color(3, 5, 3) },
         }
 
         return visuals[entityType]
@@ -36,7 +36,7 @@ module.exports.Screen = function (display, uuid) {
         //NOTE this should be verified serverside later
         //should also not remake the object every render
         let fov = new rot.FOV.PreciseShadowcasting((x, y) => {
-            if (
+            if (//make sure not to test cords out of bounds
                 (x > map.width || x < 0)
                 ||
                 (y > map.height || y < 0)
@@ -51,7 +51,7 @@ module.exports.Screen = function (display, uuid) {
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
                 if (lightMap[y][x] < visibility ||
                     lightMap[y][x] == undefined) {
-                        
+
                     lightMap[y][x] = visibility
                 }
             })
@@ -64,17 +64,37 @@ module.exports.Screen = function (display, uuid) {
         }
 
 
-        const mapColors = {
-            //dark      floor                         wall
-            [false]: { [false]: new Color(0, 0, 0), [true]: new Color(0, 0, 0) },
-            //illuminated floor                      wall
-            [true]: { [false]: new Color(3, 2, 2), [true]: new Color(2, 1, 1) }
+        const mapGlyph = {
+            //dark block
+            [false]:
+            {
+                [false]: { //floor
+                    ch: " ",
+                    fg: new Color(5, 5, 5),
+                    bg: new Color(0, 0, 0)
+                },
+                [true]: { //wall
+                    ch: " ",
+                    fg: new Color(5, 5, 5),
+                    bg: new Color(0, 0, 0)
+                }
+            },
+            //illuminated block
+            [true]:
+            {
+                [false]: { //floor
+                    ch: ".",
+                    fg: new Color(4, 3, 3),
+                    bg: new Color(3, 2, 2)
+                },
+                [true]: { //wall
+                    ch: "#",
+                    fg: new Color(4, 2, 2),
+                    bg: new Color(3, 1, 1)
+                }
+            }
         }
 
-        const mapGlyphs = {
-            [true]: "#",
-            [false]: "."
-        }
 
 
         //draw the world
@@ -84,18 +104,20 @@ module.exports.Screen = function (display, uuid) {
                 const lit = cordLight > 0.0,
                     wall = map.tiles[y][x] !== 0
 
+                const cordTile = mapGlyph[lit][wall]
+
 
                 let ch = " ",
-                    fg = "black",
-                    bg = mapColors[lit][wall].string(cordLight),
+                    fg = cordTile.fg.string(cordLight),
+                    bg = cordTile.bg.string(cordLight),
                     glyph = glyphMap[y][x]
 
                 if (glyph) {
                     ch = lit ? glyph.ch : ch
-                    fg = glyph.fg
+                    fg = glyph.fg.string(cordLight)
                     bg = glyph.bg || bg
                 } else {
-                    ch = mapGlyphs[wall]
+                    ch = cordTile.ch
                 }
 
                 display.draw(x, y, ch, fg, bg)
