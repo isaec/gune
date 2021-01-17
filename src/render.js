@@ -65,37 +65,17 @@ module.exports.Screen = function (display, uuid) {
 
 
         const mapGlyph = {
-            //dark block
-            [false]:
-            {
-                [false]: { //floor
-                    ch: " ",
-                    fg: new Color(5, 5, 5),
-                    bg: new Color(0, 0, 0)
-                },
-                [true]: { //wall
-                    ch: " ",
-                    fg: new Color(5, 5, 5),
-                    bg: new Color(0, 0, 0)
-                }
+            [false]: { //floor
+                ch: ".",
+                fg: new Color(4, 3, 3),
+                bg: new Color(3, 2, 2)
             },
-            //illuminated block
-            [true]:
-            {
-                [false]: { //floor
-                    ch: ".",
-                    fg: new Color(4, 3, 3),
-                    bg: new Color(3, 2, 2)
-                },
-                [true]: { //wall
-                    ch: "#",
-                    fg: new Color(4, 2, 2),
-                    bg: new Color(3, 1, 1)
-                }
-            }
+            [true]: { //wall
+                ch: "#",
+                fg: new Color(4, 2, 2),
+                bg: new Color(3, 1, 1)
+            } 
         }
-
-
 
         //draw the world
         for (let y = 0; y < map.height; y++) {
@@ -104,17 +84,17 @@ module.exports.Screen = function (display, uuid) {
                 const lit = cordLight > 0.0,
                     wall = map.tiles[y][x] !== 0
 
-                const cordTile = mapGlyph[lit][wall]
+                const cordTile = mapGlyph[wall]
 
 
                 let ch = " ",
-                    fg = cordTile.fg.string(cordLight),
-                    bg = cordTile.bg.string(cordLight),
+                    fg = cordTile.fg.truestring(cordLight),
+                    bg = cordTile.bg.truestring(cordLight),
                     glyph = glyphMap[y][x]
 
                 if (glyph) {
                     ch = lit ? glyph.ch : ch
-                    fg = glyph.fg.string(cordLight)
+                    fg = glyph.fg.truestring(cordLight)
                     bg = glyph.bg || bg
                 } else {
                     ch = cordTile.ch
@@ -123,6 +103,8 @@ module.exports.Screen = function (display, uuid) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
+
+        
 
 
     }
