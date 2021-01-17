@@ -63,6 +63,12 @@ module.exports.Screen = function (display, uuid) {
             [true]: {[false]: "rgb(200, 180, 50)", [true]: "rgb(130, 110, 50)"}
         }
 
+        const mapGlyphs = {
+            [true] : "#",
+            [false] : "."
+        }
+
+
 
         //draw the world
         for (let y = 0; y < map.height; y++) {
@@ -79,15 +85,14 @@ module.exports.Screen = function (display, uuid) {
                     ch = lit? glyph[0] : ch
                     fg = glyph[1]
                     bg = glyph[2] || bg
+                } else {
+                    ch = mapGlyphs[wall]
                 }
 
                 display.draw(x,y,ch,fg,bg)
             }
         }
 
-        //draw the entities
-        for (const entity of world.entities) {
-            this.drawEntity(entity.type)
-        }
+        
     }
 }
