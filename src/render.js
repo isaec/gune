@@ -44,9 +44,9 @@ module.exports.Screen = function (display, uuid) {
 
         //values from 0.0 to 1.0
         let lightMap = Array.from({ length: map.width }, () => [])
-        const player = this.getPlayer(world)
-        if (player) {
-            fov.compute(player.x, player.y, 10, (x, y, r, visibility) => {
+        //const player = this.getPlayer(world)
+        for (const entity of world.entities) {
+            fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
                 lightMap[y][x] = visibility
             })
         }
