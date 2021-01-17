@@ -61,8 +61,10 @@ module.exports.Screen = function (display, uuid) {
 
 
         const mapColors = {
-            [false]: { [false]: "rgb(50, 50, 150)", [true]: "rgb(0, 0, 100)" },
-            [true]: { [false]: "rgb(200, 180, 50)", [true]: "rgb(130, 110, 50)" }
+            //dark      floor                         wall
+            [false]: { [false]: new Color(0, 0, 0), [true]: new Color(0, 0, 0) },
+            //illuminated floor                      wall
+            [true]: { [false]: new Color(4, 3, 3), [true]: new Color(2, 1, 1) }
         }
 
         const mapGlyphs = {
@@ -71,19 +73,17 @@ module.exports.Screen = function (display, uuid) {
         }
 
 
-        
-
         //draw the world
         for (let y = 0; y < map.height; y++) {
             for (let x = 0; x < map.width; x++) {
-                const lit = lightMap[y][x] > 0.0,
+                const cordLight = lightMap[y][x]
+                const lit = cordLight > 0.0,
                     wall = map.tiles[y][x] !== 0
-
 
 
                 let ch = " ",
                     fg = "black",
-                    bg = mapColors[lit][wall],
+                    bg = mapColors[lit][wall].string(cordLight),
                     glyph = glyphMap[y][x]
 
                 if (glyph) {
