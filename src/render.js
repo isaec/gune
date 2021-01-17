@@ -1,4 +1,6 @@
 const rot = require("rot-js")
+const { Color } = require("./color")
+const color = require("/src/color")
 
 module.exports.Screen = function (display, uuid) {
     this.display = display
@@ -69,12 +71,15 @@ module.exports.Screen = function (display, uuid) {
         }
 
 
+        
 
         //draw the world
         for (let y = 0; y < map.height; y++) {
             for (let x = 0; x < map.width; x++) {
                 const lit = lightMap[y][x] > 0.0,
                     wall = map.tiles[y][x] !== 0
+
+
 
                 let ch = " ",
                     fg = "black",
