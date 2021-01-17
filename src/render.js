@@ -49,7 +49,11 @@ module.exports.Screen = function (display, uuid) {
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
-                lightMap[y][x] = visibility
+                if (lightMap[y][x] < visibility ||
+                    lightMap[y][x] == undefined) {
+                        
+                    lightMap[y][x] = visibility
+                }
             })
         }
 
@@ -64,7 +68,7 @@ module.exports.Screen = function (display, uuid) {
             //dark      floor                         wall
             [false]: { [false]: new Color(0, 0, 0), [true]: new Color(0, 0, 0) },
             //illuminated floor                      wall
-            [true]: { [false]: new Color(4, 3, 3), [true]: new Color(2, 1, 1) }
+            [true]: { [false]: new Color(3, 2, 2), [true]: new Color(2, 1, 1) }
         }
 
         const mapGlyphs = {
