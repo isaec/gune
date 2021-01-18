@@ -4,6 +4,8 @@ const color = require("/src/color")
 
 module.exports.Screen = function (display, uuid) {
     this.display = display
+    this.width = this.display._options.width
+    this.height = this.display._options.height
     this.uuid = uuid
     this.entityGlyph = function (entityType) {
         const visuals = {
@@ -31,6 +33,8 @@ module.exports.Screen = function (display, uuid) {
         this.display.clear() //clear screen
 
         const map = world.map
+
+        const player = this.getPlayer(world)
 
         //calculate light levels and such
         //NOTE this should be verified serverside later
@@ -74,15 +78,26 @@ module.exports.Screen = function (display, uuid) {
                 ch: "#",
                 fg: new Color(4, 2, 2),
                 bg: new Color(3, 1, 1)
-            } 
+            }
         }
 
         //draw the world
-        for (let y = 0; y < map.height; y++) {
-            for (let x = 0; x < map.width; x++) {
-                const cordLight = lightMap[y][x]
+        console.log()
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+
+                const adjX = player.x + x - Math.floor(this.width/2),
+                    adjY = player.y + y - Math.floor(this.height/2)
+
+
+                //this is a very poor fix
+                if((adjX > map.width || adjX < 0)
+                ||
+                (adjY > map.height || adjY < 0)){continue}
+
+                const cordLight = lightMap[adjY][adjX]
                 const lit = cordLight > 0.0,
-                    wall = map.tiles[y][x] !== 0
+                    wall = map.tiles[adjY][adjX] !== 0
 
                 const cordTile = mapGlyph[wall]
 
@@ -90,7 +105,7 @@ module.exports.Screen = function (display, uuid) {
                 let ch = " ",
                     fg = cordTile.fg.truestring(cordLight),
                     bg = cordTile.bg.truestring(cordLight),
-                    glyph = glyphMap[y][x]
+                    glyph = glyphMap[adjY][adjX]
 
                 if (glyph) {
                     ch = lit ? glyph.ch : ch
@@ -104,7 +119,7 @@ module.exports.Screen = function (display, uuid) {
             }
         }
 
-        
+
 
 
     }

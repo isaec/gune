@@ -8,9 +8,9 @@ const decoder = new TextDecoder('utf-8')
 let uuid, world
 
 const display = new rot.Display({
-    width: 60,
+    width: 35,
     height: 35,
-    fontSize: 20,
+    fontSize: 23,
     fontFamily: "metrickal, monospace",
     forceSquareRatio: true,
 })
