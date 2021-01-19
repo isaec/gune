@@ -10,10 +10,14 @@ let uuid, world
 const display = new rot.Display({
     width: 35,
     height: 35,
-    fontSize: 23,
     fontFamily: "metrickal, monospace",
     forceSquareRatio: true,
 })
+
+const scaleDisplay = () => display.setOptions({fontSize: Math.floor(window.innerHeight/36)})
+window.onresize = scaleDisplay
+scaleDisplay()
+
 
 const MESSAGE_ENUM = Object.freeze({
     SELF_CONNECTED: "SELF_CONNECTED",
@@ -25,7 +29,7 @@ const MESSAGE_ENUM = Object.freeze({
     SERVER_ACTION: "SERVER_ACTION"
 })
 
-const gameFigure = document.getElementById("gameFigure")
+const gameFigure = document.getElementById("game")
 gameFigure.appendChild(display.getContainer())
 
 const canvas = display.getContainer()
