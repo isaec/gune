@@ -33,7 +33,7 @@ module.exports.GuiConsole = function () {
 
         let displayLines = [...this.lines]
         while (displayLines.length > this.maxLines) displayLines.shift()
-        this.messages.textContent = displayLines.join("\n")
+        this.messages.innerHTML = displayLines.join("\n")
     }
 }
 
@@ -44,6 +44,8 @@ module.exports.ConsoleLine = function (message, temp=false) {
     this.temp = temp
     this.amount = 1
 
-    this.toString = () => { return this.amount>1 ? `(${this.amount}x) ${this.message}` : this.message }
+    this.toString = () => {
+        return this.amount>1 ? `<span style="color:red;">(${this.amount}x) ${this.message}</span>` : this.message
+    }
 
 }
