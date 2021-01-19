@@ -29,5 +29,5 @@ module.exports.Color = function (r, g, b) {
     }
 }
 
-
-module.exports.Html = (text,color) => `<span style="color:${color};">${text}</span>`
+//spaggetii but works gud
+module.exports.Html = (text,color) => `<span style="color:rgb(${color[0]*51},${color[1]*51},${color[2]*51});">${text}</span>`

@@ -40,7 +40,7 @@ module.exports.GuiConsole = function () {
 }
 
 
-module.exports.ConsoleLine = function (message, color = "white", temp = false) {
+module.exports.ConsoleLine = function (message, color = [5,5,5], temp = false) {
     this.message = message
     this.temp = temp
     this.amount = 1
@@ -48,7 +48,7 @@ module.exports.ConsoleLine = function (message, color = "white", temp = false) {
 
     this.toString = () => {
         return this.amount > 1 ?
-            HtmlColor(`(${this.amount}x) `, "grey")
+            HtmlColor(`(${this.amount}x) `, [3,3,3])
             + HtmlColor(this.message, this.color)
             :
             HtmlColor(this.message, this.color)
