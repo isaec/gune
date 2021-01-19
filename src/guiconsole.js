@@ -1,5 +1,5 @@
-module.exports.GuiConsole = function (maxLines=5) {
-    this.maxLines = maxLines
+module.exports.GuiConsole = function () {
+    this.maxLines = 11
     this.messages = document.querySelector("#console")
 
     this.print = (message) => {

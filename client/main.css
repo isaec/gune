@@ -5,13 +5,13 @@
 
 body {
     background-color: rgb(39, 39, 39);
+    overflow: hidden;
 }
 
 #viewport {
     display: flex;
     justify-content: flex-start;
     align-content: stretch;
-    width: 100;
     flex-direction: row;
 }
 
@@ -22,7 +22,8 @@ body {
 #console {
     flex: 1;
     font-family: "Metrickal";
-    line-height: 1.0;
+    line-height: 130%;
+    height: 14em;
     background: black;
     color: white;
     padding: 0.5em 1em;

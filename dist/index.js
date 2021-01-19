@@ -553,7 +553,7 @@ eval("const rot = __webpack_require__(/*! rot-js */ \"./node_modules/rot-js/lib/
   \***************************/
 /***/ ((module) => {
 
-eval("module.exports.GuiConsole = function (maxLines=5) {\n    this.maxLines = maxLines\n    this.messages = document.querySelector(\"#console\")\n\n    this.print = (message) => {\n        let lines = this.messages.textContent.split(\"\\n\")\n        lines.push(message)\n        while (lines.length > this.maxLines) lines.shift()\n        this.messages.textContent = lines.join(\"\\n\")\n    }\n}\n\n//# sourceURL=webpack://gune/./src/guiconsole.js?");
+eval("module.exports.GuiConsole = function () {\n    this.maxLines = 11\n    this.messages = document.querySelector(\"#console\")\n\n    this.print = (message) => {\n        let lines = this.messages.textContent.split(\"\\n\")\n        lines.push(message)\n        while (lines.length > this.maxLines) lines.shift()\n        this.messages.textContent = lines.join(\"\\n\")\n    }\n}\n\n//# sourceURL=webpack://gune/./src/guiconsole.js?");
 
 /***/ }),
 
