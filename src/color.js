@@ -28,3 +28,6 @@ module.exports.Color = function (r, g, b) {
         return this.greystring(mod)
     }
 }
+
+
+module.exports.Html = (text,color) => `<span style="color:${color};">${text}</span>`

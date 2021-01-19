@@ -1,3 +1,5 @@
+const HtmlColor = require("/src/color").Html
+
 module.exports.GuiConsole = function () {
     this.maxLines = 11
     this.messages = document.querySelector("#console")
@@ -7,12 +9,12 @@ module.exports.GuiConsole = function () {
     this.lines = []
 
     this.print = (ConsoleLine) => {
-        
-        
-            if(this.lines.length > 0 && this.lines[this.lines.length-1].message === ConsoleLine.message) {
-                this.lines[this.lines.length-1].amount++
-            }
-        
+
+
+        if (this.lines.length > 0 && this.lines[this.lines.length - 1].message === ConsoleLine.message) {
+            this.lines[this.lines.length - 1].amount++
+        }
+
         else {
             this.lines.push(ConsoleLine)
         }
@@ -27,9 +29,9 @@ module.exports.GuiConsole = function () {
     // }
 
     this._update = () => {
-        if( //remove temp line if its been replaced
-            this.lines.length > 2 && this.lines[this.lines.length-2].temp
-        ) this.lines.splice(this.lines.length-2, 1)
+        if ( //remove temp line if its been replaced
+            this.lines.length > 2 && this.lines[this.lines.length - 2].temp
+        ) this.lines.splice(this.lines.length - 2, 1)
 
         let displayLines = [...this.lines]
         while (displayLines.length > this.maxLines) displayLines.shift()
@@ -38,14 +40,17 @@ module.exports.GuiConsole = function () {
 }
 
 
-module.exports.ConsoleLine = function (message, temp=false) {
-
+module.exports.ConsoleLine = function (message, color = "white", temp = false) {
     this.message = message
     this.temp = temp
     this.amount = 1
+    this.color = color
 
     this.toString = () => {
-        return this.amount>1 ? `<span style="color:red;">(${this.amount}x) ${this.message}</span>` : this.message
+        return this.amount > 1 ?
+            HtmlColor(`(${this.amount}x) `, "grey")
+            + HtmlColor(this.message, this.color)
+            :
+            HtmlColor(this.message, this.color)
     }
-
 }
