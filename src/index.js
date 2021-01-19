@@ -1,9 +1,10 @@
 import * as rot from "rot-js"
 const render = require("/src/render")
-const color = require("/src/color")
-const url = location.origin.replace(/^http/, 'ws')+"/ws"
+//const color = require("/src/color")
+const guiconsole = require("/src/guiconsole")
+const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
-const decoder = new TextDecoder('utf-8')
+//const decoder = new TextDecoder('utf-8')
 
 let uuid, world
 
@@ -14,7 +15,7 @@ const display = new rot.Display({
     forceSquareRatio: true,
 })
 
-const scaleDisplay = () => display.setOptions({fontSize: Math.floor(window.innerHeight/36)})
+const scaleDisplay = () => display.setOptions({ fontSize: Math.floor(window.innerHeight / 36) })
 window.onresize = scaleDisplay
 scaleDisplay()
 
@@ -38,9 +39,10 @@ canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
 const screen = new render.Screen(display, uuid)
+const guiConsole = new guiconsole.GuiConsole()
 
 //stupid fix to redraw world when font is ready
-window.addEventListener("load", () => {screen.render(world)})
+window.addEventListener("load", () => { screen.render(world) })
 
 function handleKeys(keyCode) {
     const actions = {
@@ -84,6 +86,8 @@ function handleKeyDown(event) {
                 // player.x += dx
                 // player.y += dy
                 // screen.render(world)
+            } else {
+                guiConsole.print("You can't move there")
             }
         }
     } else {
@@ -110,6 +114,17 @@ connection.onmessage = msg => {
         case MESSAGE_ENUM.SELF_CONNECTED: {
             uuid = srvMsg.body.id
             screen.uuid = uuid
+            guiConsole.print(`${srvMsg.body.name} (you) connected`)
+            break
+        }
+
+        case MESSAGE_ENUM.CLIENT_CONNECTED: {
+            if (srvMsg.body.id !== uuid) guiConsole.print(`${srvMsg.body.name} connected`)
+            break
+        }
+
+        case MESSAGE_ENUM.CLIENT_DISCONNECTED: {
+            guiConsole.print(`${srvMsg.body.name} disconnected`)
             break
         }
 

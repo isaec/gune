@@ -150,7 +150,7 @@ app.ws("/ws", {
             type: MESSAGE_ENUM.CLIENT_DISCONNECTED,
             body: {
                 id: ws.id,
-                name: ws.name
+                name: ws.username
             }
         }
 
