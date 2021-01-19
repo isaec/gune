@@ -87,7 +87,9 @@ function handleKeyDown(event) {
                 // player.y += dy
                 // screen.render(world)
             } else {
-                guiConsole.print("You can't move there")
+                guiConsole.print(
+                    new guiconsole.ConsoleLine("You can't move there", true)
+                )
             }
         }
     } else {
@@ -114,17 +116,23 @@ connection.onmessage = msg => {
         case MESSAGE_ENUM.SELF_CONNECTED: {
             uuid = srvMsg.body.id
             screen.uuid = uuid
-            guiConsole.print(`${srvMsg.body.name} (you) connected`)
+            guiConsole.print(
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} (you) connected`)
+            )
             break
         }
 
         case MESSAGE_ENUM.CLIENT_CONNECTED: {
-            if (srvMsg.body.id !== uuid) guiConsole.print(`${srvMsg.body.name} connected`)
+            if (srvMsg.body.id !== uuid) guiConsole.print(
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} connected`)
+            )
             break
         }
 
         case MESSAGE_ENUM.CLIENT_DISCONNECTED: {
-            guiConsole.print(`${srvMsg.body.name} disconnected`)
+            guiConsole.print(
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} disconnected`)
+            )
             break
         }
 
