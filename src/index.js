@@ -98,9 +98,16 @@ function handleKeyDown(event) {
     event.preventDefault()
 }
 
-connection.onopen = () => console.log("socket connected (onopen)")
+connection.onopen = () => {
+    guiConsole.print(
+        new guiconsole.ConsoleLine("websocket connected", [2,4,4])
+    )
+}
+
 connection.onclose = () => {
-    console.log("websocket closed.")
+    guiConsole.print(
+        new guiconsole.ConsoleLine("websocket closed (server disconnect)", [5,2,2])
+    )
     setTimeout(location.reload.bind(window.location), 500)
 }
 connection.onmessage = msg => {

@@ -14,24 +14,18 @@ module.exports.GuiConsole = function () {
         if (this.lines.length > 0 && this.lines[this.lines.length - 1].message === ConsoleLine.message) {
             this.lines[this.lines.length - 1].amount++
         }
-
         else {
             this.lines.push(ConsoleLine)
         }
-
         this._update()
     }
-
-    // this.removeNewest = (message) => {
-    //     const index = this.lines.indexOf(message)
-    //     if (index > -1) this.lines.splice(index, 1)
-    //     this._update()
-    // }
 
     this._update = () => {
         if ( //remove temp line if its been replaced
             this.lines.length > 2 && this.lines[this.lines.length - 2].temp
         ) this.lines.splice(this.lines.length - 2, 1)
+
+        
 
         let displayLines = [...this.lines]
         while (displayLines.length > this.maxLines) displayLines.shift()
@@ -40,17 +34,19 @@ module.exports.GuiConsole = function () {
 }
 
 
-module.exports.ConsoleLine = function (message, color = [5,5,5], temp = false) {
+module.exports.ConsoleLine = function (message, color = [5, 5, 5], temp = false) {
     this.message = message
     this.temp = temp
     this.amount = 1
     this.color = color
+    this.bg = false
+
 
     this.toString = () => {
         return this.amount > 1 ?
-            HtmlColor(`(${this.amount}x) `, [3,3,3])
-            + HtmlColor(this.message, this.color)
+            HtmlColor(`(${this.amount}x) `, [3, 3, 3])
+            + HtmlColor(this.message, this.color, this.bg)
             :
-            HtmlColor(this.message, this.color)
+            HtmlColor(this.message, this.color, this.bg)
     }
 }

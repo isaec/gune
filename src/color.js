@@ -29,5 +29,9 @@ module.exports.Color = function (r, g, b) {
     }
 }
 
-//spaggetii but works gud
-module.exports.Html = (text,color) => `<span style="color:rgb(${color[0]*51},${color[1]*51},${color[2]*51});">${text}</span>`
+//terribad spaggetii but works gud
+const rgbstring = (color) => `rgb(${color[0] * 51},${color[1] * 51},${color[2] * 51});`
+module.exports.Html = (text, color, bg = false) => !bg ?
+    `<span style="color:${rgbstring(color)}">${text}</span>`
+    : //pray you never debug this
+    `<span style="color:${rgbstring(color)}background-color:${rgbstring(bg)}">${text}</span>`
