@@ -1,5 +1,6 @@
-
+const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
+const clone = require("rfdc")()
 
 const MESSAGE_ENUM = Object.freeze({
     SELF_CONNECTED: "SELF_CONNECTED",
@@ -46,8 +47,7 @@ module.exports.World = function () {
             //if the id is present
             if (index > -1) {
                 //make a worldUpdate
-                let worldUpdate = new WorldUpdate()
-                worldUpdate.map = this.map
+                let worldUpdate = new WorldUpdate(this, entity.x, entity.y)
                 worldUpdate.entities = this.entities
                 //send the websocket a world update
                 playerWs[index].send(
@@ -55,7 +55,7 @@ module.exports.World = function () {
                         {
                             type: MESSAGE_ENUM.SERVER_ACTION,
                             body: {
-                                world: worldUpdate
+                                world: worldUpdate.update()
                             }
                         }
                     )
@@ -67,5 +67,44 @@ module.exports.World = function () {
 }
 
 class WorldUpdate {
+
+    constructor(world, entx, enty) {
+
+        this.map = {
+            width: world.map.width,
+            height: world.map.height,
+            tiles: Array.from({ length: world.map.width }, () => [])
+        }
+        this.entities = world.entities
+
+
+        let fov = new rot.FOV.PreciseShadowcasting((x, y) => {
+            if (//make sure not to test cords out of bounds
+                (x > this.map.width || x < 0)
+                ||
+                (y > this.map.height || y < 0)
+            ) return false
+            return world.map.tiles[y][x] === 0
+        })
+
+        //values from true to false
+        let isLit = Array.from({ length: this.map.width }, () => [])
+        fov.compute(entx, enty, 10, (x, y, r, visibility) => isLit[y][x] = visibility > 0.0)
+
+
+        for (let x = 0; x < this.map.width; x++) {
+            for (let y = 0; y < this.map.height; y++) {
+                this.map.tiles[y][x] = isLit[y][x] ? world.map.tiles[y][x] : 0
+            }
+        }
+
+    }
+
+    update() {
+        return {
+            map: this.map,
+            entities: this.entities
+        }
+    }
 
 }

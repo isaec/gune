@@ -35,6 +35,7 @@ module.exports.Screen = function (display, uuid) {
         const map = world.map
 
         const player = this.getPlayer(world)
+        if(player === null) return //dont render if the world doesnt have the player in it
 
         //calculate light levels and such
         //NOTE this should be verified serverside later
@@ -53,6 +54,7 @@ module.exports.Screen = function (display, uuid) {
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
+                //if (lightMap[y] == undefined) return
                 if (lightMap[y][x] < visibility ||
                     lightMap[y][x] == undefined) {
 
