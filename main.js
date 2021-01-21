@@ -49,8 +49,7 @@ let world = new wrld.World()
 //end gamecode setup block
 
 
-let SOCKETS = []
-
+app.SOCKETS = []
 
 app.ws("/ws", {
     compression: uWS.SHARED_COMPRESSOR,
@@ -66,7 +65,7 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.CLIENT_MESSAGE)
         ws.subscribe(MESSAGE_ENUM.SERVER_ACTION)
         //add the socket to sockets after creation
-        SOCKETS.push(ws)
+        app.SOCKETS.push(ws)
         console.log("\x1b[32m" + "opened" + "\x1b[0m" + " %o", ws)
         //let the socket know its name and uuid
         let selfMsg = {
@@ -94,6 +93,7 @@ app.ws("/ws", {
 
         ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
         app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
+
 
     },
     message: (ws, msg, isBinary) => {
@@ -134,8 +134,8 @@ app.ws("/ws", {
 
     },
     close: (ws, code, message) => {
-        SOCKETS.find((socket, index) => {
-            if (socket && socket.id === ws.id) SOCKETS.splice(index, 1)
+        app.SOCKETS.find((socket, index) => { //removes socket
+            if (socket && socket.id === ws.id) app.SOCKETS.splice(index, 1)
         })
         const [index, entity] = world.getEntity(ws.id)
         if (entity) {
