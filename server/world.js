@@ -48,7 +48,6 @@ module.exports.World = function () {
             if (index > -1) {
                 //make a worldUpdate
                 let worldUpdate = new WorldUpdate(this, entity.x, entity.y)
-                worldUpdate.entities = this.entities
                 //send the websocket a world update
                 playerWs[index].send(
                     JSON.stringify(
@@ -75,7 +74,7 @@ class WorldUpdate {
             height: world.map.height,
             tiles: Array.from({ length: world.map.width }, () => [])
         }
-        this.entities = world.entities
+        this.entities = []
 
 
         let fov = new rot.FOV.PreciseShadowcasting((x, y) => {
@@ -97,6 +96,11 @@ class WorldUpdate {
                 this.map.tiles[y][x] = isLit[y][x] ? world.map.tiles[y][x] : 0
             }
         }
+
+        for(const entity of world.entities){
+            if(isLit[entity.y][entity.x]) this.entities.push(entity)
+        }
+
 
     }
 
