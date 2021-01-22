@@ -74,7 +74,7 @@ function handleKeyDown(event) {
             })()
             const dx = action.data[0], dy = action.data[1]
             const newX = player.x + dx, newY = player.y + dy
-            if (world.map.tiles[newY][newX] === 0) {
+            if (world.map.tiles[newY][newX] === 1) {
                 connection.send(JSON.stringify({
                     type: MESSAGE_ENUM.CLIENT_ACTION,
                     body: action,

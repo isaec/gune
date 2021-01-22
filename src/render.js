@@ -35,7 +35,7 @@ module.exports.Screen = function (display, uuid) {
         const map = world.map
 
         const player = this.getPlayer(world)
-        if(player === null) return //dont render if the world doesnt have the player in it
+        if (player === null) return //dont render if the world doesnt have the player in it
 
         //calculate light levels and such
         //NOTE this should be verified serverside later
@@ -46,7 +46,7 @@ module.exports.Screen = function (display, uuid) {
                 ||
                 (y > map.height || y < 0)
             ) return false
-            return world.map.tiles[y][x] === 0
+            return world.map.tiles[y][x] === 1
         })
 
         //values from 0.0 to 1.0
@@ -71,12 +71,22 @@ module.exports.Screen = function (display, uuid) {
 
 
         const mapGlyph = {
-            [false]: { //floor
+            0: { //unknown
+                ch: "?",
+                fg: new Color(2, 2, 2),
+                bg: new Color(0, 0, 0)
+            },
+            undefined: { //out of bounds
+                ch: " ",
+                fg: new Color(0, 0, 0),
+                bg: new Color(0, 0, 0)
+            },
+            1: { //floor
                 ch: ".",
                 fg: new Color(4, 3, 3),
                 bg: new Color(3, 2, 2)
             },
-            [true]: { //wall
+            2: { //wall
                 ch: "#",
                 fg: new Color(4, 2, 2),
                 bg: new Color(3, 1, 1)
@@ -87,20 +97,19 @@ module.exports.Screen = function (display, uuid) {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
 
-                const adjX = player.x + x - Math.floor(this.width/2),
-                    adjY = player.y + y - Math.floor(this.height/2)
+                const adjX = player.x + x - Math.floor(this.width / 2),
+                    adjY = player.y + y - Math.floor(this.height / 2)
 
 
                 //this is a very poor fix
-                if((adjX > map.width || adjX < 0)
-                ||
-                (adjY > map.height || adjY < 0)){continue}
+                if ((adjX > map.width || adjX < 0)
+                    ||
+                    (adjY > map.height || adjY < 0)) { continue }
 
                 const cordLight = lightMap[adjY][adjX]
-                const lit = cordLight > 0.0,
-                    wall = map.tiles[adjY][adjX] !== 0
+                const lit = cordLight > 0.0
 
-                const cordTile = mapGlyph[wall]
+                const cordTile = mapGlyph[map.tiles[adjY][adjX]]
 
 
                 let ch = " ",

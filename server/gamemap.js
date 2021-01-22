@@ -14,5 +14,5 @@ module.exports.Map = function (width = 60, height = 35) {
     this.digger = new rot.Map.Digger(width, height, {
         dugPercentage: 80
     })
-    this.digger.create((y, x, content) => this.set(x, y, content))
+    this.digger.create((y, x, content) => this.set(x, y, content+1))
 }

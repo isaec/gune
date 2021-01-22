@@ -83,7 +83,7 @@ class WorldUpdate {
                 ||
                 (y > this.map.height || y < 0)
             ) return false
-            return world.map.tiles[y][x] === 0
+            return world.map.tiles[y][x] === 1
         })
 
         //values from true to false
