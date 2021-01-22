@@ -2,15 +2,7 @@ const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
 const clone = require("rfdc")()
 
-const MESSAGE_ENUM = Object.freeze({
-    SELF_CONNECTED: "SELF_CONNECTED",
-    CLIENT_CONNECTED: "CLIENT_CONNECTED",
-    CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
-    CLIENT_MESSAGE: "CLIENT_MESSAGE",
-    CLIENT_ACTION: "CLIENT_ACTION",
-    CLIENT_ALIVE: "CLIENT_ALIVE",
-    SERVER_ACTION: "SERVER_ACTION"
-})
+const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
 
 module.exports.World = function () {
@@ -25,6 +17,15 @@ module.exports.World = function () {
         return null
     }
     this.add = function (entity) { this.entities.push(entity) }
+    // this.sendFullWorld = function (app, ws) {
+    //     ws.send(
+    //         JSON.stringify(
+    //             {
+    //                 type: MESSAGE_ENUM.
+    //             }
+    //         )
+    //     )
+    // }
     this.updateClients = function (app) {
         app.publish(MESSAGE_ENUM.SERVER_ACTION, 
             JSON.stringify(

@@ -20,15 +20,7 @@ window.onresize = scaleDisplay
 scaleDisplay()
 
 
-const MESSAGE_ENUM = Object.freeze({
-    SELF_CONNECTED: "SELF_CONNECTED",
-    CLIENT_CONNECTED: "CLIENT_CONNECTED",
-    CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
-    CLIENT_MESSAGE: "CLIENT_MESSAGE",
-    CLIENT_ACTION: "CLIENT_ACTION",
-    CLIENT_ALIVE: "CLIENT_ALIVE",
-    SERVER_ACTION: "SERVER_ACTION"
-})
+const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
 const gameFigure = document.getElementById("game")
 gameFigure.appendChild(display.getContainer())

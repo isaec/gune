@@ -10,15 +10,7 @@ const decoder = new TextDecoder('utf-8')
 const wrld = require("./server/world")
 const entity = require("./server/entity")
 
-const MESSAGE_ENUM = Object.freeze({
-    SELF_CONNECTED: "SELF_CONNECTED",
-    CLIENT_CONNECTED: "CLIENT_CONNECTED",
-    CLIENT_DISCONNECTED: "CLIENT_DISCONNECTED",
-    CLIENT_MESSAGE: "CLIENT_MESSAGE",
-    CLIENT_ACTION: "CLIENT_ACTION",
-    CLIENT_ALIVE: "CLIENT_ALIVE",
-    SERVER_ACTION: "SERVER_ACTION"
-})
+const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 
 const app = uWS.App()
 
