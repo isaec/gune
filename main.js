@@ -105,7 +105,6 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-
                 let [i, entity] = world.getEntity(ws.id)
                 
                 if (entity) {
@@ -124,7 +123,6 @@ app.ws("/ws", {
 
                     
                 }
-
                 world.updateClients(app)
                 break
             }
