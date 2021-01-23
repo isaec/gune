@@ -1,6 +1,11 @@
 module.exports.ClientWorld = function (world) {
     this.map = world.map
     this.entities = world.entities
+    this.seenMap = {
+        width: this.map.width,
+        height: this.map.height,
+        tiles: Array.from({length:this.map.width}, () => []),
+    }
     this.update = (world) => {
         this.map = world.map
         this.entities = world.entities
@@ -27,10 +32,10 @@ module.exports.ClientWorld = function (world) {
             this.map.tiles[tileAction.y][tileAction.x] = tileAction.value
         }
         //delete any elements that were deleted
-        for(const uuid of actions.delete){
+        for (const uuid of actions.delete) {
             for (const [index, entity] of this.entities.entries()) {
                 if (entity.id === uuid) {
-                    this.entities.splice(index,1)
+                    this.entities.splice(index, 1)
                     break
                 }
             }

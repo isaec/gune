@@ -33,6 +33,7 @@ module.exports.Screen = function (display, uuid) {
         this.display.clear() //clear screen
 
         const map = world.map
+        const seenMap = world.seenMap.tiles
 
         const player = this.getPlayer(world)
         if (player === null) return //dont render if the world doesnt have the player in it
@@ -55,7 +56,7 @@ module.exports.Screen = function (display, uuid) {
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
-                //if (lightMap[y] == undefined) return
+                if(!seenMap[y][x]) seenMap[y][x] = visibility > 0.0
                 if (lightMap[y][x] < visibility ||
                     lightMap[y][x] == undefined) {
 
@@ -110,7 +111,8 @@ module.exports.Screen = function (display, uuid) {
                 const cordLight = lightMap[adjY][adjX]
                 const lit = cordLight > 0.0
 
-                const cordTile = mapGlyph[map.tiles[adjY][adjX]]
+                const cordTile = mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
+
 
 
                 let ch = " ",
@@ -129,8 +131,6 @@ module.exports.Screen = function (display, uuid) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
-
-
 
 
     }
