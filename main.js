@@ -77,12 +77,12 @@ app.ws("/ws", {
             }
         }
 
-        //send the socket the entire world
-        world.sendFullWorld(ws)
-
         const room = world.map.digger.getRooms()[0]
         //make the new player for the uuid
         world.add(new entity.Entity("player", room._x1, room._y1, ws.id))
+
+        //send the socket the entire world
+        world.sendFullWorld(ws)
 
         world.updateClients(app) //update the world for the clients
 

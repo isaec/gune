@@ -2,6 +2,7 @@ import * as rot from "rot-js"
 const render = require("/src/render")
 //const color = require("/src/color")
 const guiconsole = require("/src/guiconsole")
+const clientworld = require("/src/clientworld")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')
@@ -106,8 +107,14 @@ connection.onmessage = msg => {
     const srvMsg = JSON.parse(msg.data)
     switch (srvMsg.type) {
 
+        case MESSAGE_ENUM.SERVER_WORLDUPDATE: {
+            world = new clientworld.ClientWorld(srvMsg.body.world)
+            screen.render(world)
+            break
+        }
+
         case MESSAGE_ENUM.SERVER_ACTION: {
-            world = srvMsg.body.world
+            world.update(srvMsg.body.world)
             screen.render(world)
             break
         }
