@@ -38,18 +38,22 @@ const guiConsole = new guiconsole.GuiConsole()
 window.addEventListener("load", () => { screen.render(world) })
 
 function handleKeys(keyCode) {
-    const actions = {
-        [rot.KEYS.VK_RIGHT]:
-            () => { return { type: 'move', data: [+1, 0] } },
-        [rot.KEYS.VK_LEFT]:
-            () => { return { type: 'move', data: [-1, 0] } },
-        [rot.KEYS.VK_DOWN]:
-            () => { return { type: 'move', data: [0, +1] } },
-        [rot.KEYS.VK_UP]:
-            () => { return { type: 'move', data: [0, -1] } },
+    switch (keyCode){
+        case rot.KEYS.VK_RIGHT:
+        case rot.KEYS.VK_D:
+            return { type: 'move', data: [+1, 0] }
+        case rot.KEYS.VK_LEFT:
+        case rot.KEYS.VK_A:
+            return { type: 'move', data: [-1, 0] }
+        case rot.KEYS.VK_DOWN:
+        case rot.KEYS.VK_S:
+            return { type: 'move', data: [0, +1] }
+        case rot.KEYS.VK_UP:
+        case rot.KEYS.VK_W:
+            return { type: 'move', data: [0, -1] }
+        default:
+            return undefined
     }
-    let action = actions[keyCode]
-    return action ? action() : undefined
 }
 
 function handleKeyDown(event) {
