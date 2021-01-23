@@ -17,22 +17,25 @@ module.exports.World = function () {
         return null
     }
     this.add = function (entity) { this.entities.push(entity) }
-    // this.sendFullWorld = function (app, ws) {
-    //     ws.send(
-    //         JSON.stringify(
-    //             {
-    //                 type: MESSAGE_ENUM.
-    //             }
-    //         )
-    //     )
-    // }
+    this.sendFullWorld = function (ws) {
+        ws.send(
+            JSON.stringify(
+                {
+                    type: MESSAGE_ENUM.SERVER_WORLDUPDATE,
+                    body: {
+                        world: this
+                    }
+                }
+            )
+        )
+    }
     this.updateClients = function (app) {
         app.publish(MESSAGE_ENUM.SERVER_ACTION, 
             JSON.stringify(
                 {
                     type: MESSAGE_ENUM.SERVER_ACTION,
                     body: {
-                        world: this//worldUpdate.update()
+                        world: this
                     }
                 }
             )

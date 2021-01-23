@@ -543,7 +543,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***************************/
 /***/ ((module) => {
 
-eval("module.exports.MESSAGE_ENUM = Object.freeze({\n    SELF_CONNECTED: \"SELF_CONNECTED\",\n    CLIENT_CONNECTED: \"CLIENT_CONNECTED\",\n    CLIENT_DISCONNECTED: \"CLIENT_DISCONNECTED\",\n    CLIENT_MESSAGE: \"CLIENT_MESSAGE\",\n    CLIENT_ACTION: \"CLIENT_ACTION\",\n    CLIENT_ALIVE: \"CLIENT_ALIVE\",\n    SERVER_ACTION: \"SERVER_ACTION\"\n})\n\n//# sourceURL=webpack://gune/./server/message.js?");
+eval("module.exports.MESSAGE_ENUM = Object.freeze({\n    SELF_CONNECTED: \"SELF_CONNECTED\",\n    CLIENT_CONNECTED: \"CLIENT_CONNECTED\",\n    CLIENT_DISCONNECTED: \"CLIENT_DISCONNECTED\",\n    CLIENT_MESSAGE: \"CLIENT_MESSAGE\",\n    CLIENT_ACTION: \"CLIENT_ACTION\",\n    CLIENT_ALIVE: \"CLIENT_ALIVE\",\n    SERVER_ACTION: \"SERVER_ACTION\",\n    SERVER_WORLDUPDATE: \"SERVER_WORLDUPDATE\",\n})\n\n//# sourceURL=webpack://gune/./server/message.js?");
 
 /***/ }),
 
