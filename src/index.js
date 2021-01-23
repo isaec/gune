@@ -74,11 +74,9 @@ function handleKeyDown(event) {
                 }))
                 //render the change on clientside pre approval
                 //this should make movement feel more responsive
-                //however, it adds rubberbanding when other moves are
-                //handled by server first.
-                // player.x += dx
-                // player.y += dy
-                // screen.render(world)
+                player.x += dx
+                player.y += dy
+                screen.render(world)
             } else {
                 guiConsole.print(
                     new guiconsole.ConsoleLine("that path is blocked", [4,4,2], true)

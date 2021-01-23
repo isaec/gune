@@ -139,8 +139,9 @@ app.ws("/ws", {
         })
         const [index, entity] = world.getEntity(ws.id)
         if (entity) {
-            world.entities.splice(index, 1)
-            world.updateClients(app)
+            let worldAction = new wrld.WorldAction(world)
+            worldAction.removeEntity(index)
+            world.updateClients(app, worldAction)
         }
 
 

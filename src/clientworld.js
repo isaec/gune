@@ -19,8 +19,17 @@ module.exports.ClientWorld = function (world) {
             if (!done) this.entities.push(action)
 
         }
-        for( const tileAction of actions.tileActions){
+        for (const tileAction of actions.tileActions) {
             this.map.tiles[tileAction.y][tileAction.x] = tileAction.value
+        }
+        //delete any elements that were deleted
+        for(const uuid of actions.delete){
+            for (const [index, entity] of this.entities.entries()) {
+                if (entity.id === uuid) {
+                    this.entities.splice(index,1)
+                    break
+                }
+            }
         }
     }
 }

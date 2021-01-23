@@ -56,10 +56,16 @@ module.exports.World = function () {
 module.exports.WorldAction = function(world) {
     this.world = world
     this.actions = []
+    this.delete = []
     this.tileActions = []
     this.addEntity = (entity) => {
         this.world.entities.push(entity)
         this.actions.push(entity)
+    }
+
+    this.removeEntity = (index) => {
+        this.delete.push(this.world.entities[index].id)
+        this.world.entities.splice(index,1)
     }
 
     this.changedEntity = (entity) => this.actions.push(entity)
@@ -77,7 +83,8 @@ module.exports.WorldAction = function(world) {
     this.publish = () => {
         return {
             actions: this.actions,
-            tileActions: this.tileActions
+            tileActions: this.tileActions,
+            delete: this.delete
         }
     }
 }
