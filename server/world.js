@@ -1,6 +1,7 @@
 const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
 const clone = require("rfdc")()
+const Entity = require("./entity").Entity
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
@@ -29,13 +30,14 @@ module.exports.World = function () {
             )
         )
     }
-    this.updateClients = function (app) {
+    this.updateClients = function (app, worldAction) {
+        if(!worldAction) throw "need world action"
         app.publish(MESSAGE_ENUM.SERVER_ACTION, 
             JSON.stringify(
                 {
                     type: MESSAGE_ENUM.SERVER_ACTION,
                     body: {
-                        world: this
+                        action: worldAction.publish()
                     }
                 }
             )
@@ -52,7 +54,9 @@ module.exports.WorldAction = function(world) {
         this.world.entities.push(entity)
         this.actions.push(entity)
     }
-    
+
+    this.changedEntity = (entity) => this.actions.push(entity)
+
     this.setTile = (x, y, value) => {
         this.world[y][x] = value
         this.tileActions.push(

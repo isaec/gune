@@ -83,12 +83,10 @@ app.ws("/ws", {
         //make the new player for the uuid
         worldAction.addEntity(new entity.Entity("player", room._x1, room._y1, ws.id))
 
-        console.log(worldAction.publish())
-
         //send the socket the entire world
         world.sendFullWorld(ws)
 
-        world.updateClients(app) //update the world for the clients
+        world.updateClients(app, worldAction) //update the world for the clients
 
         ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
         app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
@@ -105,6 +103,8 @@ app.ws("/ws", {
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
                 let [i, entity] = world.getEntity(ws.id)
+
+                let worldAction = new wrld.WorldAction(world)
                 
                 if (entity) {
 
@@ -117,12 +117,15 @@ app.ws("/ws", {
                         //move the player
                         entity.x += clientMsg.body.data[0]
                         entity.y += clientMsg.body.data[1]
+
+                        //log the change with the worldAction
+                        worldAction.changedEntity(entity)
                         
                     }
 
                     
                 }
-                world.updateClients(app)
+                world.updateClients(app, worldAction)
                 break
             }
 

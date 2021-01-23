@@ -114,7 +114,7 @@ connection.onmessage = msg => {
         }
 
         case MESSAGE_ENUM.SERVER_ACTION: {
-            world.update(srvMsg.body.world)
+            world.applyActions(srvMsg.body.action)
             screen.render(world)
             break
         }

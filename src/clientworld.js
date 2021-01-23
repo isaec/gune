@@ -1,4 +1,4 @@
-module.exports.ClientWorld = function(world) {
+module.exports.ClientWorld = function (world) {
     this.map = world.map
     this.entities = world.entities
     this.update = (world) => {
@@ -7,5 +7,17 @@ module.exports.ClientWorld = function(world) {
     }
     this.applyActions = (actions) => {
         console.log(actions)
+        for (const action of actions.actions) {
+            let done = false
+            for (const [index, entity] of this.entities.entries()) {
+                if (entity.id === action.id) {
+                    this.entities[index] = action
+                    done = true
+                    break
+                }
+            }
+            if (!done) this.entities.push(action)
+
+        }
     }
 }
