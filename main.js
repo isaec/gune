@@ -8,6 +8,7 @@ const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
 const wrld = require("./server/world")
+const WorldAction = require("./server/worldaction").WorldAction
 const entity = require("./server/entity")
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
@@ -77,7 +78,7 @@ app.ws("/ws", {
             }
         }
         //make a worldaction so we can keep track of changes easily
-        let worldAction = new wrld.WorldAction(world)
+        let worldAction = new WorldAction(world)
 
         const room = world.map.digger.getRooms()[0]
         //make the new player for the uuid
@@ -104,7 +105,7 @@ app.ws("/ws", {
             case MESSAGE_ENUM.CLIENT_ACTION: {
                 let [i, entity] = world.getEntity(ws.id)
 
-                let worldAction = new wrld.WorldAction(world)
+                let worldAction = new WorldAction(world)
                 
                 if (entity) {
 
@@ -139,7 +140,7 @@ app.ws("/ws", {
         })
         const [index, entity] = world.getEntity(ws.id)
         if (entity) {
-            let worldAction = new wrld.WorldAction(world)
+            let worldAction = new WorldAction(world)
             worldAction.removeEntity(index)
             world.updateClients(app, worldAction)
         }
