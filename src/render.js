@@ -1,6 +1,6 @@
 const rot = require("rot-js")
 const { Color } = require("./color")
-const color = require("/src/color")
+const entityTypes = require("/server/entity").Type
 
 module.exports.Screen = function (display, uuid) {
     this.display = display
@@ -9,9 +9,9 @@ module.exports.Screen = function (display, uuid) {
     this.uuid = uuid
     this.entityGlyph = function (entityType) {
         const visuals = {
-            player: { ch: '@', fg: new Color(5, 5, 2) },
-            devil: { ch: '&', fg: new Color(3, 0, 1) },
-            imp: { ch: 'i', fg: new Color(5, 1, 0) },
+            [entityTypes.player]: { ch: '@', fg: new Color(5, 5, 2) },
+            [entityTypes.devil]: { ch: '&', fg: new Color(3, 0, 1) },
+            [entityTypes.imp]: { ch: 'i', fg: new Color(5, 1, 0) },
         }
 
         return visuals[entityType]

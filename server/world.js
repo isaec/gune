@@ -1,7 +1,7 @@
 const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
 const clone = require("rfdc")()
-const Entity = require("./entity").Entity
+const entity = require("./entity")
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
@@ -73,8 +73,8 @@ module.exports.World = function () {
     for (const room of this.map.digger.getRooms()) {
         let b = this.validSpace(room)
         let x = b[0], y = b[1]
-        this.add(new Entity(
-            Math.floor(Math.random() * 2) == 1 ? "devil" : "imp"
+        this.add(new entity.Entity(
+            Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp
             , x, y))
     }
 }

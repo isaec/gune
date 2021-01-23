@@ -7,3 +7,9 @@ module.exports.Entity = function (type, x, y, uuid = false) {
     this.x = x
     this.y = y
 }
+
+module.exports.Type = Object.freeze({
+    player: "player",
+    devil: "devil",
+    imp: "imp"
+})

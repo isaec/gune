@@ -84,7 +84,7 @@ app.ws("/ws", {
         const room = rooms[Math.floor(Math.random() * rooms.length)]
         //make the new player for the uuid
         const [tarX, tarY] = world.validSpace(room)
-        worldAction.addEntity(new entity.Entity("player", tarX, tarY, ws.id))
+        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id))
 
         //send the socket the entire world
         world.sendFullWorld(ws)
@@ -105,24 +105,24 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                let [i, entity] = world.getEntity(ws.id)
+                let [i, ent] = world.getEntity(ws.id)
 
                 let worldAction = new WorldAction(world)
 
-                if (entity) {
+                if (ent) {
 
-                    let newX = entity.x + clientMsg.body.data[0],
-                        newY = entity.y + clientMsg.body.data[1]
+                    let newX = ent.x + clientMsg.body.data[0],
+                        newY = ent.y + clientMsg.body.data[1]
 
                     //if the move is valid
                     if (world.map.tiles[newY][newX] === 1 && !world.entityAt(newX, newY)) {
 
                         //move the player
-                        entity.x += clientMsg.body.data[0]
-                        entity.y += clientMsg.body.data[1]
+                        ent.x += clientMsg.body.data[0]
+                        ent.y += clientMsg.body.data[1]
 
                         //log the change with the worldAction
-                        worldAction.changedEntity(entity)
+                        worldAction.changedEntity(ent)
 
                     }
 
@@ -140,8 +140,8 @@ app.ws("/ws", {
         app.SOCKETS.find((socket, index) => { //removes socket
             if (socket && socket.id === ws.id) app.SOCKETS.splice(index, 1)
         })
-        const [index, entity] = world.getEntity(ws.id)
-        if (entity) {
+        const [index, ent] = world.getEntity(ws.id)
+        if (ent) {
             let worldAction = new WorldAction(world)
             worldAction.removeEntity(index)
             world.updateClients(app, worldAction)
