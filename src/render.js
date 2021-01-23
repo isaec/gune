@@ -29,11 +29,35 @@ module.exports.Screen = function (display, uuid) {
         })()
     }
 
+    this.mapGlyph = {
+        0: { //unknown
+            ch: "?",
+            fg: new Color(2, 2, 2),
+            bg: new Color(0, 0, 0)
+        },
+        undefined: { //out of bounds
+            ch: " ",
+            fg: new Color(0, 0, 0),
+            bg: new Color(0, 0, 0)
+        },
+        1: { //floor
+            ch: ".",
+            fg: new Color(4, 3, 3),
+            bg: new Color(3, 2, 2)
+        },
+        2: { //wall
+            ch: "#",
+            fg: new Color(4, 2, 2),
+            bg: new Color(3, 1, 1)
+        }
+    }
+
     this.render = function (world) {
+        console.time("render")
         this.display.clear() //clear screen
 
         const map = world.map
-        const seenMap = world.seenMap.tiles
+        let seenMap = world.seenMap.tiles
 
         const player = this.getPlayer(world)
         if (player === null) return //dont render if the world doesnt have the player in it
@@ -72,29 +96,6 @@ module.exports.Screen = function (display, uuid) {
         }
 
 
-        const mapGlyph = {
-            0: { //unknown
-                ch: "?",
-                fg: new Color(2, 2, 2),
-                bg: new Color(0, 0, 0)
-            },
-            undefined: { //out of bounds
-                ch: " ",
-                fg: new Color(0, 0, 0),
-                bg: new Color(0, 0, 0)
-            },
-            1: { //floor
-                ch: ".",
-                fg: new Color(4, 3, 3),
-                bg: new Color(3, 2, 2)
-            },
-            2: { //wall
-                ch: "#",
-                fg: new Color(4, 2, 2),
-                bg: new Color(3, 1, 1)
-            }
-        }
-
         //draw the world
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -111,7 +112,7 @@ module.exports.Screen = function (display, uuid) {
                 const cordLight = lightMap[adjY][adjX]
                 const lit = cordLight > 0.0
 
-                const cordTile = mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
+                const cordTile = this.mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
 
 
 
@@ -131,7 +132,7 @@ module.exports.Screen = function (display, uuid) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
-
+        console.timeEnd("render")
 
     }
 }
