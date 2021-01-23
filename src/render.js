@@ -10,8 +10,8 @@ module.exports.Screen = function (display, uuid) {
     this.entityGlyph = function (entityType) {
         const visuals = {
             player: { ch: '@', fg: new Color(5, 5, 2) },
-            troll: { ch: 'T', fg: new Color(2, 5, 2) },
-            orc: { ch: 'o', fg: new Color(3, 5, 3) },
+            devil: { ch: '&', fg: new Color(3, 0, 1) },
+            imp: { ch: 'i', fg: new Color(5, 1, 0) },
         }
 
         return visuals[entityType]
@@ -53,6 +53,7 @@ module.exports.Screen = function (display, uuid) {
         let lightMap = Array.from({ length: map.width }, () => [])
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
+            if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
                 //if (lightMap[y] == undefined) return
                 if (lightMap[y][x] < visibility ||

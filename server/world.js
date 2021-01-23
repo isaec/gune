@@ -6,7 +6,7 @@ const Entity = require("./entity").Entity
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
 const randint = rot.RNG.getUniformInt.bind(rot.RNG.setSeed(
-    Math.floor(Math.random()*100000)
+    Math.floor(Math.random() * 100000)
 ))
 
 module.exports.World = function () {
@@ -27,11 +27,11 @@ module.exports.World = function () {
     }
     this.validSpace = (room) => {
         let tries = 0
-        while (tries < 50){
+        while (tries < 50) {
             const x = randint(room.getLeft(), room.getRight()),
-            y = randint(room.getTop(), room.getBottom())
-            if(!this.entityAt(x, y)) {return [x,y]}
-            else {tries++}
+                y = randint(room.getTop(), room.getBottom())
+            if (!this.entityAt(x, y)) { return [x, y] }
+            else { tries++ }
         }
         return null
     }
@@ -66,5 +66,15 @@ module.exports.World = function () {
                 }
             )
         )
+    }
+
+
+    //processing and spawning, temp location
+    for (const room of this.map.digger.getRooms()) {
+        let b = this.validSpace(room)
+        let x = b[0], y = b[1]
+        this.add(new Entity(
+            Math.floor(Math.random() * 2) == 1 ? "devil" : "imp"
+            , x, y))
     }
 }
