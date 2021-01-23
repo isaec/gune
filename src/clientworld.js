@@ -6,7 +6,7 @@ module.exports.ClientWorld = function (world) {
         this.entities = world.entities
     }
     this.applyActions = (actions) => {
-        console.log(actions)
+        //console.log(actions)
         for (const action of actions.actions) {
             let done = false
             for (const [index, entity] of this.entities.entries()) {
@@ -18,6 +18,9 @@ module.exports.ClientWorld = function (world) {
             }
             if (!done) this.entities.push(action)
 
+        }
+        for( const tileAction of actions.tileActions){
+            this.map.tiles[tileAction.y][tileAction.x] = tileAction.value
         }
     }
 }

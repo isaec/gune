@@ -58,7 +58,7 @@ module.exports.WorldAction = function(world) {
     this.changedEntity = (entity) => this.actions.push(entity)
 
     this.setTile = (x, y, value) => {
-        this.world[y][x] = value
+        this.world.map.tiles[y][x] = value
         this.tileActions.push(
             {
                 x: x,
