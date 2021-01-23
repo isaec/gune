@@ -5,6 +5,9 @@ const Entity = require("./entity").Entity
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
+const randint = rot.RNG.getUniformInt.bind(rot.RNG.setSeed(
+    Math.floor(Math.random()*100000)
+))
 
 module.exports.World = function () {
     this.map = new gamemap.Map(60, 35)
@@ -18,6 +21,20 @@ module.exports.World = function () {
         return null
     }
     this.add = function (entity) { this.entities.push(entity) }
+    this.entityAt = (x, y) => {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
+        return false
+    }
+    this.validSpace = (room) => {
+        let tries = 0
+        while (tries < 50){
+            const x = randint(room.getLeft(), room.getRight()),
+            y = randint(room.getTop(), room.getBottom())
+            if(!this.entityAt(x, y)) {return [x,y]}
+            else {tries++}
+        }
+        return null
+    }
     this.sendFullWorld = function (ws) {
         ws.send(
             JSON.stringify(
@@ -38,8 +55,8 @@ module.exports.World = function () {
         )
     }
     this.updateClients = function (app, worldAction) {
-        if(!worldAction) throw "need world action"
-        app.publish(MESSAGE_ENUM.SERVER_ACTION, 
+        if (!worldAction) throw "need world action"
+        app.publish(MESSAGE_ENUM.SERVER_ACTION,
             JSON.stringify(
                 {
                     type: MESSAGE_ENUM.SERVER_ACTION,

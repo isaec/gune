@@ -80,9 +80,11 @@ app.ws("/ws", {
         //make a worldaction so we can keep track of changes easily
         let worldAction = new WorldAction(world)
 
-        const room = world.map.digger.getRooms()[0]
+        const rooms = world.map.digger.getRooms()
+        const room = rooms[Math.floor(Math.random() * rooms.length)]
         //make the new player for the uuid
-        worldAction.addEntity(new entity.Entity("player", room._x1, room._y1, ws.id))
+        const [tarX, tarY] = world.validSpace(room)
+        worldAction.addEntity(new entity.Entity("player", tarX, tarY, ws.id))
 
         //send the socket the entire world
         world.sendFullWorld(ws)
@@ -106,14 +108,14 @@ app.ws("/ws", {
                 let [i, entity] = world.getEntity(ws.id)
 
                 let worldAction = new WorldAction(world)
-                
+
                 if (entity) {
 
                     let newX = entity.x + clientMsg.body.data[0],
-                    newY = entity.y + clientMsg.body.data[1]
+                        newY = entity.y + clientMsg.body.data[1]
 
                     //if the move is valid
-                    if(world.map.tiles[newY][newX] === 1){
+                    if (world.map.tiles[newY][newX] === 1) {
 
                         //move the player
                         entity.x += clientMsg.body.data[0]
@@ -121,10 +123,10 @@ app.ws("/ws", {
 
                         //log the change with the worldAction
                         worldAction.changedEntity(entity)
-                        
+
                     }
 
-                    
+
                 }
                 world.updateClients(app, worldAction)
                 break
