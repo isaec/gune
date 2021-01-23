@@ -24,7 +24,14 @@ module.exports.World = function () {
                 {
                     type: MESSAGE_ENUM.SERVER_WORLDUPDATE,
                     body: {
-                        world: this
+                        world: { //only send the importent parts
+                            map: {
+                                width: this.map.width,
+                                height: this.map.height,
+                                tiles: this.map.tiles,
+                            },
+                            entities: this.entities
+                        }
                     }
                 }
             )
