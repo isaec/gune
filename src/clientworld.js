@@ -5,6 +5,10 @@ module.exports.ClientWorld = function (world) {
         this.map = world.map
         this.entities = world.entities
     }
+    this.entityAt = (x, y) => {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
+        return false
+    }
     this.applyActions = (actions) => {
         //console.log(actions)
         for (const action of actions.actions) {

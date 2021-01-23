@@ -67,7 +67,7 @@ function handleKeyDown(event) {
             })()
             const dx = action.data[0], dy = action.data[1]
             const newX = player.x + dx, newY = player.y + dy
-            if (world.map.tiles[newY][newX] === 1) {
+            if (world.map.tiles[newY][newX] === 1 && !world.entityAt(newX, newY)) {
                 connection.send(JSON.stringify({
                     type: MESSAGE_ENUM.CLIENT_ACTION,
                     body: action,
@@ -79,7 +79,7 @@ function handleKeyDown(event) {
                 screen.render(world)
             } else {
                 guiConsole.print(
-                    new guiconsole.ConsoleLine("that path is blocked", [4,4,2], true)
+                    new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
                 )
             }
         }
@@ -91,13 +91,13 @@ function handleKeyDown(event) {
 
 connection.onopen = () => {
     guiConsole.print(
-        new guiconsole.ConsoleLine("websocket connected", [2,4,4])
+        new guiconsole.ConsoleLine("websocket connected", [2, 4, 4])
     )
 }
 
 connection.onclose = () => {
     guiConsole.print(
-        new guiconsole.ConsoleLine("websocket closed (server disconnect)", [5,2,2])
+        new guiconsole.ConsoleLine("websocket closed (server disconnect)", [5, 2, 2])
     )
     setTimeout(location.reload.bind(window.location), 500)
 }
@@ -121,21 +121,21 @@ connection.onmessage = msg => {
             uuid = srvMsg.body.id
             screen.uuid = uuid
             guiConsole.print(
-                new guiconsole.ConsoleLine(`${srvMsg.body.name} (you) connected`,[4,5,3])
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} (you) connected`, [4, 5, 3])
             )
             break
         }
 
         case MESSAGE_ENUM.CLIENT_CONNECTED: {
             if (srvMsg.body.id !== uuid) guiConsole.print(
-                new guiconsole.ConsoleLine(`${srvMsg.body.name} connected`,[3,5,3])
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} connected`, [3, 5, 3])
             )
             break
         }
 
         case MESSAGE_ENUM.CLIENT_DISCONNECTED: {
             guiConsole.print(
-                new guiconsole.ConsoleLine(`${srvMsg.body.name} disconnected`,[4,2,2])
+                new guiconsole.ConsoleLine(`${srvMsg.body.name} disconnected`, [4, 2, 2])
             )
             break
         }

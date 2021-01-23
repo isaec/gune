@@ -115,7 +115,7 @@ app.ws("/ws", {
                         newY = entity.y + clientMsg.body.data[1]
 
                     //if the move is valid
-                    if (world.map.tiles[newY][newX] === 1) {
+                    if (world.map.tiles[newY][newX] === 1 && !world.entityAt(newX, newY)) {
 
                         //move the player
                         entity.x += clientMsg.body.data[0]
