@@ -42,3 +42,31 @@ module.exports.World = function () {
         )
     }
 }
+
+
+module.exports.WorldAction = function(world) {
+    this.world = world
+    this.actions = []
+    this.tileActions = []
+    this.addEntity = (entity) => {
+        this.world.entities.push(entity)
+        this.actions.push(entity)
+    }
+    
+    this.setTile = (x, y, value) => {
+        this.world[y][x] = value
+        this.tileActions.push(
+            {
+                x: x,
+                y: y,
+                value: value
+            }
+        )
+    }
+    this.publish = () => {
+        return {
+            actions: this.actions,
+            tileActions: this.tileActions
+        }
+    }
+}

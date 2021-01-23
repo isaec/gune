@@ -553,7 +553,7 @@ eval("module.exports.MESSAGE_ENUM = Object.freeze({\n    SELF_CONNECTED: \"SELF_
   \****************************/
 /***/ ((module) => {
 
-eval("module.exports.ClientWorld = function(world) {\n    this.map = world.map\n    this.entities = world.entities\n    this.update = (world) => {\n        this.map = world.map\n        this.entities = world.entities\n    }\n}\n\n//# sourceURL=webpack://gune/./src/clientworld.js?");
+eval("module.exports.ClientWorld = function(world) {\n    this.map = world.map\n    this.entities = world.entities\n    this.update = (world) => {\n        this.map = world.map\n        this.entities = world.entities\n    }\n    this.applyActions = (actions) => {\n        console.log(actions)\n    }\n}\n\n//# sourceURL=webpack://gune/./src/clientworld.js?");
 
 /***/ }),
 

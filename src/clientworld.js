@@ -5,4 +5,7 @@ module.exports.ClientWorld = function(world) {
         this.map = world.map
         this.entities = world.entities
     }
+    this.applyActions = (actions) => {
+        console.log(actions)
+    }
 }
