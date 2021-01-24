@@ -91,7 +91,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
             return world.map.tiles[y][x] === 1
         })
 
-        
+
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
@@ -128,19 +128,15 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
 
                 const cordTile = this.mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
 
-
-
-                let ch = " ",
+                let ch = cordTile.ch,
                     fg = cordTile.fg.truestring(cordLight),
                     bg = cordTile.bg.truestring(cordLight),
                     glyph = this.glyphMap[adjY][adjX]
 
-                if (glyph) {
-                    ch = lit ? glyph.ch : ch
+                if (glyph && lit) {
+                    ch = glyph.ch
                     fg = glyph.fg.truestring(cordLight)
                     bg = glyph.bg || bg
-                } else {
-                    ch = cordTile.ch
                 }
 
                 display.draw(x, y, ch, fg, bg)
