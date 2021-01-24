@@ -59,7 +59,7 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.SERVER_ACTION)
         //add the socket to sockets after creation
         app.SOCKETS.push(ws)
-        console.log("\x1b[32m" + "opened" + "\x1b[0m" + " %o", ws)
+        //console.log("\x1b[32m" + "opened" + "\x1b[0m" + " %o", ws)
         //let the socket know its name and uuid
         let selfMsg = {
             type: MESSAGE_ENUM.SELF_CONNECTED,
@@ -148,7 +148,7 @@ app.ws("/ws", {
         }
 
 
-        console.log("\x1b[31m" + "closed" + "\x1b[0m" + " %o", ws)
+        //console.log("\x1b[31m" + "closed" + "\x1b[0m" + " %o", ws)
 
         let pubMsg = {
             type: MESSAGE_ENUM.CLIENT_DISCONNECTED,
