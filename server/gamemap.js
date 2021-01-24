@@ -5,7 +5,7 @@ module.exports.Map = function (width = 60, height = 35) {
     this.height = height
     //makes a new array of the width and hight
     //basically, null in desired shape
-    this.tiles = Array.from({length:width}, () => [])
+    this.tiles = []; for (let y = 0; y < width; y++) this.tiles[y] = []
 
 
     this.get = (x, y) => { return this.tiles[x][y] }

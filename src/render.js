@@ -53,7 +53,6 @@ module.exports.Screen = function (display, uuid) {
     }
 
     this.render = function (world) {
-        console.time("render")
         this.display.clear() //clear screen
 
         const map = world.map
@@ -75,12 +74,12 @@ module.exports.Screen = function (display, uuid) {
         })
 
         //values from 0.0 to 1.0
-        let lightMap = Array.from({ length: map.width }, () => [])
+        let lightMap = []; for (let y = 0; y < map.width; y++) lightMap[y] = []
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
-                if(!seenMap[y][x]) seenMap[y][x] = visibility > 0.0
+                if (!seenMap[y][x]) seenMap[y][x] = visibility > 0.0
                 if (lightMap[y][x] < visibility ||
                     lightMap[y][x] == undefined) {
 
@@ -90,7 +89,7 @@ module.exports.Screen = function (display, uuid) {
         }
 
         //values of [char, fg, and optional bg]
-        let glyphMap = Array.from({ length: map.width }, () => [])
+        let glyphMap = []; for (let y = 0; y < map.width; y++) glyphMap[y] = []
         for (let entity of world.entities.values()) {
             glyphMap[entity.y][entity.x] = this.entityGlyph(entity.type)
         }
@@ -132,7 +131,6 @@ module.exports.Screen = function (display, uuid) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
-        console.timeEnd("render")
 
     }
 }

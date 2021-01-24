@@ -4,8 +4,9 @@ module.exports.ClientWorld = function (world) {
     this.seenMap = {
         width: this.map.width,
         height: this.map.height,
-        tiles: Array.from({length:this.map.width}, () => []),
+        tiles: [],
     }
+    for (let y = 0; y < this.map.width; y++) this.seenMap.tiles[y] = []
     this.update = (world) => {
         this.map = world.map
         this.entities = world.entities
