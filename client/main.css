@@ -21,13 +21,23 @@ body {
 
 #console {
     flex: 1;
+    display: flex;
+    max-height: 35vh;
+    height: 35vh;
+    flex-direction: column-reverse;
     font-family: "Metrickal";
     line-height: 130%;
-    height: 14em;
     background: black;
     color: white;
     padding: 0.5em 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
     text-align: left;
+}
+
+#console::-webkit-scrollbar {
+    display: none;
 }
 
 @font-face {
