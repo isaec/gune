@@ -65,7 +65,6 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
 
 
     this.render = function (world) {
-        console.time("render")
         this.display.clear() //clear screen
 
         //clear the arrays (2x the speed of deref!)
@@ -147,6 +146,5 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
-        console.timeEnd("render")
     }
 }
