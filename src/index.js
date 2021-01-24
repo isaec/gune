@@ -7,7 +7,7 @@ const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')
 
-let uuid, world
+let uuid, world, screen
 
 const display = new rot.Display({
     width: 35,
@@ -31,7 +31,6 @@ canvas.addEventListener('keydown', handleKeyDown)
 canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
-const screen = new render.Screen(display, uuid)
 const guiConsole = new guiconsole.GuiConsole()
 
 //stupid fix to redraw world when font is ready
@@ -111,6 +110,7 @@ connection.onmessage = msg => {
 
         case MESSAGE_ENUM.SERVER_WORLDUPDATE: {
             world = new clientworld.ClientWorld(srvMsg.body.world)
+            screen = new render.Screen(display, uuid, world.map.width, world.map.height)
             screen.render(world)
             break
         }

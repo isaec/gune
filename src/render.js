@@ -2,10 +2,12 @@ const rot = require("rot-js")
 const { Color } = require("./color")
 const entityTypes = require("/server/entity").Type
 
-module.exports.Screen = function (display, uuid) {
+module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     this.display = display
     this.width = this.display._options.width
     this.height = this.display._options.height
+    this.worldWidth = worldWidth
+    this.worldHeight = worldHeight
     this.uuid = uuid
     this.entityGlyph = function (entityType) {
         const visuals = {
@@ -52,8 +54,25 @@ module.exports.Screen = function (display, uuid) {
         }
     }
 
+    //values from 0.0 to 1.0
+    this.lightMap = []
+    //values of [char, fg, and optional bg]
+    this.glyphMap = []
+    for (let y = 0; y < worldWidth; y++) {
+        this.lightMap[y] = []
+        this.glyphMap[y] = []
+    }
+
+
     this.render = function (world) {
+        console.time("render")
         this.display.clear() //clear screen
+
+        //clear the arrays (2x the speed of deref!)
+        for (let y = 0; y < worldWidth; y++) {
+            this.lightMap[y] = [];
+            this.glyphMap[y] = [];
+        }
 
         const map = world.map
         let seenMap = world.seenMap.tiles
@@ -73,25 +92,22 @@ module.exports.Screen = function (display, uuid) {
             return world.map.tiles[y][x] === 1
         })
 
-        //values from 0.0 to 1.0
-        let lightMap = []; for (let y = 0; y < map.width; y++) lightMap[y] = []
+        
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
                 if (!seenMap[y][x]) seenMap[y][x] = visibility > 0.0
-                if (lightMap[y][x] < visibility ||
-                    lightMap[y][x] == undefined) {
+                if (this.lightMap[y][x] < visibility ||
+                    this.lightMap[y][x] == undefined) {
 
-                    lightMap[y][x] = visibility
+                    this.lightMap[y][x] = visibility
                 }
             })
         }
 
-        //values of [char, fg, and optional bg]
-        let glyphMap = []; for (let y = 0; y < map.width; y++) glyphMap[y] = []
         for (let entity of world.entities.values()) {
-            glyphMap[entity.y][entity.x] = this.entityGlyph(entity.type)
+            this.glyphMap[entity.y][entity.x] = this.entityGlyph(entity.type)
         }
 
 
@@ -108,7 +124,7 @@ module.exports.Screen = function (display, uuid) {
                     ||
                     (adjY > map.height || adjY < 0)) { continue }
 
-                const cordLight = lightMap[adjY][adjX]
+                const cordLight = this.lightMap[adjY][adjX]
                 const lit = cordLight > 0.0
 
                 const cordTile = this.mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
@@ -118,7 +134,7 @@ module.exports.Screen = function (display, uuid) {
                 let ch = " ",
                     fg = cordTile.fg.truestring(cordLight),
                     bg = cordTile.bg.truestring(cordLight),
-                    glyph = glyphMap[adjY][adjX]
+                    glyph = this.glyphMap[adjY][adjX]
 
                 if (glyph) {
                     ch = lit ? glyph.ch : ch
@@ -131,6 +147,6 @@ module.exports.Screen = function (display, uuid) {
                 display.draw(x, y, ch, fg, bg)
             }
         }
-
+        console.timeEnd("render")
     }
 }
