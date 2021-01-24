@@ -30,7 +30,7 @@ body {
     background: black;
     color: white;
     padding: 0.5em 1em;
-    overflow-x: hidden;
+    white-space: normal;
     overflow-y: scroll;
     scrollbar-width: none;
     text-align: left;
@@ -39,6 +39,7 @@ body {
 #console::-webkit-scrollbar {
     display: none;
 }
+
 
 @font-face {
     font-family: Metrickal;
