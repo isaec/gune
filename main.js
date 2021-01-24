@@ -37,7 +37,7 @@ addFile(app, "/favicon.ico", "/client/favicon.ico")
 
 //gamecode setup block
 
-let world = new wrld.World()
+let world = new wrld.World(100,100)
 
 //end gamecode setup block
 

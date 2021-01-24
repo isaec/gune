@@ -1,7 +1,8 @@
 const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
 const clone = require("rfdc")()
-const entity = require("./entity")
+const Entity = require("./entity").Entity
+const EType = require("./entity").Type
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
@@ -9,8 +10,8 @@ const randint = rot.RNG.getUniformInt.bind(rot.RNG.setSeed(
     Math.floor(Math.random() * 100000)
 ))
 
-module.exports.World = function () {
-    this.map = new gamemap.Map(60, 35)
+module.exports.World = function (width = 60, height = 35) {
+    this.map = new gamemap.Map(width, height)
     this.entities = [] //new array
     this.getEntity = function (uuid) {
         for (const [index, entity] of this.entities.entries()) {
@@ -73,8 +74,8 @@ module.exports.World = function () {
     for (const room of this.map.digger.getRooms()) {
         let b = this.validSpace(room)
         let x = b[0], y = b[1]
-        this.add(new entity.Entity(
-            Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp
+        this.add(new Entity(
+            Math.floor(Math.random() * 2) == 1 ? EType.devil : EType.imp
             , x, y))
     }
 }
