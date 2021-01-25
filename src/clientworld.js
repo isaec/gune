@@ -1,12 +1,12 @@
+const FArray = require("/shared/array").FArray
 module.exports.ClientWorld = function (world) {
     this.map = world.map
     this.entities = world.entities
     this.seenMap = {
         width: this.map.width,
         height: this.map.height,
-        tiles: [],
+        tiles: new FArray(this.map.width),
     }
-    for (let y = 0; y < this.map.width; y++) this.seenMap.tiles[y] = []
     this.update = (world) => {
         this.map = world.map
         this.entities = world.entities

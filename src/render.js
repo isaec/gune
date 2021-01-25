@@ -1,6 +1,7 @@
 const rot = require("rot-js")
 const { Color } = require("./color")
 const entityTypes = require("/server/entity").Type
+const FArray = require("/shared/array").FArray
 
 module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     this.display = display
@@ -55,23 +56,18 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     }
 
     //values from 0.0 to 1.0
-    this.lightMap = []
+    this.lightMap = new FArray(worldWidth)
     //values of [char, fg, and optional bg]
-    this.glyphMap = []
-    for (let y = 0; y < worldWidth; y++) {
-        this.lightMap[y] = []
-        this.glyphMap[y] = []
-    }
+    this.glyphMap = new FArray(worldWidth)
 
 
     this.render = function (world) {
         this.display.clear() //clear screen
 
-        //clear the arrays (2x the speed of deref!)
-        for (let y = 0; y < worldWidth; y++) {
-            this.lightMap[y] = [];
-            this.glyphMap[y] = [];
-        }
+        //clear arrays
+        this.lightMap.clean()
+        this.glyphMap.clean()
+
 
         const map = world.map
         let seenMap = world.seenMap.tiles
@@ -82,31 +78,27 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
         //calculate light levels and such
         //NOTE this should be verified serverside later
         //should also not remake the object every render
-        let fov = new rot.FOV.PreciseShadowcasting((x, y) => {
-            if (//make sure not to test cords out of bounds
-                (x > map.width || x < 0)
-                ||
-                (y > map.height || y < 0)
-            ) return false
-            return world.map.tiles[y][x] === 1
-        })
+        let fov = new rot.FOV.PreciseShadowcasting(
+            (x, y) => (x < map.width && x > -1) && (y < map.height && y > -1)
+                ? map.tiles[y][x] === 1 : false
+        )
 
 
         //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
-                if (!seenMap[y][x]) seenMap[y][x] = visibility > 0.0
-                if (this.lightMap[y][x] < visibility ||
-                    this.lightMap[y][x] == undefined) {
+                if (!seenMap.get(x, y)) seenMap.set(x, y, visibility > 0.0)
+                if (this.lightMap.get(x, y) < visibility ||
+                    this.lightMap.get(x, y) == undefined) {
 
-                    this.lightMap[y][x] = visibility
+                    this.lightMap.set(x, y, visibility)
                 }
             })
         }
 
         for (let entity of world.entities.values()) {
-            this.glyphMap[entity.y][entity.x] = this.entityGlyph(entity.type)
+            this.glyphMap.set(entity.x, entity.y, this.entityGlyph(entity.type))
         }
 
 
@@ -123,15 +115,15 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                     ||
                     (adjY > map.height || adjY < 0)) { continue }
 
-                const cordLight = this.lightMap[adjY][adjX]
+                const cordLight = this.lightMap.get(adjX, adjY)
                 const lit = cordLight > 0.0
 
-                const cordTile = this.mapGlyph[seenMap[adjY][adjX] ? map.tiles[adjY][adjX] : 0]
+                const cordTile = this.mapGlyph[seenMap.get(adjX, adjY) ? map.tiles[adjY][adjX] : 0]
 
                 let ch = cordTile.ch,
                     fg = cordTile.fg.truestring(cordLight),
                     bg = cordTile.bg.truestring(cordLight),
-                    glyph = this.glyphMap[adjY][adjX]
+                    glyph = this.glyphMap.get(adjX, adjY)
 
                 if (glyph && lit) {
                     ch = glyph.ch
