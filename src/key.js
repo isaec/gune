@@ -9,6 +9,12 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
     this.uuid = uuid //this should all be in an engine class
     this.connection = connection
     this.keyset = new Set()
+    this.validmoves = new Set([
+        rot.KEYS.VK_RIGHT,rot.KEYS.VK_D,
+        rot.KEYS.VK_LEFT,rot.KEYS.VK_A,
+        rot.KEYS.VK_DOWN,rot.KEYS.VK_S,
+        rot.KEYS.VK_UP,rot.KEYS.VK_W
+    ])
     this.keypulse = () => {
         for (const key of this.keyset) {
             const action = this.keyToAction(key)
@@ -17,7 +23,7 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
     }
     this.interval = setInterval(this.keypulse,150)
     this.keydown = (event) => {
-        if (event.repeat || !event.isTrusted) return
+        if (event.repeat || !event.isTrusted || !this.validmoves.has(event.keyCode)) return
         this.keyset.add(event.keyCode)
 
         clearInterval(this.interval)
