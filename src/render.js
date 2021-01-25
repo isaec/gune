@@ -101,12 +101,8 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
 
 
         //draw the world
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
-
-                const adjX = player.x + x - Math.floor(this.width / 2),
-                    adjY = player.y + y - Math.floor(this.height / 2)
-
+        for (let y = 0, adjY = player.y - Math.floor(this.height / 2); y < this.height; y++, adjY++) {
+            for (let x = 0, adjX = player.x - Math.floor(this.width / 2); x < this.width; x++, adjX++) {
 
                 //this is a very poor fix
                 if ((adjX > map.width || adjX < 0)
