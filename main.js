@@ -127,7 +127,8 @@ app.ws("/ws", {
                         worldAction.changedEntity(ent)
 
                     } else { //otherwise, remind clients where the misbehaving player is
-                        worldAction.changedEntity(ent)
+                        //this needs to be reviewed - can cause rubberbanding
+                        //worldAction.changedEntity(ent)
                     }
 
 
