@@ -68,6 +68,18 @@ module.exports.World = function (width = 60, height = 35) {
             )
         )
     }
+    this.sendEntities = function (app) {
+        app.publish(MESSAGE_ENUM.SERVER_ENTITYUPDATE,
+            JSON.stringify(
+                {
+                    type: MESSAGE_ENUM.SERVER_ENTITYUPDATE,
+                    body: {
+                        entities: this.entities
+                    }
+                }
+            )
+        )
+    }
 
 
     //processing and spawning, temp location

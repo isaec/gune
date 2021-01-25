@@ -23,6 +23,7 @@ module.exports.ClientWorld = function (world) {
     
         this.entities = world.entities
     }
+    this.entityUpdate = (entities) => this.entities = entities
     this.entityAt = (x, y) => {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
         return false

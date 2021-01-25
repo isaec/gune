@@ -87,7 +87,7 @@ function handleKeyDown(event) {
             }
         }
     } else {
-        //console.log("unhandled event %o", event)
+        console.log("unhandled event %o", event)
     }
     event.preventDefault()
 }
@@ -111,6 +111,12 @@ connection.onmessage = msg => {
         case MESSAGE_ENUM.SERVER_WORLDUPDATE: {
             world = new clientworld.ClientWorld(srvMsg.body.world)
             screen = new render.Screen(display, uuid, world.map.width, world.map.height)
+            screen.render(world)
+            break
+        }
+
+        case MESSAGE_ENUM.SERVER_ENTITYUPDATE: {
+            world.entityUpdate(srvMsg.body.entities)
             screen.render(world)
             break
         }

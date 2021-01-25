@@ -57,6 +57,8 @@ app.ws("/ws", {
         ws.subscribe(MESSAGE_ENUM.CLIENT_DISCONNECTED)
         ws.subscribe(MESSAGE_ENUM.CLIENT_MESSAGE)
         ws.subscribe(MESSAGE_ENUM.SERVER_ACTION)
+        ws.subscribe(MESSAGE_ENUM.SERVER_WORLDUPDATE)
+        ws.subscribe(MESSAGE_ENUM.SERVER_ENTITYUPDATE)
         //add the socket to sockets after creation
         app.SOCKETS.push(ws)
         //console.log("\x1b[32m" + "opened" + "\x1b[0m" + " %o", ws)
@@ -124,6 +126,8 @@ app.ws("/ws", {
                         //log the change with the worldAction
                         worldAction.changedEntity(ent)
 
+                    } else { //otherwise, remind clients where the misbehaving player is
+                        worldAction.changedEntity(ent)
                     }
 
 
