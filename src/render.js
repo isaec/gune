@@ -79,16 +79,14 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
         //NOTE this should be verified serverside later
         //should also not remake the object every render
         let fov = new rot.FOV.PreciseShadowcasting(
-            (x, y) => (x < map.width && x > -1) && (y < map.height && y > -1)
-                ? map.tiles[y][x] === 1 : false
+            (x, y) => map.tiles.get(x, y) === 1
         )
 
 
-        //const player = this.getPlayer(world)
         for (const entity of world.entities) {
             if (entity.type !== "player") continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
-                if (!seenMap.get(x, y)) seenMap.set(x, y, visibility > 0.0)
+                seenMap.set(x, y, true)
                 if (this.lightMap.get(x, y) < visibility ||
                     this.lightMap.get(x, y) == undefined) {
 
@@ -118,7 +116,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                 const cordLight = this.lightMap.get(adjX, adjY)
                 const lit = cordLight > 0.0
 
-                const cordTile = this.mapGlyph[seenMap.get(adjX, adjY) ? map.tiles[adjY][adjX] : 0]
+                const cordTile = this.mapGlyph[seenMap.getSafe(adjX, adjY, false) ? map.tiles.get(adjX, adjY) : 0]
 
                 let ch = cordTile.ch,
                     fg = cordTile.fg.truestring(cordLight),

@@ -37,7 +37,7 @@ addFile(app, "/favicon.ico", "/client/favicon.ico")
 
 //gamecode setup block
 
-let world = new wrld.World(100,100)
+let world = new wrld.World(100, 100)
 
 //end gamecode setup block
 
@@ -115,7 +115,7 @@ app.ws("/ws", {
                         newY = ent.y + clientMsg.body.data[1]
 
                     //if the move is valid
-                    if (world.map.tiles[newY][newX] === 1 && !world.entityAt(newX, newY)) {
+                    if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY)) {
 
                         //move the player
                         ent.x += clientMsg.body.data[0]

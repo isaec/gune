@@ -29,8 +29,8 @@ module.exports.World = function (width = 60, height = 35) {
     this.validSpace = (room) => {
         let tries = 0
         while (tries < 50) {
-            const x = randint(room.getLeft(), room.getRight()),
-                y = randint(room.getTop(), room.getBottom())
+            const y = randint(room.getLeft(), room.getRight()),
+                x = randint(room.getTop(), room.getBottom())
             if (!this.entityAt(x, y)) { return [x, y] }
             else { tries++ }
         }
