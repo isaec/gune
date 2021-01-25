@@ -3,6 +3,7 @@ const render = require("/src/render")
 //const color = require("/src/color")
 const guiconsole = require("/src/guiconsole")
 const clientworld = require("/src/clientworld")
+const key = require("/src/key")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')
@@ -23,74 +24,22 @@ scaleDisplay()
 
 const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
+const guiConsole = new guiconsole.GuiConsole()
+
 const gameFigure = document.getElementById("game")
 gameFigure.appendChild(display.getContainer())
 
+let keyHandler = new key.KeyHandler(world, guiConsole, screen, uuid, connection)
 const canvas = display.getContainer()
-canvas.addEventListener('keydown', handleKeyDown)
+canvas.addEventListener('keydown', keyHandler.keydown)
+canvas.addEventListener('keyup', keyHandler.keyup)
 canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
-const guiConsole = new guiconsole.GuiConsole()
 
 //stupid fix to redraw world when font is ready
 window.addEventListener("load", () => { screen.render(world) })
 
-function handleKeys(keyCode) {
-    switch (keyCode){
-        case rot.KEYS.VK_RIGHT:
-        case rot.KEYS.VK_D:
-            return { type: 'move', data: [+1, 0] }
-        case rot.KEYS.VK_LEFT:
-        case rot.KEYS.VK_A:
-            return { type: 'move', data: [-1, 0] }
-        case rot.KEYS.VK_DOWN:
-        case rot.KEYS.VK_S:
-            return { type: 'move', data: [0, +1] }
-        case rot.KEYS.VK_UP:
-        case rot.KEYS.VK_W:
-            return { type: 'move', data: [0, -1] }
-        default:
-            return undefined
-    }
-}
-
-function handleKeyDown(event) {
-    let action = handleKeys(event.keyCode)
-    if (action) {
-        if (action.type === "move") {
-            const player = (() => {
-                for (const entity of world.entities) {
-                    if (entity.id === uuid) {
-                        return entity
-                    }
-                }
-                alert("this should not have happened.")
-                return null
-            })()
-            const dx = action.data[0], dy = action.data[1]
-            const newX = player.x + dx, newY = player.y + dy
-            if (world.map.tiles.get(newX,newY) === 1 && !world.entityAt(newX, newY)) {
-                connection.send(JSON.stringify({
-                    type: MESSAGE_ENUM.CLIENT_ACTION,
-                    body: action,
-                }))
-                //render the change on clientside pre approval
-                //this should make movement feel more responsive
-                player.x += dx
-                player.y += dy
-                screen.render(world)
-            } else {
-                guiConsole.print(
-                    new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
-                )
-            }
-        }
-    } else {
-        console.log("unhandled event %o", event)
-    }
-    event.preventDefault()
-}
 
 connection.onopen = () => {
     guiConsole.print(
@@ -111,6 +60,8 @@ connection.onmessage = msg => {
         case MESSAGE_ENUM.SERVER_WORLDUPDATE: {
             world = new clientworld.ClientWorld(srvMsg.body.world)
             screen = new render.Screen(display, uuid, world.map.width, world.map.height)
+            keyHandler.world = world
+            keyHandler.screen = screen
             screen.render(world)
             break
         }
@@ -130,6 +81,7 @@ connection.onmessage = msg => {
         case MESSAGE_ENUM.SELF_CONNECTED: {
             uuid = srvMsg.body.id
             screen.uuid = uuid
+            keyHandler.uuid = uuid
             guiConsole.print(
                 new guiconsole.ConsoleLine(`${srvMsg.body.name} (you) connected`, [4, 5, 3])
             )
