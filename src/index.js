@@ -33,6 +33,7 @@ let keyHandler = new key.KeyHandler(world, guiConsole, screen, uuid, connection)
 const canvas = display.getContainer()
 canvas.addEventListener('keydown', keyHandler.keydown)
 canvas.addEventListener('keyup', keyHandler.keyup)
+canvas.addEventListener('blur',()=>{keyHandler.pressed.clear()})
 canvas.setAttribute('tabindex', "1")
 canvas.focus()
 
