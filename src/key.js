@@ -8,55 +8,66 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
     this.screen = screen //engine asap
     this.uuid = uuid //this should all be in an engine class
     this.connection = connection
-    this.keyset = new Set()
-    this.validmoves = new Set([
-        rot.KEYS.VK_RIGHT,rot.KEYS.VK_D,
-        rot.KEYS.VK_LEFT,rot.KEYS.VK_A,
-        rot.KEYS.VK_DOWN,rot.KEYS.VK_S,
-        rot.KEYS.VK_UP,rot.KEYS.VK_W
-    ])
-    this.keypulse = () => {
-        for (const key of this.keyset) {
-            const action = this.keyToAction(key)
-            this.emitAction(action)
-        }
-    }
-    this.interval = setInterval(this.keypulse,150)
-    this.keydown = (event) => {
-        if (event.repeat || !event.isTrusted || !this.validmoves.has(event.keyCode)) return
-        this.keyset.add(event.keyCode)
 
-        clearInterval(this.interval)
-        this.keypulse()
-        this.interval = setInterval(this.keypulse,150)
+    this.pressed = new Set()
+    this.buffer = new Set()
+    this.validmoves = new Set([
+        "w", "a", "s", "d",
+    ])
+    this.lastInput = undefined
+    this.lastInputTime = performance.now()
+
+    this.keydown = (event) => {
+        if (!this.validmoves.has(event.key.toLowerCase()) || event.repeat || !event.isTrusted) return
+        const key = event.key.toLowerCase()
+        if (event.shiftKey) {
+            this.buffer.add(key)
+        } else {
+            this.pressed.add(key)
+            clearInterval(this.interval)
+
+            if (performance.now() - this.lastInputTime < 70 && key === this.lastInput) {
+                alert("macros are not allowed to reduce load on server. if you reached this input speed naturally, please contact isaac.")
+            }
+            this.lastInput = key
+            this.lastInputTime = performance.now()
+
+            this.intervalFunc()
+            this.interval = setInterval(this.intervalFunc, this.spacing)
+        }
 
         //post handle
         event.preventDefault()
     }
     this.keyup = (event) => {
-        this.keyset.delete(event.keyCode)
-        // if (!this.keyset.size === 0) return
-        // if (this.interval) clearInterval(this.interval)
-        // this.interval = undefined
+        if (event.key == "Shift") this.clearBuffer()
+        this.pressed.delete(event.key.toLowerCase())
     }
+    this.spacing = 170
+    this.intervalFunc = () => {
+        this.emitAction(this.keysToMoveAction(this.pressed))
+    }
+    this.interval = setInterval(this.intervalFunc, this.spacing)
 
-    this.keyToAction = (keyCode) => {
-        switch (keyCode) { //is switch the right structure?
-            case rot.KEYS.VK_RIGHT:
-            case rot.KEYS.VK_D:
-                return { type: 'move', data: [+1, 0] }
-            case rot.KEYS.VK_LEFT:
-            case rot.KEYS.VK_A:
-                return { type: 'move', data: [-1, 0] }
-            case rot.KEYS.VK_DOWN:
-            case rot.KEYS.VK_S:
-                return { type: 'move', data: [0, +1] }
-            case rot.KEYS.VK_UP:
-            case rot.KEYS.VK_W:
-                return { type: 'move', data: [0, -1] }
-            default:
-                return undefined
+    this.clearBuffer = () => {
+        this.emitAction(this.keysToMoveAction(this.buffer))
+        this.buffer.clear()
+    }
+    this.keysToMoveAction = (keys) => {
+        if (keys.size === 0) return
+        let x = 0, y = 0
+
+        for (const key of keys) {
+            switch (key) {
+                case "w": y--; break;
+                case "a": x--; break;
+                case "s": y++; break;
+                case "d": x++; break;
+                default: console.log("ruh roh, I see a", key)
+            }
         }
+
+        return { type: "move", data: [x, y] }
     }
 
     this.emitAction = (action) => {
