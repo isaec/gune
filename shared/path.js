@@ -37,25 +37,26 @@ function* neighbor(x, y) {
 
 
 module.exports.Dij = function (map, goalX, goalY) {
-    console.time("dij")
     let distance = new FArray(map.width)
     let frontier = []
     frontier.push(new Cord(goalX, goalY))
     distance.set(goalX, goalY, 0)
 
-    while (frontier.length > 0) {
-        let curr = frontier[0]
-        for (let cord of neighbor(curr.x, curr.y)) {
-            if(map.tiles.get(cord.x,cord.y) != 1) continue
-            if (distance.get(cord.x, cord.y) == undefined) {
-                frontier.push(cord)
-                distance.set(cord.x, cord.y, distance.get(curr.x, curr.y)+1)
+    while(frontier.length > 0){
+        let newFrontier = []
+        for (let i = 0; i < frontier.length; i++) {
+            let curr = frontier[i]
+            for (let cord of neighbor(curr.x, curr.y)) {
+                if(map.tiles.get(cord.x,cord.y) != 1) continue
+                if (distance.get(cord.x, cord.y) == undefined) {
+                    newFrontier.push(cord)
+                    distance.set(cord.x, cord.y, distance.get(curr.x, curr.y)+1)
+                }
+                
             }
-            
         }
-        frontier.shift()
+        frontier = newFrontier
     }
-    console.timeEnd("dij")
     return distance
 }
 

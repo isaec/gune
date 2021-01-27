@@ -100,8 +100,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
             this.glyphMap.set(entity.x, entity.y, this.entityGlyph(entity.type))
         }
 
-        //calc dij for testing
-        //let dij = path.Dij(map, player.x, player.y)
+
 
         //draw the world
         for (let y = 0, adjY = player.y - Math.floor(this.height / 2); y < this.height; y++, adjY++) {
@@ -129,7 +128,6 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                 }
 
                 display.draw(x, y, ch, fg, bg)
-                //if (dij.get(adjX, adjY) != undefined) display.draw(x, y, dij.get(adjX, adjY).toString())
             }
         }
     }
