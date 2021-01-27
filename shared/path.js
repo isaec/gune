@@ -17,13 +17,51 @@ given tile to the nearest goal.
 
 */
 
+function* neighbor(x, y) {
+    yield new Cord(x + -1, y + -1)
+    yield new Cord(x + -1, y + 0)
+    yield new Cord(x + -1, y + 1)
+    yield new Cord(x + 0, y + -1)
+    yield new Cord(x + 0, y + 0)
+    yield new Cord(x + 0, y + 1)
+    yield new Cord(x + 1, y + -1)
+    yield new Cord(x + 1, y + 0)
+    yield new Cord(x + 1, y + 1)
+    //made from below
+    // for(let xMod = -1; xMod <= 1; xMod++){
+    //     for(let yMod = -1; yMod <= 1; yMod++){
+    //         console.log(`yield new Cord(x + ${xMod}, y + ${yMod})`)
+    //     }
+    // }
+}
 
-module.exports.Dij = function(map, goalX, goalY) {
-    let values = new FArray(map.width)
-    values.set(goalX,goalY,0)
-    for(let x = 0; x < map.width; x++){
-        for(let y = 0; y < map.height; y++){
-            console.log(map.tiles.get(x,y))
+
+module.exports.Dij = function (map, goalX, goalY) {
+    console.time("dij")
+    let distance = new FArray(map.width)
+    let frontier = []
+    frontier.push(new Cord(goalX, goalY))
+    distance.set(goalX, goalY, 0)
+
+    while (frontier.length > 0) {
+        let curr = frontier[0]
+        for (let cord of neighbor(curr.x, curr.y)) {
+            if(map.tiles.get(cord.x,cord.y) != 1) continue
+            if (distance.get(cord.x, cord.y) == undefined) {
+                frontier.push(cord)
+                distance.set(cord.x, cord.y, distance.get(curr.x, curr.y)+1)
+            }
+            
         }
+        frontier.shift()
     }
-} 
+    console.timeEnd("dij")
+    return distance
+}
+
+class Cord {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+    }
+}
