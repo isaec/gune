@@ -7,6 +7,7 @@ const key = require("/src/key")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')
+const path = require("/shared/path")
 
 let uuid, world, screen
 
@@ -64,6 +65,7 @@ connection.onmessage = msg => {
             keyHandler.world = world
             keyHandler.screen = screen
             screen.render(world)
+            //path.Dij(world.map, 50, 50)
             break
         }
 

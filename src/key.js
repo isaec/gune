@@ -66,8 +66,7 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
                 default: console.log("ruh roh, I see a", key)
             }
         }
-
-        return { type: "move", data: [x, y] }
+        return !(x == 0 && y == 0) ? { type: "move", data: [x, y] } : undefined
     }
 
     this.emitAction = (action) => {
