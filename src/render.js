@@ -101,7 +101,6 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
         }
 
 
-        //let dij = path.Dij(map, [{ x: player.x, y: player.y }], 9)
         //draw the world
         for (let y = 0, adjY = player.y - Math.floor(this.height / 2); y < this.height; y++, adjY++) {
             for (let x = 0, adjX = player.x - Math.floor(this.width / 2); x < this.width; x++, adjX++) {
@@ -128,7 +127,6 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                 }
 
                 display.draw(x, y, ch, fg, bg)
-                //if(dij.get(adjX, adjY)) display.draw(x, y, dij.get(adjX,adjY).toString(), fg, bg)
             }
         }
     }

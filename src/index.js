@@ -4,6 +4,7 @@ const render = require("/src/render")
 const guiconsole = require("/src/guiconsole")
 const clientworld = require("/src/clientworld")
 const key = require("/src/key")
+const mouse = require("/src/mouse")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')
@@ -31,11 +32,14 @@ gameFigure.appendChild(display.getContainer())
 
 let keyHandler = new key.KeyHandler(world, guiConsole, screen, uuid, connection)
 const canvas = display.getContainer()
-canvas.addEventListener('keydown', keyHandler.keydown)
-canvas.addEventListener('keyup', keyHandler.keyup)
-canvas.addEventListener('blur',()=>{keyHandler.pressed.clear()})
-canvas.setAttribute('tabindex', "1")
+canvas.addEventListener("keydown", keyHandler.keydown)
+canvas.addEventListener("keyup", keyHandler.keyup)
+canvas.addEventListener("blur",()=>{keyHandler.pressed.clear()})
+canvas.setAttribute("tabindex", "1")
 canvas.focus()
+let mouseHandler = new mouse.MouseHandler()
+canvas.addEventListener("click", mouseHandler.click)
+//canvas.addEventListener("mousemove", mouseHandler.mousemove)
 
 
 //stupid fix to redraw world when font is ready
