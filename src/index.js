@@ -1,10 +1,10 @@
 import * as rot from "rot-js"
-const render = require("/src/render")
+const render = require("/src/display/render")
 //const color = require("/src/color")
-const guiconsole = require("/src/guiconsole")
-const clientworld = require("/src/clientworld")
-const key = require("/src/key")
-const mouse = require("/src/mouse")
+const guiconsole = require("/src/display/guiconsole")
+const clientworld = require("/src/data/clientworld")
+const key = require("/src/input/key")
+const mouse = require("/src/input/mouse")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)
 //const decoder = new TextDecoder('utf-8')

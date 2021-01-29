@@ -1,5 +1,5 @@
 const rot = require("rot-js")
-const guiconsole = require("/src/guiconsole")
+const guiconsole = require("/src/display/guiconsole")
 const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
 module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connection) {

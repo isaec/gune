@@ -1,4 +1,4 @@
-const HtmlColor = require("/src/color").Html
+const HtmlColor = require("/src/display/color").Html
 
 module.exports.GuiConsole = function () {
     this.maxLines = 100
