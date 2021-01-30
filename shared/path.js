@@ -35,7 +35,10 @@ function* neighbor(x, y) {
     // }
 }
 
-
+/** 
+ * returns a map of distances from goals
+ * goalArray expects objects with x and y properites
+*/
 module.exports.Dij = function (map, goalArray, maxDistance = 20) {
     let distance = new FArray(map.width)
     let frontier = []
@@ -63,9 +66,25 @@ module.exports.Dij = function (map, goalArray, maxDistance = 20) {
     return distance
 }
 
+module.exports.rollDown = (dij, fromCord) => {
+    let lowest = fromCord
+    let lowestVal = dij.get(fromCord.x, fromCord.y)
+    for (let cord of neighbor(fromCord.x, fromCord.y)) {
+        const val = dij.get(cord.x, cord.y)
+        if (val < lowestVal) {
+            lowest = cord
+            lowestVal = val
+        }
+    }
+    if (lowest === fromCord) console.log("rolling nowhere")
+    return new Cord(lowest.x - fromCord.x, lowest.y - fromCord.y)
+}
+
+
 class Cord {
     constructor(x, y) {
         this.x = x
         this.y = y
     }
-}
+} //didnt know i could do this
+module.exports.Cord = Cord

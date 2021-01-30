@@ -55,4 +55,17 @@ module.exports.Engine = function (connection) {
     window.addEventListener("blur", () => { this.keyHandler.pressed.clear() })
     const canvas = this.display.getContainer()
     canvas.addEventListener("click", this.mouseHandler.click)
+
+
+    //functions
+    this.getPlayer = () => {
+        for (const entity of this.world.entities) {
+            if (entity.id === this.uuid) {
+                return entity
+            }
+        }
+        alert("this should not have happened.")
+        return null
+    }
+
 }

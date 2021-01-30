@@ -2,7 +2,6 @@ const rot = require("rot-js")
 const { Color } = require("./color")
 const entityTypes = require("/server/entity").Type
 const FArray = require("/shared/array").FArray
-const path = require("/shared/path")
 
 module.exports.Screen = function (engine) {
     this.engine = engine

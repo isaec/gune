@@ -7,15 +7,7 @@ module.exports.ActionHandler = function (engine) {
     this.handle = (action) => {
         if(!action) return
 
-        const player = (() => {
-            for (const entity of this.engine.world.entities) {
-                if (entity.id === this.engine.uuid) {
-                    return entity
-                }
-            }
-            alert("this should not have happened.")
-            return null
-        })()
+        const player = engine.getPlayer()
         const dx = action.data[0], dy = action.data[1]
         const newX = player.x + dx, newY = player.y + dy
         if (this.engine.world.map.tiles.get(newX, newY) === 1 && !this.engine.world.entityAt(newX, newY)) {
