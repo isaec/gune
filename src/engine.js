@@ -3,9 +3,11 @@ const guiconsole = require("/src/display/guiconsole")
 const clientworld = require("/src/data/clientworld")
 const key = require("/src/input/key")
 const mouse = require("/src/input/mouse")
+const action = require("/src/input/action")
 const rot = require("rot-js")
 
 module.exports.Engine = function (connection) {
+    //this block can be initialized right away
     this.connection = connection
     this.display = new rot.Display({
         width: 35,
@@ -14,7 +16,9 @@ module.exports.Engine = function (connection) {
         forceSquareRatio: true,
     })
     this.guiConsole = new guiconsole.GuiConsole()
+    this.actionHandler = new action.ActionHandler(this)
 
+    //this block can't be loaded without help from the server
     this.world = undefined
     this.uuid = undefined
     this.screen = undefined
@@ -35,6 +39,7 @@ module.exports.Engine = function (connection) {
     this.loadIfReady = () => {
         if (this._screenReady() && !this.screen) this.screen = new render.Screen(this)
     }
+
 
     //bind display
     const gameFigure = document.getElementById("game")

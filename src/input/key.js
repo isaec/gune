@@ -1,6 +1,4 @@
 const rot = require("rot-js")
-const guiconsole = require("/src/display/guiconsole")
-const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
 module.exports.KeyHandler = function (engine) {
     this.engine = engine
@@ -41,12 +39,12 @@ module.exports.KeyHandler = function (engine) {
     }
     this.spacing = 170
     this.intervalFunc = () => {
-        this.emitAction(this.keysToMoveAction(this.pressed))
+        this.engine.actionHandler.handle(this.keysToMoveAction(this.pressed))
     }
     this.interval = setInterval(this.intervalFunc, this.spacing)
 
     this.clearBuffer = () => {
-        this.emitAction(this.keysToMoveAction(this.buffer))
+        this.engine.actionHandler.handle(this.keysToMoveAction(this.buffer))
         this.buffer.clear()
     }
     this.keysToMoveAction = (keys) => {
@@ -63,41 +61,6 @@ module.exports.KeyHandler = function (engine) {
             }
         }
         return !(x == 0 && y == 0) ? { type: "move", data: [x, y] } : undefined
-    }
-
-    this.emitAction = (action) => {
-        if (action) {
-            if (action.type === "move") {
-                const player = (() => {
-                    for (const entity of this.engine.world.entities) {
-                        if (entity.id === this.engine.uuid) {
-                            return entity
-                        }
-                    }
-                    alert("this should not have happened.")
-                    return null
-                })()
-                const dx = action.data[0], dy = action.data[1]
-                const newX = player.x + dx, newY = player.y + dy
-                if (this.engine.world.map.tiles.get(newX, newY) === 1 && !this.engine.world.entityAt(newX, newY)) {
-                    this.engine.connection.send(JSON.stringify({
-                        type: MESSAGE_ENUM.CLIENT_ACTION,
-                        body: action,
-                    }))
-                    //render the change on clientside pre approval
-                    //this should make movement feel more responsive
-                    player.x += dx
-                    player.y += dy
-                    this.engine.screen.render(this.engine.world)
-                } else {
-                    this.engine.guiConsole.print(
-                        new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
-                    )
-                }
-            }
-        } else {
-            //console.log("unhandled event %o", event)
-        }
     }
 }
 
