@@ -24,10 +24,6 @@ module.exports.Engine = function (connection) {
         if (this._loaded()) return //this is not the best solution
         this.world = new clientworld.ClientWorld(world)
         this.screen = new render.Screen(this.display, this.uuid, this.world.map.width, this.world.map.height)
-        this.keyHandler.world = this.world
-        this.keyHandler.screen = this.screen
-        this.screen.render(this.world)
-        this._loaded = true
     }
     this.loadUuid = (uuid) => {
         this.uuid = uuid
@@ -40,8 +36,8 @@ module.exports.Engine = function (connection) {
     gameFigure.appendChild(this.display.getContainer())
 
     //make the handlers
-    this.keyHandler = new key.KeyHandler(this.world, this.guiConsole, this.screen, this.uuid, this.connection)
-    this.mouseHandler = new mouse.MouseHandler(this.display)
+    this.keyHandler = new key.KeyHandler(this)
+    this.mouseHandler = new mouse.MouseHandler(this)
     //bind the handlers
 
     window.addEventListener("keydown", this.keyHandler.keydown)

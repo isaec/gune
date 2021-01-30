@@ -1,10 +1,10 @@
 const rot = require("rot-js")
 
-module.exports.MouseHandler = function (display) {
-    this.display = display
+module.exports.MouseHandler = function (engine) {
+    this.engine = engine
     this.click = (event) => {
 
-        let [x, y] = display.eventToPosition(event)
+        let [x, y] = engine.display.eventToPosition(event)
 
         console.log(`click at ${x}, ${y} in onscreen cords!`)
     }

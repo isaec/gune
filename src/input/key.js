@@ -2,12 +2,8 @@ const rot = require("rot-js")
 const guiconsole = require("/src/display/guiconsole")
 const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
-module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connection) {
-    this.world = world //stop doing this, write an engine
-    this.guiConsole = guiConsole //also this
-    this.screen = screen //engine asap
-    this.uuid = uuid //this should all be in an engine class
-    this.connection = connection
+module.exports.KeyHandler = function (engine) {
+    this.engine = engine
 
     this.pressed = new Set()
     this.buffer = new Set()
@@ -73,8 +69,8 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
         if (action) {
             if (action.type === "move") {
                 const player = (() => {
-                    for (const entity of this.world.entities) {
-                        if (entity.id === this.uuid) {
+                    for (const entity of this.engine.world.entities) {
+                        if (entity.id === this.engine.uuid) {
                             return entity
                         }
                     }
@@ -83,8 +79,8 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
                 })()
                 const dx = action.data[0], dy = action.data[1]
                 const newX = player.x + dx, newY = player.y + dy
-                if (this.world.map.tiles.get(newX, newY) === 1 && !this.world.entityAt(newX, newY)) {
-                    this.connection.send(JSON.stringify({
+                if (this.engine.world.map.tiles.get(newX, newY) === 1 && !this.engine.world.entityAt(newX, newY)) {
+                    this.engine.connection.send(JSON.stringify({
                         type: MESSAGE_ENUM.CLIENT_ACTION,
                         body: action,
                     }))
@@ -92,9 +88,9 @@ module.exports.KeyHandler = function (world, guiConsole, screen, uuid, connectio
                     //this should make movement feel more responsive
                     player.x += dx
                     player.y += dy
-                    this.screen.render(this.world)
+                    this.engine.screen.render(this.engine.world)
                 } else {
-                    this.guiConsole.print(
+                    this.engine.guiConsole.print(
                         new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
                     )
                 }
