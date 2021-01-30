@@ -6,6 +6,11 @@ const path = require("/shared/path")
 
 module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     this.display = display
+
+    this.scaleDisplay = () => display.setOptions({ fontSize: Math.floor(window.innerHeight / 36) })
+    window.onresize = this.scaleDisplay
+    this.scaleDisplay()
+    
     this.width = this.display._options.width
     this.height = this.display._options.height
     this.worldWidth = worldWidth

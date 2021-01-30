@@ -17,9 +17,10 @@ module.exports.ClientWorld = function (world) {
 
 
     this.update = (world) => {
-            this.map.width = world.map.width
-            this.map.height = world.map.height
-            this.map.tiles = new FArray(world.map.width, world.map.tiles._data)
+
+        this.map.width = world.map.width
+        this.map.height = world.map.height
+        this.map.tiles = new FArray(world.map.width, world.map.tiles._data)
     
         this.entities = world.entities
     }
