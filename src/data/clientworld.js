@@ -22,7 +22,7 @@ module.exports.ClientWorld = function (world) {
         this.map.height = updatedWorld.map.height
         this.map.tiles = new FArray(updatedWorld.map.width, updatedWorld.map.tiles._data)
 
-        this.entities = world.entities
+        this.entities = updatedWorld.entities
     }
     this.entityUpdate = (entities) => this.entities = entities
     this.entityAt = (x, y) => {
