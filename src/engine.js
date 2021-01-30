@@ -15,20 +15,25 @@ module.exports.Engine = function (connection) {
     })
     this.guiConsole = new guiconsole.GuiConsole()
 
-    this._loaded = () => this.world && this.screen && this.uuid
     this.world = undefined
-    this.screen = undefined
     this.uuid = undefined
+    this.screen = undefined
+    this._screenReady = () => this.world && this.uuid
+
+    this._loaded = () => this.world && this.screen && this.uuid
 
     this.loadWorld = (world) => {
         if (this._loaded()) return //this is not the best solution
         this.world = new clientworld.ClientWorld(world)
-        this.screen = new render.Screen(this.display, this.uuid, this.world.map.width, this.world.map.height)
+        this.loadIfReady()
     }
     this.loadUuid = (uuid) => {
         this.uuid = uuid
-        this.screen.uuid = uuid
-        this.keyHandler.uuid = uuid
+        this.loadIfReady()
+    }
+
+    this.loadIfReady = () => {
+        if (this._screenReady() && !this.screen) this.screen = new render.Screen(this)
     }
 
     //bind display

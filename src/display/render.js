@@ -4,18 +4,16 @@ const entityTypes = require("/server/entity").Type
 const FArray = require("/shared/array").FArray
 const path = require("/shared/path")
 
-module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
-    this.display = display
+module.exports.Screen = function (engine) {
+    this.engine = engine
+    this.width = this.engine.display._options.width
+    this.height = this.engine.display._options.height
 
-    this.scaleDisplay = () => display.setOptions({ fontSize: Math.floor(window.innerHeight / 36) })
+    this.scaleDisplay = () => this.engine.display.setOptions({ fontSize: Math.floor(window.innerHeight / 36) })
     window.onresize = this.scaleDisplay
     this.scaleDisplay()
-    
-    this.width = this.display._options.width
-    this.height = this.display._options.height
-    this.worldWidth = worldWidth
-    this.worldHeight = worldHeight
-    this.uuid = uuid
+
+
     this.entityGlyph = function (entityType) {
         const visuals = {
             [entityTypes.player]: { ch: '@', fg: new Color(5, 5, 2) },
@@ -29,7 +27,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     this.getPlayer = (world) => {
         return (() => {
             for (const entity of world.entities) {
-                if (entity.id === this.uuid) {
+                if (entity.id === this.engine.uuid) {
                     this.player = entity
                     return entity
                 }
@@ -62,24 +60,23 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
     }
 
     //values from 0.0 to 1.0
-    this.lightMap = new FArray(worldWidth)
+    this.lightMap = new FArray(this.engine.world.map.width)
     //values of [char, fg, and optional bg]
-    this.glyphMap = new FArray(worldWidth)
+    this.glyphMap = new FArray(this.engine.world.map.width)
 
 
     this.render = function (world) {
-        this.display.clear() //clear screen
+        this.engine.display.clear() //clear screen
 
         //clear arrays
         this.lightMap.clean()
         this.glyphMap.clean()
 
+        const map = this.engine.world.map
+        let seenMap = this.engine.world.seenMap.tiles
 
-        const map = world.map
-        let seenMap = world.seenMap.tiles
-
-        const player = this.getPlayer(world)
-        if (player === null) return //dont render if the world doesnt have the player in it
+        const player = this.getPlayer(this.engine.world)
+        if (player === null) console.log("woah")//return //dont render if the world doesnt have the player in it
 
         //calculate light levels and such
         //NOTE this should be verified serverside later
@@ -89,8 +86,8 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
         )
 
 
-        for (const entity of world.entities) {
-            if (entity.type !== "player") continue
+        for (const entity of this.engine.world.entities) {
+            if (entity.type !== entityTypes.player) continue
             fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
                 seenMap.set(x, y, true)
                 if (this.lightMap.get(x, y) < visibility ||
@@ -101,7 +98,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
             })
         }
 
-        for (let entity of world.entities.values()) {
+        for (let entity of this.engine.world.entities.values()) {
             this.glyphMap.set(entity.x, entity.y, this.entityGlyph(entity.type))
         }
 
@@ -131,7 +128,7 @@ module.exports.Screen = function (display, uuid, worldWidth, worldHeight) {
                     bg = glyph.bg || bg
                 }
 
-                display.draw(x, y, ch, fg, bg)
+                this.engine.display.draw(x, y, ch, fg, bg)
             }
         }
     }
