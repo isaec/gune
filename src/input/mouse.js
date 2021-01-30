@@ -1,5 +1,6 @@
 const rot = require("rot-js")
 const path = require("/shared/path")
+const guiconsole = require("/src/display/guiconsole")
 
 module.exports.MouseHandler = function (engine) {
     this.engine = engine
@@ -20,7 +21,12 @@ module.exports.MouseHandler = function (engine) {
         //console.log(`clicked at ${x}, ${y} or ${adjX}, ${adjY} absolute`)
 
         //this is basically a demo... its not well done and shouldnt hang around
-        if(this.engine.world.map.tiles.get(adjX, adjY) !== 1) return
+        if (this.engine.world.map.tiles.get(adjX, adjY) !== 1) {
+            this.engine.guiConsole.print(
+                new guiconsole.ConsoleLine("that pathing goal is obstructed", [5, 3, 2], true)
+            )
+            return 
+        }
 
 
         this.dij = path.Dij(this.engine.world.map, [
