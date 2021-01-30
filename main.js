@@ -117,7 +117,8 @@ app.ws("/ws", {
                         newY = ent.y + clientMsg.body.data[1]
 
                     //if the move is valid
-                    if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY)) {
+                    if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY) &&
+                        (Math.abs(ent.x-newX) <= 1 && Math.abs(ent.y-newY) <= 1)) {
 
                         //move the player
                         ent.x += clientMsg.body.data[0]

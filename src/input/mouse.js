@@ -21,7 +21,7 @@ module.exports.MouseHandler = function (engine) {
                 x: adjX,
                 y: adjY
             }
-        ], 9)
+        ], 50)
 
 
 
@@ -32,6 +32,8 @@ module.exports.MouseHandler = function (engine) {
                 moveCord.x, moveCord.y
             ]
         })
+
+        event.preventDefault()
 
     }
     this.mousemove = () => {
