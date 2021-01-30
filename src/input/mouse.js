@@ -25,7 +25,7 @@ module.exports.MouseHandler = function (engine) {
 
 
 
-        let moveCord = path.rollDown(dij, new path.Cord(player.x, player.y))
+        let moveCord = path.rollDown(dij, new path.Cord(player.x, player.y), this.engine.world.entityAt)
 
         this.engine.actionHandler.handle({
             type: "move", data: [

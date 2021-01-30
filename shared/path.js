@@ -22,11 +22,17 @@ function* neighbor(x, y) {
     yield new Cord(x, y + 1)
     yield new Cord(x + 1, y)
     yield new Cord(x + -1, y)
-    
+
     yield new Cord(x + -1, y + -1)
     yield new Cord(x + -1, y + 1)
     yield new Cord(x + 1, y + -1)
     yield new Cord(x + 1, y + 1)
+}
+
+function* emptyNeighbor(x, y, occCallback) {
+    for (const cord of neighbor(x, y)) {
+        if (!occCallback(cord.x, cord.y)) yield cord
+    }
 }
 
 /** 
@@ -60,10 +66,10 @@ module.exports.Dij = function (map, goalArray, maxDistance = 20) {
     return distance
 }
 
-module.exports.rollDown = (dij, fromCord) => {
+module.exports.rollDown = (dij, fromCord, occCallback) => {
     let lowest = fromCord
     let lowestVal = dij.get(fromCord.x, fromCord.y)
-    for (let cord of neighbor(fromCord.x, fromCord.y)) {
+    for (let cord of emptyNeighbor(fromCord.x, fromCord.y, occCallback)) {
         const val = dij.get(cord.x, cord.y)
         if (val < lowestVal) {
             lowest = cord
