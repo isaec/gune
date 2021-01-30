@@ -76,8 +76,7 @@ module.exports.rollDown = (dij, fromCord, occCallback) => {
             lowestVal = val
         }
     }
-    if (lowest === fromCord) console.log("rolling nowhere")
-    return new Cord(lowest.x - fromCord.x, lowest.y - fromCord.y)
+    return (lowest !== fromCord) ? new Cord(lowest.x - fromCord.x, lowest.y - fromCord.y) : undefined
 }
 
 
