@@ -25,15 +25,13 @@ module.exports.Screen = function (engine) {
     }
 
     this.getPlayer = (world) => {
-        return (() => {
-            for (const entity of world.entities) {
+        for (const entity of world.entities) {
                 if (entity.id === this.engine.uuid) {
                     this.player = entity
                     return entity
                 }
             }
-            return null
-        })()
+        return null
     }
 
     this.mapGlyph = {
@@ -115,7 +113,7 @@ module.exports.Screen = function (engine) {
                 const cordLight = this.lightMap.get(adjX, adjY)
                 const lit = cordLight > 0.0
 
-                const cordTile = this.mapGlyph[seenMap.getSafe(adjX, adjY, false) ? map.tiles.get(adjX, adjY) : 0]
+                const cordTile = this.mapGlyph[seenMap.get(adjX, adjY) ? map.tiles.get(adjX, adjY) : 0]
 
                 let ch = cordTile.ch,
                     fg = cordTile.fg.truestring(cordLight),
