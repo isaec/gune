@@ -16,12 +16,12 @@ module.exports.ClientWorld = function (world) {
     }
 
 
-    this.update = (world) => {
+    this.update = (updatedWorld) => {
 
-        this.map.width = world.map.width
-        this.map.height = world.map.height
-        this.map.tiles = new FArray(world.map.width, world.map.tiles._data)
-    
+        this.map.width = updatedWorld.map.width
+        this.map.height = updatedWorld.map.height
+        this.map.tiles = new FArray(updatedWorld.map.width, updatedWorld.map.tiles._data)
+
         this.entities = world.entities
     }
     this.entityUpdate = (entities) => this.entities = entities
