@@ -18,21 +18,15 @@ given tile to the nearest goal.
 */
 
 function* neighbor(x, y) {
+    yield new Cord(x, y + -1)
+    yield new Cord(x, y + 1)
+    yield new Cord(x + 1, y)
+    yield new Cord(x + -1, y)
+    
     yield new Cord(x + -1, y + -1)
-    yield new Cord(x + -1, y + 0)
     yield new Cord(x + -1, y + 1)
-    yield new Cord(x + 0, y + -1)
-    yield new Cord(x + 0, y + 0)
-    yield new Cord(x + 0, y + 1)
     yield new Cord(x + 1, y + -1)
-    yield new Cord(x + 1, y + 0)
     yield new Cord(x + 1, y + 1)
-    //made from below
-    // for(let xMod = -1; xMod <= 1; xMod++){
-    //     for(let yMod = -1; yMod <= 1; yMod++){
-    //         console.log(`yield new Cord(x + ${xMod}, y + ${yMod})`)
-    //     }
-    // }
 }
 
 /** 
