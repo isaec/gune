@@ -35,6 +35,7 @@ body {
     overflow-y: scroll;
     scrollbar-width: none;
     text-align: left;
+    user-select: none;
 }
 
 #console::-webkit-scrollbar {
