@@ -1,6 +1,7 @@
 const rot = require("rot-js")
 const path = require("/shared/path")
 const guiconsole = require("/src/display/guiconsole")
+const FArray = require("/shared/array").FArray
 
 module.exports.MouseHandler = function (engine) {
     this.engine = engine
@@ -18,18 +19,25 @@ module.exports.MouseHandler = function (engine) {
         const adjX = player.x + x - Math.floor(this.engine.screen.width / 2),
             adjY = player.y + y - Math.floor(this.engine.screen.height / 2)
 
-        //console.log(`clicked at ${x}, ${y} or ${adjX}, ${adjY} absolute`)
+        //build a map of only seen floor tiles
+        let knownTiles = new FArray(this.engine.world.map.width)
+
+        for (let x = 0; x < this.engine.world.map.width; x++) {
+            for (let y = 0; y < this.engine.world.map.width; y++) {
+                knownTiles.set(x, y, this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1)
+            }
+        }
 
         //this is basically a demo... its not well done and shouldnt hang around
-        if (this.engine.world.map.tiles.get(adjX, adjY) !== 1) {
+        if (knownTiles.get(adjX, adjY) !== 1) {
             this.engine.guiConsole.print(
                 new guiconsole.ConsoleLine("that pathing goal is obstructed", [5, 3, 2], true)
             )
-            return 
+            return
         }
 
 
-        this.dij = path.Dij(this.engine.world.map, [
+        this.dij = path.Dij({ width: knownTiles.width, tiles: knownTiles }, [
             {
                 x: adjX,
                 y: adjY
