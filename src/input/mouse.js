@@ -7,7 +7,7 @@ module.exports.MouseHandler = function (engine) {
     this.engine = engine
 
     this.dij = undefined
-    this.rate = 170
+    this.rate = 160
 
     this.click = (event) => {
 
@@ -20,17 +20,11 @@ module.exports.MouseHandler = function (engine) {
         const adjX = player.x + x - Math.floor(this.engine.screen.width / 2),
             adjY = player.y + y - Math.floor(this.engine.screen.height / 2)
 
-        //build a map of only seen floor tiles
-        let knownTiles = new FArray(this.engine.world.map.width)
 
-        for (let x = 0; x < this.engine.world.map.width; x++) {
-            for (let y = 0; y < this.engine.world.map.width; y++) {
-                knownTiles.set(x, y, this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1)
-            }
-        }
+        let knownTile = (x, y) => this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1
 
         //this is basically a demo... its not well done and shouldnt hang around
-        if (knownTiles.get(adjX, adjY) !== 1) {
+        if (knownTile(adjX, adjY) !== 1) {
             this.engine.guiConsole.print(
                 new guiconsole.ConsoleLine("that pathing goal is obstructed", [5, 3, 2], true)
             )
@@ -38,14 +32,13 @@ module.exports.MouseHandler = function (engine) {
         }
 
 
-        this.dij = new path.Dij(knownTiles.width, knownTiles.get, [
+        this.dij = new path.Dij(this.engine.world.map.width, knownTile, [
             {
                 x: adjX,
                 y: adjY
             }
-        ], Infinity)
+        ], 70)
 
-        this.intervalFunc()
         this.startInterval()
 
         event.preventDefault()
@@ -76,5 +69,8 @@ module.exports.MouseHandler = function (engine) {
 
     this.stopInterval = () => { if (this.interval) clearInterval(this.interval) }
 
-    this.startInterval = () => this.interval = setInterval(this.intervalFunc, this.rate)
+    this.startInterval = () => {
+        this.stopInterval()
+        this.interval = setInterval(this.intervalFunc, this.rate)
+    }
 }
