@@ -45,6 +45,7 @@ module.exports.Dij = function (width, mapCallback, goalArray, maxDistance = 20) 
     this.goalArray = goalArray
     this.maxDistance = maxDistance
     this.calc = () => {
+        this.distance.clean()
         let frontier = []
         for (const goal of this.goalArray) {
             frontier.push(new Cord(goal.x, goal.y))
