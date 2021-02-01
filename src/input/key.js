@@ -12,6 +12,7 @@ module.exports.KeyHandler = function (engine) {
     this.lastInputTime = performance.now()
 
     this.keydown = (event) => {
+        this.engine.mouseHandler.stopInterval()
         if (!this.validmoves.has(event.key.toLowerCase()) || event.repeat || !event.isTrusted) return
         const key = event.key.toLowerCase()
         if (event.shiftKey) {

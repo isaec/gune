@@ -37,7 +37,7 @@ module.exports.MouseHandler = function (engine) {
                 x: adjX,
                 y: adjY
             }
-        ], 70)
+        ], 140)
 
         this.startInterval()
 
