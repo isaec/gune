@@ -5,7 +5,7 @@ module.exports.ActionHandler = function (engine) {
     this.engine = engine
 
     this.handle = (action) => {
-        if(!action) return
+        if(!action) return "no action"
 
         const player = engine.getPlayer()
         const dx = action.data[0], dy = action.data[1]
@@ -24,6 +24,7 @@ module.exports.ActionHandler = function (engine) {
             this.engine.guiConsole.print(
                 new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
             )
+            return "illegal move"
         }
     }
 }

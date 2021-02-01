@@ -39,31 +39,36 @@ function* emptyNeighbor(x, y, occCallback) {
  * returns a map of distances from goals
  * goalArray expects objects with x and y properites
 */
-module.exports.Dij = function (map, goalArray, maxDistance = 20) {
-    let distance = new FArray(map.width)
-    let frontier = []
-    for (const goal of goalArray) {
-        frontier.push(new Cord(goal.x, goal.y))
-        distance.set(goal.x, goal.y, 0)
-    }
-
-
-    while (frontier.length > 0) {
-        let newFrontier = []
-        for (let i = 0; i < frontier.length; i++) {
-            let curr = frontier[i]
-            for (let cord of neighbor(curr.x, curr.y)) {
-                if (map.tiles.get(cord.x, cord.y) != 1) continue
-                if (distance.get(cord.x, cord.y) == undefined) {
-                    newFrontier.push(cord)
-                    if (distance.set(cord.x, cord.y, distance.get(curr.x, curr.y) + 1) > maxDistance) return distance
-                }
-
-            }
+module.exports.Dij = function (width, mapCallback, goalArray, maxDistance = 20) {
+    this.distance = new FArray(width)
+    this.mapCallback = mapCallback
+    this.goalArray = goalArray
+    this.maxDistance = maxDistance
+    this.calc = () => {
+        let frontier = []
+        for (const goal of this.goalArray) {
+            frontier.push(new Cord(goal.x, goal.y))
+            this.distance.set(goal.x, goal.y, 0)
         }
-        frontier = newFrontier
+
+
+        while (frontier.length > 0) {
+            let newFrontier = []
+            for (let i = 0; i < frontier.length; i++) {
+                let curr = frontier[i]
+                for (let cord of neighbor(curr.x, curr.y)) {
+                    if (this.mapCallback(cord.x, cord.y) != 1) continue
+                    if (this.distance.get(cord.x, cord.y) == undefined) {
+                        newFrontier.push(cord)
+                        if (this.distance.set(cord.x, cord.y, this.distance.get(curr.x, curr.y) + 1) > this.maxDistance) return
+                    }
+
+                }
+            }
+            frontier = newFrontier
+        }
     }
-    return distance
+    this.calc()
 }
 
 module.exports.rollDown = (dij, fromCord, occCallback) => {

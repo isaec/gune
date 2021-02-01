@@ -11,6 +11,7 @@ module.exports.MouseHandler = function (engine) {
 
     this.click = (event) => {
 
+
         const [x, y] = engine.display.eventToPosition(event)
         const player = engine.getPlayer()
         if (!player) return
@@ -37,7 +38,7 @@ module.exports.MouseHandler = function (engine) {
         }
 
 
-        this.dij = path.Dij({ width: knownTiles.width, tiles: knownTiles }, [
+        this.dij = new path.Dij(knownTiles.width, knownTiles.get, [
             {
                 x: adjX,
                 y: adjY
@@ -58,15 +59,17 @@ module.exports.MouseHandler = function (engine) {
         const player = engine.getPlayer()
         if (!player) return
 
-        let moveCord = path.rollDown(this.dij, new path.Cord(player.x, player.y), this.engine.world.entityAt)
+        let moveCord = path.rollDown(this.dij.distance, new path.Cord(player.x, player.y), this.engine.world.entityAt)
         if (!moveCord) {
             this.stopInterval()
         } else {
-            this.engine.actionHandler.handle({
+            if (this.engine.actionHandler.handle({
                 type: "move", data: [
                     moveCord.x, moveCord.y
                 ]
-            })
+            }) !== undefined) {
+                this.dij.calc()
+            }
         }
     }
     this.interval = false
