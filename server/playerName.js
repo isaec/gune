@@ -1,3 +1,4 @@
+//code from https://dwheeler.com/totro.html
 const vowels = [
     ["a", 7], ["e", 7], ["i", 7], ["o", 7], ["u", 7],
     ["a", 7], ["e", 7], ["i", 7], ["o", 7], ["u", 7],
@@ -44,6 +45,16 @@ const consonants = [
     ["br", 6], ["dr", 6], ["fr", 6], ["gr", 6], ["kr", 6]
 ]
 
+let vowelMap = new Map()
+for (let vowel of vowels) {
+    vowelMap[vowel[0]] = vowel
+}
+
+let consMap = new Map()
+for (let cons of consonants) {
+    consMap[cons[0]] = cons
+}
+
 
 const rolldie = (minvalue, maxvalue) => {
     let result
@@ -54,14 +65,22 @@ const rolldie = (minvalue, maxvalue) => {
 }
 
 
-module.exports.randomName = () => {
+const nameStart = (starter) => {
+    if (starter) {
+        const v = vowelMap[starter]
+        let genname = v ? v : consMap[starter]
+        if (genname) return [genname[0], rolldie(2, 6), v ? 1 : 0]
+    }
+    return ["", rolldie(3, 7), rolldie(0, 1)]
+}
+
+module.exports.randomName = (starter = false) => {
     //code from https://dwheeler.com/totro.html
     //slightly altered, but nothing big
-    let data = ""
-    let genname = ""                    // this accumulates the generated name.
-    const leng = rolldie(3, 7)          // Compute number of syllables in the name
-    let isvowel = rolldie(0, 1)         // randomly start with vowel or consonant
-    for (let i = 1; i <= leng; i++) {   // syllable #. Start is 1 (not 0)
+
+    let data = "", [genname, leng, isvowel] = nameStart(starter)
+
+    for (let i = 1; i <= leng; i++) { //i is syllabel
         do {
             if (isvowel) {
                 data = vowels[rolldie(0, vowels.length - 1)]
