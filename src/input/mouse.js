@@ -19,16 +19,15 @@ module.exports.MouseHandler = function (engine) {
             player]
     }
 
+    this.knownTile = (x, y) => this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1
+
     this.click = (event) => {
 
         const [x, y, adjX, adjY, player] = this.eventParse(event)
         if (!player) return
 
-
-        let knownTile = (x, y) => this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1
-
         //this is basically a demo... its not well done and shouldnt hang around
-        if (knownTile(adjX, adjY) !== 1) {
+        if (this.knownTile(adjX, adjY) !== 1) {
             this.engine.guiConsole.print(
                 new guiconsole.ConsoleLine("that pathing goal is obstructed", [5, 3, 2], true)
             )
@@ -36,11 +35,8 @@ module.exports.MouseHandler = function (engine) {
         }
 
 
-        this.dij = new path.Dij(this.engine.world.map.width, knownTile, [
-            {
-                x: adjX,
-                y: adjY
-            }
+        this.dij = new path.Dij(this.engine.world.map.width, this.knownTile, [
+            new path.Cord(adjX, adjY)
         ], 140)
 
         this.startInterval()
@@ -65,6 +61,13 @@ module.exports.MouseHandler = function (engine) {
                     moveCord.x, moveCord.y
                 ]
             }) !== undefined) {
+                let target = this.dij.goalArray[0]
+                if (this.knownTile(target.x, target.y) !== 1) {
+                    this.engine.guiConsole.print(
+                        new guiconsole.ConsoleLine("that pathing goal has been revealed to be obstructed", [4, 3, 3], true)
+                    )
+                    this.stopInterval()
+                }
                 this.dij.calc()
             }
         }
