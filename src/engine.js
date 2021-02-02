@@ -59,9 +59,12 @@ module.exports.Engine = function (connection) {
 
 
     //functions
+    this.player = undefined
     this.getPlayer = () => {
+        if(this.player) return this.player
         for (const entity of this.world.entities) {
             if (entity.id === this.uuid) {
+                this.player = entity
                 return entity
             }
         }
