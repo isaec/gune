@@ -64,7 +64,7 @@ module.exports.MouseHandler = function (engine) {
                 let target = this.dij.goalArray[0]
                 if (this.knownTile(target.x, target.y) !== 1) {
                     this.engine.guiConsole.print(
-                        new guiconsole.ConsoleLine("that pathing goal has been revealed to be obstructed", [4, 3, 3], true)
+                        new guiconsole.ConsoleLine("that pathing goal has been revealed to be obstructed", [3, 1, 2], true)
                     )
                     this.stopInterval()
                 }
