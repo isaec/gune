@@ -9,16 +9,20 @@ module.exports.MouseHandler = function (engine) {
     this.dij = undefined
     this.rate = 160
 
-    this.click = (event) => {
-
-
+    this.eventParse = (event) => {
         const [x, y] = engine.display.eventToPosition(event)
         const player = engine.getPlayer()
+        if (!player) return [x, y, undefined, undefined, undefined]
+        return [x, y,
+            player.x + x - Math.floor(this.engine.screen.width / 2),
+            player.y + y - Math.floor(this.engine.screen.height / 2),
+            player]
+    }
+
+    this.click = (event) => {
+
+        const [x, y, adjX, adjY, player] = this.eventParse(event)
         if (!player) return
-
-
-        const adjX = player.x + x - Math.floor(this.engine.screen.width / 2),
-            adjY = player.y + y - Math.floor(this.engine.screen.height / 2)
 
 
         let knownTile = (x, y) => this.engine.world.seenMap.tiles.get(x, y) ? this.engine.world.map.tiles.get(x, y) : 1
@@ -44,8 +48,8 @@ module.exports.MouseHandler = function (engine) {
         event.preventDefault()
 
     }
-    this.mousemove = () => {
-        console.log("mousemove!")
+    this.mousemove = (event) => {
+        //
     }
 
     this.intervalFunc = () => {
