@@ -8,24 +8,27 @@ module.exports.KeyHandler = function (engine) {
     this.validmoves = new Set([
         "w", "a", "s", "d",
     ])
-    this.lastInput = undefined
-    this.lastInputTime = performance.now()
+    this.inputs = 0
+
+    this.antiMacro = setInterval(() => {
+        if (this.inputs > 10) {
+            alert("you are making too many inputs a second\nthis is in place to prevent server overloading\nmacros are a bannable offence")
+            this.pressed.clear()
+            this.buffer.clear()
+        }
+        this.inputs = 0
+    }, 1000)
 
     this.keydown = (event) => {
         this.engine.mouseHandler.stopInterval()
         if (!this.validmoves.has(event.key.toLowerCase()) || event.repeat || !event.isTrusted) return
         const key = event.key.toLowerCase()
+        this.inputs++
         if (event.shiftKey) {
             this.buffer.add(key)
         } else {
             this.pressed.add(key)
             clearInterval(this.interval)
-
-            if (performance.now() - this.lastInputTime < 70 && key === this.lastInput) {
-                alert("macros are not allowed to reduce load on server. if you reached this input speed naturally, please contact isaac.")
-            }
-            this.lastInput = key
-            this.lastInputTime = performance.now()
 
             this.intervalFunc()
             this.interval = setInterval(this.intervalFunc, this.spacing)
