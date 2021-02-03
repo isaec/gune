@@ -12,9 +12,17 @@ module.exports.KeyHandler = function (engine) {
 
     this.antiMacro = setInterval(() => {
         if (this.inputs > 10) {
-            alert("you are making too many inputs a second\nthis is in place to prevent server overloading\nmacros are a bannable offence")
+            alert(
+`You are making too many inputs a second.
+This rule is in place to prevent server overloading.
+You should know, macros are a bannable offence.
+If there is a good and fair usecase for a macro...
+it should be a feature! Make a feature request.
+Stop using macros.`
+            )
             this.pressed.clear()
             this.buffer.clear()
+            window.close()
         }
         this.inputs = 0
     }, 1000)
