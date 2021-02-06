@@ -9,7 +9,7 @@ const decoder = new TextDecoder('utf-8')
 
 const wrld = require("./server/world")
 const WorldAction = require("./server/worldaction").WorldAction
-const entity = require("./server/entity")
+const entity = require("./shared/entity")
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 
