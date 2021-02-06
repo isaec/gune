@@ -10,6 +10,7 @@ const decoder = new TextDecoder('utf-8')
 const wrld = require("./server/world")
 const WorldAction = require("./server/worldaction").WorldAction
 const entity = require("./shared/entity")
+const path = require("./shared/path")
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 
@@ -107,25 +108,25 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                let [i, ent] = world.getEntity(ws.id)
+                let [i, player] = world.getEntity(ws.id)
 
                 let worldAction = new WorldAction(world)
 
-                if (ent) {
+                if (player) {
 
-                    let newX = ent.x + clientMsg.body.data[0],
-                        newY = ent.y + clientMsg.body.data[1]
+                    let newX = player.x + clientMsg.body.data[0],
+                        newY = player.y + clientMsg.body.data[1]
 
                     //if the move is valid
                     if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY) &&
-                        (Math.abs(ent.x-newX) <= 1 && Math.abs(ent.y-newY) <= 1)) {
+                        (Math.abs(player.x-newX) <= 1 && Math.abs(player.y-newY) <= 1)) {
 
                         //move the player
-                        ent.x += clientMsg.body.data[0]
-                        ent.y += clientMsg.body.data[1]
+                        player.x += clientMsg.body.data[0]
+                        player.y += clientMsg.body.data[1]
 
                         //log the change with the worldAction
-                        worldAction.changedEntity(ent)
+                        worldAction.changedEntity(player)
 
                     } else { //otherwise, remind clients where the misbehaving player is
                         //this needs to be reviewed - can cause rubberbanding
@@ -134,6 +135,23 @@ app.ws("/ws", {
 
 
                 }
+
+                //jank zone
+                let dij = new path.Dij(world.map.width, world.map.tiles.get, [
+                    new path.Cord(player.x, player.y)
+                ], 25)
+                for(let ent of world.entities){
+                    if(ent.type === entity.Type.player) continue
+                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), world.entityAt)
+                    if(moveCord){
+                        ent.x += moveCord.x
+                        ent.y += moveCord.y
+                        worldAction.changedEntity(ent)
+                    }
+                }
+                //end of jank zone
+
+
                 world.updateClients(app, worldAction)
                 break
             }
