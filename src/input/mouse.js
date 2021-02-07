@@ -60,7 +60,9 @@ module.exports.MouseHandler = function (engine) {
 
         const [x, y, adjX, adjY, player] = this.eventParse(event)
 
-        if (!this.engine.world.entityAt(adjX, adjY)) {
+        let entity = this.engine.world.getEntityAt(adjX, adjY)
+
+        if (!entity) {
             this.mouseout()
             return
         }
@@ -74,7 +76,7 @@ module.exports.MouseHandler = function (engine) {
             firstChild.parentNode.insertBefore(this.tooltipWrap, firstChild)
         }
 
-        this.tooltipWrap.childNodes[0].nodeValue = `entity (${adjX}, ${adjY})`
+        this.tooltipWrap.childNodes[0].nodeValue = `${entity.type} (${adjX}, ${adjY})`
 
         let tooltipProps = this.tooltipWrap.getBoundingClientRect()
         let frameProps = this.engine.display._backend._ctx.canvas.getBoundingClientRect()
