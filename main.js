@@ -87,7 +87,7 @@ app.ws("/ws", {
         const room = rooms[Math.floor(Math.random() * rooms.length)]
         //make the new player for the uuid
         const [tarX, tarY] = world.validSpace(room)
-        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id))
+        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id, ws.username))
 
         //send the socket the entire world
         world.sendFullWorld(ws)

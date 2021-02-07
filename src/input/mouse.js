@@ -76,7 +76,7 @@ module.exports.MouseHandler = function (engine) {
             firstChild.parentNode.insertBefore(this.tooltipWrap, firstChild)
         }
 
-        this.tooltipWrap.childNodes[0].nodeValue = `${entity.type} (${adjX}, ${adjY})`
+        this.tooltipWrap.childNodes[0].nodeValue = entity.name ? `${entity.name}` : `${entity.type}`
 
         let tooltipProps = this.tooltipWrap.getBoundingClientRect()
         let frameProps = this.engine.display._backend._ctx.canvas.getBoundingClientRect()

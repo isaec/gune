@@ -1,8 +1,11 @@
 const { v4: uuidv4 } = require("uuid")
+const playerName = require("../server/playerName")
 
-module.exports.Entity = function (type, x, y, uuid = false) {
+module.exports.Entity = function (type, x, y, uuid = false, name = false) {
     if (!uuid) uuid = uuidv4()
+    //if (!name) name = playerName.randomName(type.charAt(0))
     this.id = uuid
+    this.name = name
     this.type = type
     this.x = x
     this.y = y
