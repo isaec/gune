@@ -33,6 +33,10 @@ module.exports.ClientWorld = function (world) {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
         return undefined
     }
+    this.getEntityAtConditional = (x, y, conditional) => {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return conditional(entity.x, entity.y) ? entity : undefined
+        return undefined
+    }
     this.applyActions = (actions) => {
         //console.log(actions)
         for (const action of actions.actions) {

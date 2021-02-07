@@ -60,7 +60,7 @@ module.exports.MouseHandler = function (engine) {
 
         const [x, y, adjX, adjY, player] = this.eventParse(event)
 
-        let entity = this.engine.world.getEntityAt(adjX, adjY)
+        let entity = this.engine.world.getEntityAtConditional(adjX, adjY, (x, y) => this.engine.screen.lightMap.get(x, y) > 0.0)
 
         if (!entity) {
             this.mouseout()
