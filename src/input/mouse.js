@@ -44,6 +44,15 @@ module.exports.MouseHandler = function (engine) {
         event.preventDefault()
 
     }
+    this.tooltipWrap = undefined
+
+    this.mouseout = () => {
+        if (this.tooltipWrap) {
+            this.tooltipWrap.remove()
+            this.tooltipWrap = undefined
+        }
+    }
+
     this.mousemove = (event) => {
         //jank lol
         // let oldTip = document.querySelector(".tooltip")
@@ -52,10 +61,7 @@ module.exports.MouseHandler = function (engine) {
         const [x, y, adjX, adjY, player] = this.eventParse(event)
 
         if (!this.engine.world.entityAt(adjX, adjY)) {
-            if (this.tooltipWrap) {
-                this.tooltipWrap.remove()
-                this.tooltipWrap = undefined
-            }
+            this.mouseout()
             return
         }
 

@@ -56,6 +56,7 @@ module.exports.Engine = function (connection) {
     const canvas = this.display.getContainer()
     canvas.addEventListener("click", this.mouseHandler.click)
     canvas.addEventListener("mousemove", this.mouseHandler.mousemove)
+    canvas.addEventListener("mouseout", this.mouseHandler.mouseout)
 
 
     //functions
