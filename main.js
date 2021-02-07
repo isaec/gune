@@ -119,7 +119,7 @@ app.ws("/ws", {
 
                     //if the move is valid
                     if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY) &&
-                        (Math.abs(player.x-newX) <= 1 && Math.abs(player.y-newY) <= 1)) {
+                        (Math.abs(player.x - newX) <= 1 && Math.abs(player.y - newY) <= 1)) {
 
                         //move the player
                         player.x += clientMsg.body.data[0]
@@ -140,10 +140,10 @@ app.ws("/ws", {
                 let dij = new path.Dij(world.map.width, world.map.tiles.get, [
                     new path.Cord(player.x, player.y)
                 ], 25)
-                for(let ent of world.entities){
-                    if(ent.type === entity.Type.player) continue
+                for (let ent of world.entities) {
+                    if (ent.type === entity.Type.player) continue
                     let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), world.entityAt)
-                    if(moveCord){
+                    if (moveCord) {
                         ent.x += moveCord.x
                         ent.y += moveCord.y
                         worldAction.changedEntity(ent)

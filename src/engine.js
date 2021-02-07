@@ -55,7 +55,7 @@ module.exports.Engine = function (connection) {
     window.addEventListener("blur", () => { this.keyHandler.pressed.clear() })
     const canvas = this.display.getContainer()
     canvas.addEventListener("click", this.mouseHandler.click)
-    //canvas.addEventListener("mousemove", this.mouseHandler.mousemove)
+    canvas.addEventListener("mousemove", this.mouseHandler.mousemove)
 
 
     //functions

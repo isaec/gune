@@ -45,7 +45,40 @@ module.exports.MouseHandler = function (engine) {
 
     }
     this.mousemove = (event) => {
-        //
+        //jank lol
+        // let oldTip = document.querySelector(".tooltip")
+        // if (oldTip) oldTip.remove()
+
+        const [x, y, adjX, adjY, player] = this.eventParse(event)
+
+        if (!this.engine.world.entityAt(adjX, adjY)) {
+            if (this.tooltipWrap) {
+                this.tooltipWrap.remove()
+                this.tooltipWrap = undefined
+            }
+            return
+        }
+
+        if (!this.tooltipWrap) {
+            this.tooltipWrap = document.createElement("div")
+            this.tooltipWrap.className = "tooltip"
+            this.tooltipWrap.appendChild(document.createTextNode(""))
+
+            let firstChild = document.body.firstChild
+            firstChild.parentNode.insertBefore(this.tooltipWrap, firstChild)
+        }
+
+        this.tooltipWrap.childNodes[0].nodeValue = `entity (${adjX},${adjY})`
+
+        let tooltipProps = this.tooltipWrap.getBoundingClientRect()
+        let frameProps = this.engine.display._backend._ctx.canvas.getBoundingClientRect()
+
+        let newPos = [
+            event.y - tooltipProps.height * 1.5,
+            event.x - 10
+        ]
+
+        this.tooltipWrap.setAttribute("style", `top:${newPos[0]}px; left:${newPos[1]}px;`)
     }
 
     this.intervalFunc = () => {
