@@ -27,6 +27,7 @@ body {
     height: 35vh;
     flex-direction: column-reverse;
     font-family: "Metrickal";
+    font-size: 1.8vmin;
     line-height: 130%;
     background: black;
     color: white;
@@ -51,13 +52,13 @@ body {
 .tooltip {    
     position: absolute;
     background: #222222;
-    border-radius:4px;
+    border-radius:2px;
     padding: 3px 6px;
     font-family: Metrickal;
     font-size: 16px;
     color: #b9b9b9;
   }
-  .tooltip:before {
+.tooltip:before {
     content : " ";
     width: 0;
     height: 0;
@@ -67,4 +68,4 @@ body {
     position:absolute;
     bottom:-5px;
     left:5px;
-  }
+}
