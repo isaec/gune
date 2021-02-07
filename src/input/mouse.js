@@ -68,17 +68,16 @@ module.exports.MouseHandler = function (engine) {
             firstChild.parentNode.insertBefore(this.tooltipWrap, firstChild)
         }
 
-        this.tooltipWrap.childNodes[0].nodeValue = `entity (${adjX},${adjY})`
+        this.tooltipWrap.childNodes[0].nodeValue = `entity (${adjX}, ${adjY})`
 
         let tooltipProps = this.tooltipWrap.getBoundingClientRect()
         let frameProps = this.engine.display._backend._ctx.canvas.getBoundingClientRect()
 
-        let newPos = [
-            event.y - tooltipProps.height * 1.5,
-            event.x - 10
-        ]
 
-        this.tooltipWrap.setAttribute("style", `top:${newPos[0]}px; left:${newPos[1]}px;`)
+        let toolX = (x * (frameProps.width / this.engine.screen.width)) + frameProps.left
+        let toolY = (y * (frameProps.height / this.engine.screen.height)) + frameProps.top
+
+        this.tooltipWrap.setAttribute("style", `top:${toolY - tooltipProps.height * 1.2}px; left:${toolX}px;`)
     }
 
     this.intervalFunc = () => {
