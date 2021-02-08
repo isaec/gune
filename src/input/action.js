@@ -10,7 +10,8 @@ module.exports.ActionHandler = function (engine) {
         const player = engine.getPlayer()
         const dx = action.data[0], dy = action.data[1]
         const newX = player.x + dx, newY = player.y + dy
-        if (this.engine.world.map.tiles.get(newX, newY) === 1 && !this.engine.world.entityAt(newX, newY)) {
+        const entityAt = this.engine.world.getEntityAt(newX, newY)
+        if (this.engine.world.map.tiles.get(newX, newY) === 1 && !entityAt) {
             this.engine.connection.send(JSON.stringify({
                 type: MESSAGE_ENUM.CLIENT_ACTION,
                 body: action,
@@ -22,7 +23,10 @@ module.exports.ActionHandler = function (engine) {
             this.engine.screen.render(this.engine.world)
         } else {
             this.engine.guiConsole.print(
-                new guiconsole.ConsoleLine("that path is blocked", [4, 4, 2], true)
+                entityAt ? 
+                new guiconsole.ConsoleLine(`that path is blocked by ${entityAt.type}`, [4, 3, 2], true)
+                :
+                new guiconsole.ConsoleLine("that path is blocked by terrain", [4, 4, 2], true)
             )
             return "illegal move"
         }
