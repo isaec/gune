@@ -738,7 +738,7 @@ eval("/**\n * A flat and fast object for storing multidimensional arrays\n */\nm
   \**************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const { v4: uuidv4 } = __webpack_require__(/*! uuid */ \"./node_modules/uuid/dist/esm-browser/index.js\")\nconst playerName = __webpack_require__(/*! ../server/playerName */ \"./server/playerName.js\")\n\nmodule.exports.Entity = function (type, x, y, uuid = false, name = false) {\n    if (!uuid) uuid = uuidv4()\n    //if (!name) name = playerName.randomName(type.charAt(0))\n    this.id = uuid\n    this.name = name\n    this.type = type\n    this.x = x\n    this.y = y\n}\n\nmodule.exports.Type = Object.freeze({\n    player: \"player\",\n    devil: \"devil\",\n    imp: \"imp\"\n})\n\n//# sourceURL=webpack://gune/./shared/entity.js?");
+eval("const { v4: uuidv4 } = __webpack_require__(/*! uuid */ \"./node_modules/uuid/dist/esm-browser/index.js\")\nconst playerName = __webpack_require__(/*! ../server/playerName */ \"./server/playerName.js\")\n\nmodule.exports.Entity = function (type, x, y, uuid = false, name = undefined) {\n    if (!uuid) uuid = uuidv4()\n    //if (!name) name = playerName.randomName(type.charAt(0))\n    this.id = uuid\n    this.name = name\n    this.type = type\n    this.x = x\n    this.y = y\n}\n\nmodule.exports.Type = Object.freeze({\n    player: \"player\",\n    devil: \"devil\",\n    imp: \"imp\"\n})\n\n//# sourceURL=webpack://gune/./shared/entity.js?");
 
 /***/ }),
 
