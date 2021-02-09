@@ -17,8 +17,8 @@ const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 const app = uWS.App()
 
 
-const addFile = (app, urlPath, filePath = urlPath) => {
-    app.get(urlPath, (res, req) => {
+const addFile = (targetApp, urlPath, filePath = urlPath) => {
+    targetApp.get(urlPath, (res, req) => {
         let file = fs.readFileSync(__dirname + filePath, function (err, data) {
             if (err) {
                 res.end(`Error getting the file: ${err}.`)

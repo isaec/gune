@@ -9,6 +9,9 @@ class Action {
         console.log(`action of type ${this.type} has no validate function`)
         return true
     }
+    apply(engine) {
+        console.log(`action of type ${this.type} has no apply function`)
+    }
 }
 
 
@@ -26,13 +29,13 @@ class Move extends Action {
 function addMethods(action) {
     switch (action.type) {
         case "move":
+            //move block
             action.validate = function (engine, clientSide = true) {
                 const newX = this.taker.x + this.dx, newY = this.taker.y + this.dy
                 const entityAt = engine.world.getEntityAt(newX, newY)
                 if (engine.world.map.tiles.get(newX, newY) === 1 && !entityAt && (Math.abs(this.taker.x - newX) <= 1 && Math.abs(this.taker.y - newY) <= 1)) {
                     if (clientSide) {
-                        this.taker.x += this.dx
-                        this.taker.y += this.dy
+                        this.apply(engine)
                         engine.screen.render(engine.world)
                     }
                     return true
@@ -48,6 +51,12 @@ function addMethods(action) {
                     return false
                 }
             }
+
+            action.apply = function (engine) {
+                this.taker.x += this.dx
+                this.taker.y += this.dy
+            }
+            //end move block
             break
         default:
             throw `unknown move type ${action.type}`
