@@ -7,15 +7,15 @@ const port = parseInt(process.env.PORT, 10) || 4141
 const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
-const wrld = require("./server/world")
 const WorldAction = require("./server/worldaction").WorldAction
 const entity = require("./shared/entity")
 const path = require("./shared/path")
+const Engine = require("./server/serverengine").Engine
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 
 const app = uWS.App()
-
+let engine = new Engine()
 
 const addFile = (targetApp, urlPath, filePath = urlPath) => {
     targetApp.get(urlPath, (res, req) => {
@@ -35,12 +35,6 @@ addFile(app, "/client/main.css")
 addFile(app, "/dist/index.js")
 addFile(app, "/client/Metrickal-Regular.otf")
 addFile(app, "/favicon.ico", "/client/favicon.ico")
-
-//gamecode setup block
-
-let world = new wrld.World(100, 100)
-
-//end gamecode setup block
 
 
 app.SOCKETS = []
@@ -81,18 +75,18 @@ app.ws("/ws", {
             }
         }
         //make a worldaction so we can keep track of changes easily
-        let worldAction = new WorldAction(world)
+        let worldAction = new WorldAction(engine.world)
 
-        const rooms = world.map.digger.getRooms()
+        const rooms = engine.world.map.digger.getRooms()
         const room = rooms[Math.floor(Math.random() * rooms.length)]
         //make the new player for the uuid
-        const [tarX, tarY] = world.validSpace(room)
+        const [tarX, tarY] = engine.world.validSpace(room)
         worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id, ws.username))
 
         //send the socket the entire world
-        world.sendFullWorld(ws)
+        engine.world.sendFullWorld(ws)
 
-        world.updateClients(app, worldAction) //update the world for the clients
+        engine.world.updateClients(app, worldAction) //update the world for the clients
 
         ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
         app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
@@ -108,9 +102,9 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                let [i, player] = world.getEntity(ws.id)
+                let [i, player] = engine.world.getEntity(ws.id)
 
-                let worldAction = new WorldAction(world)
+                let worldAction = new WorldAction(engine.world)
 
                 if (player) {
 
@@ -118,7 +112,7 @@ app.ws("/ws", {
                         newY = player.y + clientMsg.body.data[1]
 
                     //if the move is valid
-                    if (world.map.tiles.get(newX, newY) === 1 && !world.entityAt(newX, newY) &&
+                    if (engine.world.map.tiles.get(newX, newY) === 1 && !engine.world.entityAt(newX, newY) &&
                         (Math.abs(player.x - newX) <= 1 && Math.abs(player.y - newY) <= 1)) {
 
                         //move the player
@@ -137,12 +131,12 @@ app.ws("/ws", {
                 }
 
                 //jank zone
-                let dij = new path.Dij(world.map.width, world.map.tiles.get, [
+                let dij = new path.Dij(engine.world.map.width, engine.world.map.tiles.get, [
                     new path.Cord(player.x, player.y)
                 ], 25)
-                for (let ent of world.entities) {
+                for (let ent of engine.world.entities) {
                     if (ent.type === entity.Type.player) continue
-                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), world.entityAt)
+                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), engine.world.entityAt)
                     if (moveCord) {
                         ent.x += moveCord.x
                         ent.y += moveCord.y
@@ -152,7 +146,7 @@ app.ws("/ws", {
                 //end of jank zone
 
 
-                world.updateClients(app, worldAction)
+                engine.world.updateClients(app, worldAction)
                 break
             }
 
@@ -164,11 +158,11 @@ app.ws("/ws", {
         app.SOCKETS.find((socket, index) => { //removes socket
             if (socket && socket.id === ws.id) app.SOCKETS.splice(index, 1)
         })
-        const [index, ent] = world.getEntity(ws.id)
+        const [index, ent] = engine.world.getEntity(ws.id)
         if (ent) {
             let worldAction = new WorldAction(world)
             worldAction.removeEntity(index)
-            world.updateClients(app, worldAction)
+            engine.world.updateClients(app, worldAction)
         }
 
 
