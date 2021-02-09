@@ -21,13 +21,12 @@ class Move extends Action {
     }
 
     validate(engine, clientSide = true) {
-        const player = engine.getPlayer()
-        const newX = player.x + this.dx, newY = player.y + this.dy
+        const newX = this.taker.x + this.dx, newY = this.taker.y + this.dy
         const entityAt = engine.world.getEntityAt(newX, newY)
         if (engine.world.map.tiles.get(newX, newY) === 1 && !entityAt) {
             if (clientSide) {
-                player.x += this.dx
-                player.y += this.dy
+                this.taker.x += this.dx
+                this.taker.y += this.dy
                 engine.screen.render(engine.world)
             }
             return true
