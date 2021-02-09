@@ -1,4 +1,5 @@
 const rot = require("rot-js")
+const action = require("/shared/action")
 
 module.exports.KeyHandler = function (engine) {
     this.engine = engine
@@ -13,7 +14,7 @@ module.exports.KeyHandler = function (engine) {
     this.antiMacro = setInterval(() => {
         if (this.inputs > 10) {
             alert(
-`You are making too many inputs a second.
+                `You are making too many inputs a second.
 This rule is in place to prevent server overloading.
 You should know, macros are a bannable offence.
 If there is a good and fair usecase for a macro...
@@ -72,7 +73,7 @@ Stop using macros.`
                 default: console.log("ruh roh, I see a", key)
             }
         }
-        return !(x == 0 && y == 0) ? { type: "move", data: [x, y] } : undefined
+        return !(x == 0 && y == 0) ? new action.Move(x, y) : undefined
     }
 }
 
