@@ -1,21 +1,47 @@
+const guiconsole = require("/src/display/guiconsole")
 
 class Action {
-    constructor(type){
+    constructor(type, taker) {
         this.type = type
+        this.taker = taker
     }
-    validate() {
-        console.log(`action of type ${this.type} with data ${this.data} has no validate function`)
+    validate(engine, clientSide = true) {
+        console.log(`action of type ${this.type} has no validate function`)
         return true
     }
 }
 
 
 class Move extends Action {
-    constructor(changeX, changeY){
-        super("move")
-        this.changeX = changeX
-        this.changeY = changeY
-        this.data = [changeX, changeY] //to maintain support for old code
+    constructor(taker, dx, dy) {
+        super("move", taker)
+        this.dx = dx
+        this.dy = dy
+        this.data = [dx, dy]
+    }
+
+    validate(engine, clientSide = true) {
+        const player = engine.getPlayer()
+        const newX = player.x + this.dx, newY = player.y + this.dy
+        const entityAt = engine.world.getEntityAt(newX, newY)
+        if (engine.world.map.tiles.get(newX, newY) === 1 && !entityAt) {
+            if (clientSide) {
+                player.x += this.dx
+                player.y += this.dy
+                engine.screen.render(engine.world)
+            }
+            return true
+        } else {
+            if (clientSide) {
+                engine.guiConsole.print(
+                    entityAt ?
+                        new guiconsole.ConsoleLine(`that path is blocked by ${entityAt.type}`, [4, 3, 2], true)
+                        :
+                        new guiconsole.ConsoleLine("that path is blocked by terrain", [4, 4, 2], true)
+                )
+            }
+            return false
+        }
     }
 }
 

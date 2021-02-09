@@ -73,7 +73,7 @@ Stop using macros.`
                 default: console.log("ruh roh, I see a", key)
             }
         }
-        return !(x == 0 && y == 0) ? new action.Move(x, y) : undefined
+        return !(x == 0 && y == 0) ? new action.Move(this.engine.getPlayer(), x, y) : undefined
     }
 }
 

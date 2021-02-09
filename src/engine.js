@@ -3,7 +3,7 @@ const guiconsole = require("/src/display/guiconsole")
 const clientworld = require("/src/data/clientworld")
 const key = require("/src/input/key")
 const mouse = require("/src/input/mouse")
-const action = require("/src/input/action")
+const sendAction = require("/src/input/sendaction")
 const rot = require("rot-js")
 
 module.exports.Engine = function (connection) {
@@ -16,7 +16,7 @@ module.exports.Engine = function (connection) {
         forceSquareRatio: true,
     })
     this.guiConsole = new guiconsole.GuiConsole()
-    this.actionHandler = new action.ActionHandler(this)
+    this.actionHandler = new sendAction.ActionHandler(this)
 
     //this block can't be loaded without help from the server
     this.world = undefined

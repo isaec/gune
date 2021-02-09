@@ -2,6 +2,7 @@ const rot = require("rot-js")
 const path = require("/shared/path")
 const guiconsole = require("/src/display/guiconsole")
 const FArray = require("/shared/array").FArray
+const action = require("/shared/action")
 
 module.exports.MouseHandler = function (engine) {
     this.engine = engine
@@ -96,11 +97,9 @@ module.exports.MouseHandler = function (engine) {
         if (!moveCord) {
             this.stopInterval()
         } else {
-            if (this.engine.actionHandler.handle({
-                type: "move", data: [
-                    moveCord.x, moveCord.y
-                ]
-            }) !== undefined) {
+            if (!this.engine.actionHandler.handle(
+                new action.Move(player, moveCord.x, moveCord.y)
+            )) {
                 let target = this.dij.goalArray[0]
                 if (this.knownTile(target.x, target.y) !== 1) {
                     this.engine.guiConsole.print(
