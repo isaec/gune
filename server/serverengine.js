@@ -1,8 +1,8 @@
-const wrld = require("../server/world")
+const World = require("../server/world")
 
 class Engine {
     constructor(){
-        this.world = new wrld.World(100, 100)
+        this.world = new World(100, 100)
     }
 }
 

@@ -39,12 +39,16 @@ function* emptyNeighbor(x, y, occCallback) {
  * returns a map of distances from goals
  * goalArray expects objects with x and y properites
 */
-module.exports.Dij = function (width, mapCallback, goalArray, maxDistance = 20) {
-    this.distance = new FArray(width)
-    this.mapCallback = mapCallback
-    this.goalArray = goalArray
-    this.maxDistance = maxDistance
-    this.calc = () => {
+class Dij {
+    constructor(width, mapCallback, goalArray, maxDistance = 20) {
+        this.distance = new FArray(width)
+        this.mapCallback = mapCallback
+        this.goalArray = goalArray
+        this.maxDistance = maxDistance
+        this.calc()
+    }
+
+    calc() {
         this.distance.clean()
         let frontier = []
         for (const goal of this.goalArray) {
@@ -69,8 +73,9 @@ module.exports.Dij = function (width, mapCallback, goalArray, maxDistance = 20) 
             frontier = newFrontier
         }
     }
-    this.calc()
 }
+
+module.exports.Dij = Dij
 
 module.exports.rollDown = (dij, fromCord, occCallback) => {
     let lowest = fromCord

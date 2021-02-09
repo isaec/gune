@@ -136,7 +136,7 @@ app.ws("/ws", {
                 ], 25)
                 for (let ent of engine.world.entities) {
                     if (ent.type === entity.Type.player) continue
-                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), engine.world.entityAt)
+                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), engine.world.entityAt.bind(engine.world))
                     if (moveCord) {
                         ent.x += moveCord.x
                         ent.y += moveCord.y
@@ -160,7 +160,7 @@ app.ws("/ws", {
         })
         const [index, ent] = engine.world.getEntity(ws.id)
         if (ent) {
-            let worldAction = new WorldAction(world)
+            let worldAction = new WorldAction(engine.world)
             worldAction.removeEntity(index)
             engine.world.updateClients(app, worldAction)
         }
