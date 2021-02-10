@@ -1,6 +1,5 @@
 const rot = require("rot-js")
 const gamemap = require("./gamemap.js")
-const clone = require("rfdc")()
 const Entity = require("../shared/entity").Entity
 const EType = require("../shared/entity").Type
 
