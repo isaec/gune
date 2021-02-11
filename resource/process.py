@@ -23,11 +23,11 @@ for line in filedata:
             lineBuffer = lineBuffer[1:-1]
         else:
             lineBuffer = lineBuffer[:-1]
-        
-        #prevent sentances from having weird breaks
-        if lineBuffer[-1:] == ",":
+
+        # prevent sentances from having weird breaks
+        if lineBuffer[-1:] in [","]:
             lineBuffer = lineBuffer[:-1] + "..."
-        if lineBuffer[-1:] == ";":
+        if lineBuffer[-1:] in [";", ":"]:
             lineBuffer = lineBuffer[:-1] + "."
 
         # count the number of quote marks
@@ -40,7 +40,7 @@ for line in filedata:
             if lineBuffer[-1] != '"':
                 lineBuffer += '"'
             else:
-                lineBuffer = '"' + lineBuffer 
+                lineBuffer = '"' + lineBuffer
 
         lineList.append(lineBuffer)
         lineBuffer = line
