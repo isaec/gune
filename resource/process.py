@@ -1,6 +1,16 @@
 from progress.bar import IncrementalBar as Bar
 import json
 
+# functions
+
+
+def count_char(str, chr):
+    count = 0
+    for char in str:
+        if char == chr:
+            count += 1
+    return count
+
 
 # read file to memory
 with open("danteInferno.txt", "r") as file:
@@ -20,8 +30,10 @@ for line in filedata:
         # buffer is done
         # make sure not to have space at start
         if lineBuffer[:1] == " ":
+            # take off the space and the linebreak at end
             lineBuffer = lineBuffer[1:-1]
         else:
+            # just remove linebreak
             lineBuffer = lineBuffer[:-1]
 
         # prevent sentances from having weird breaks
@@ -31,16 +43,19 @@ for line in filedata:
             lineBuffer = lineBuffer[:-1] + "."
 
         # count the number of quote marks
-        quotes = 0
-        for char in lineBuffer:
-            if char == '"':
-                quotes += 1
+        quotes = count_char(lineBuffer, '"')
         # try to close quotes
         if quotes % 2 == 1:
+            quotes += 1
             if lineBuffer[-1] != '"':
                 lineBuffer += '"'
             else:
                 lineBuffer = '"' + lineBuffer
+
+        # check if the entire block is only single quote
+        if quotes == 2 and ((lineBuffer[0], lineBuffer[-1]) == ('"', '"')):
+            # trim off the quotes
+            lineBuffer = lineBuffer[1:-1]
 
         lineList.append(lineBuffer)
         lineBuffer = line
