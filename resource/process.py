@@ -20,9 +20,29 @@ for line in filedata:
         # buffer is done
         # make sure not to have space at start
         if lineBuffer[:1] == " ":
-            lineBuffer = lineBuffer[1:]
+            lineBuffer = lineBuffer[1:-1]
+        else:
+            lineBuffer = lineBuffer[:-1]
+        
+        #prevent sentances from having weird breaks
+        if lineBuffer[-1:] == ",":
+            lineBuffer = lineBuffer[:-1] + "..."
+        if lineBuffer[-1:] == ";":
+            lineBuffer = lineBuffer[:-1] + "."
 
-        lineList.append(lineBuffer[:-1])
+        # count the number of quote marks
+        quotes = 0
+        for char in lineBuffer:
+            if char == '"':
+                quotes += 1
+        # try to close quotes
+        if quotes % 2 == 1:
+            if lineBuffer[-1] != '"':
+                lineBuffer += '"'
+            else:
+                lineBuffer = '"' + lineBuffer 
+
+        lineList.append(lineBuffer)
         lineBuffer = line
 lineList.remove("")
 
