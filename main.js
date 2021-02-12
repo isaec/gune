@@ -84,9 +84,9 @@ app.ws("/ws", {
         worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id, ws.username))
 
         //send the socket the entire world
-        engine.world.sendFullWorld(ws)
+        engine.sendFullWorld(ws)
 
-        engine.world.updateClients(app, worldAction) //update the world for the clients
+        engine.updateClients(app, worldAction) //update the world for the clients
 
         ws.send(JSON.stringify(selfMsg)) //send the message to the new socket
         app.publish(MESSAGE_ENUM.CLIENT_CONNECTED, JSON.stringify(pubMsg)) //send to all subbed sockets
@@ -146,7 +146,7 @@ app.ws("/ws", {
                 //end of jank zone
 
 
-                engine.world.updateClients(app, worldAction)
+                engine.updateClients(app, worldAction)
                 break
             }
 
@@ -162,7 +162,7 @@ app.ws("/ws", {
         if (ent) {
             let worldAction = new WorldAction(engine.world)
             worldAction.removeEntity(index)
-            engine.world.updateClients(app, worldAction)
+            engine.updateClients(app, worldAction)
         }
 
 
