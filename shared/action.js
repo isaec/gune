@@ -7,6 +7,10 @@ try {
     //automatic but its good to be clear
 }
 
+const Type = Object.freeze({
+    move: "move",
+})
+module.exports.Type = Type
 
 class Action {
     constructor(type) {
@@ -24,7 +28,7 @@ class Action {
 
 class Move extends Action {
     constructor(dx, dy) {
-        super("move")
+        super(Type.move)
         this.dx = dx
         this.dy = dy
         this.data = [dx, dy]
@@ -35,7 +39,7 @@ class Move extends Action {
 
 function addMethods(action) {
     switch (action.type) {
-        case "move":
+        case Type.move:
             //move block
             action.validate = function (taker, engine, clientSide = true) {
                 const newX = taker.x + this.dx, newY = taker.y + this.dy
