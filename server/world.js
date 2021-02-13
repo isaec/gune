@@ -24,6 +24,10 @@ class World {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
         return false
     }
+    getEntityAt(x, y) {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
+        return undefined
+    }
     validSpace(room) {
         let tries = 0
         while (tries < 50) {
