@@ -77,10 +77,8 @@ app.ws("/ws", {
         //make a worldaction so we can keep track of changes easily
         let worldAction = new WorldAction(engine.world)
 
-        const rooms = engine.world.map.digger.getRooms()
-        const room = rooms[Math.floor(Math.random() * rooms.length)]
-        //make the new player for the uuid
-        const [tarX, tarY] = engine.world.validSpace(room)
+        //add this new connection as a player with a random position in the world
+        const [tarX, tarY] = engine.world.validSpace(engine.world.randomRoom())
         worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, ws.id, ws.username))
 
         //send the socket the entire world
@@ -102,7 +100,7 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                let [i, player] = engine.world.getEntity(ws.id)
+                let [, player] = engine.world.getEntity(ws.id)
 
                 let worldAction = new WorldAction(engine.world)
 
@@ -155,8 +153,8 @@ app.ws("/ws", {
 
     },
     close: (ws, code, message) => {
-        app.SOCKETS.find((socket, index) => { //removes socket
-            if (socket && socket.id === ws.id) app.SOCKETS.splice(index, 1)
+        app.SOCKETS.find((socket, i) => { //removes socket
+            if (socket && socket.id === ws.id) app.SOCKETS.splice(i, 1)
         })
         const [index, ent] = engine.world.getEntity(ws.id)
         if (ent) {

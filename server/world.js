@@ -34,6 +34,10 @@ class World {
         }
         return null
     }
+    randomRoom() {
+        const rooms = this.map.digger._rooms
+        return rooms[Math.floor(Math.random() * rooms.length)]
+    }
 }
 
 module.exports = World
