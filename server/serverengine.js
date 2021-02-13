@@ -62,6 +62,7 @@ class Engine {
     }
     updateClients(app, worldAction) {
         if (!worldAction) throw "need world action"
+        if(worldAction.empty()) return //dont send empty action
         app.publish(MESSAGE_ENUM.SERVER_ACTION,
             JSON.stringify(
                 {

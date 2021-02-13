@@ -119,6 +119,8 @@ app.ws("/ws", {
                         //log the change with the worldAction
                         worldAction.changedEntity(player)
 
+                        engine.npcTick(worldAction, player)
+
                     } else { //otherwise, remind clients where the misbehaving player is
                         //this needs to be reviewed - can cause rubberbanding
                         //worldAction.changedEntity(ent)
@@ -126,8 +128,6 @@ app.ws("/ws", {
 
 
                 }
-
-                engine.npcTick(worldAction, player)
 
 
                 engine.updateClients(app, worldAction)

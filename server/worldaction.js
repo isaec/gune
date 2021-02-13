@@ -1,4 +1,4 @@
-module.exports.WorldAction = function(world) {
+module.exports.WorldAction = function (world) {
     this.world = world
     this.actions = []
     this.delete = []
@@ -10,7 +10,7 @@ module.exports.WorldAction = function(world) {
 
     this.removeEntity = (index) => {
         this.delete.push(this.world.entities[index].id)
-        this.world.entities.splice(index,1)
+        this.world.entities.splice(index, 1)
     }
 
     this.changedEntity = (entity) => this.actions.push(entity)
@@ -25,6 +25,8 @@ module.exports.WorldAction = function(world) {
             }
         )
     }
+    this.empty = () => this.actions.length + this.delete.length + this.tileActions.length === 0
+
     this.publish = () => {
         return {
             actions: this.actions,
