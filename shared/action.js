@@ -1,4 +1,12 @@
-const guiconsole = require("/src/display/guiconsole")
+//this import is an ugly mess but ill fix it *later*
+let guiconsole
+try {
+    guiconsole = require("../src/display/guiconsole")
+} catch (e) {
+    guiconsole = undefined
+    //automatic but its good to be clear
+}
+
 
 class Action {
     constructor(type, taker) {

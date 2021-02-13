@@ -1,5 +1,7 @@
 const World = require("../server/world")
 
+const action = require("../shared/action")
+
 const Entity = require("../shared/entity").Entity
 const EType = require("../shared/entity").Type
 
