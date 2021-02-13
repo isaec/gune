@@ -15,7 +15,7 @@ module.exports.GuiConsole = function () {
             this.lines[this.lines.length - 1].message === ConsoleLine.message &&
             this.lines[this.lines.length - 1].stack) {
 
-            this.lines[this.lines.length - 1].amount++
+            this.lines[this.lines.length - 1].addAmount()
         }
         else {
             this.lines.push(ConsoleLine)
@@ -40,22 +40,30 @@ module.exports.GuiConsole = function () {
 }
 
 class ConsoleLine {
-    constructor(message, color = [5, 5, 5], temp = false, stack = true){
+    constructor(message, color = [5, 5, 5], temp = false, stack = true) {
         this.message = message
         this.temp = temp
         this.stack = stack
         this.amount = 1
         this.color = color
         this.bg = false
+        this.time = new Date()
     }
-    
+
+    get timeString() {
+        return `${(this.time.getHours() % 12 || 12)
+            .toLocaleString(undefined, { minimumIntegerDigits: 2, useGrouping: false })
+            }:${this.time.getMinutes()}`
+    }
+
+    addAmount() {
+        this.amount++
+        this.time = new Date()
+    }
 
     toString() {
-        return "<div>" + (this.amount > 1 ?
-            HtmlColor(`(${this.amount}x) `, [3, 3, 3])
-            + HtmlColor(this.message, this.color, this.bg)
-            :
-            HtmlColor(this.message, this.color, this.bg)) + "</div>"
+        return `<div>${HtmlColor(this.timeString, [1, 1, 1])} ${HtmlColor(this.message, this.color, this.bg)} ${(this.amount > 1 ?
+            HtmlColor(`(${this.amount}x) `, [2, 2, 2]) : "")}</div>`
     }
 }
 
