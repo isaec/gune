@@ -50,6 +50,7 @@ class Engine {
             if (act.validate(player, this, false)) {
 
                 act.apply(player, this)
+                worldAction.changedEntity(player)
                 this.npcTick(worldAction, player)
 
             } else { //otherwise, remind clients where the misbehaving player is
