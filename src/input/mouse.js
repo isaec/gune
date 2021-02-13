@@ -98,7 +98,7 @@ module.exports.MouseHandler = function (engine) {
             this.stopInterval()
         } else {
             if (!this.engine.actionHandler.handle(
-                new action.Move(player, moveCord.x, moveCord.y)
+                new action.Move(moveCord.x, moveCord.y)
             )) {
                 let target = this.dij.goalArray[0]
                 if (this.knownTile(target.x, target.y) !== 1) {

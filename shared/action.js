@@ -9,23 +9,22 @@ try {
 
 
 class Action {
-    constructor(type, taker) {
+    constructor(type) {
         this.type = type
-        this.taker = taker
     }
-    validate(engine, clientSide = true) {
+    validate(taker, engine, clientSide = true) {
         console.log(`action of type ${this.type} has no validate function`)
         return true
     }
-    apply(engine) {
+    apply(taker, engine) {
         console.log(`action of type ${this.type} has no apply function`)
     }
 }
 
 
 class Move extends Action {
-    constructor(taker, dx, dy) {
-        super("move", taker)
+    constructor(dx, dy) {
+        super("move")
         this.dx = dx
         this.dy = dy
         this.data = [dx, dy]
@@ -38,12 +37,12 @@ function addMethods(action) {
     switch (action.type) {
         case "move":
             //move block
-            action.validate = function (engine, clientSide = true) {
-                const newX = this.taker.x + this.dx, newY = this.taker.y + this.dy
+            action.validate = function (taker, engine, clientSide = true) {
+                const newX = taker.x + this.dx, newY = taker.y + this.dy
                 const entityAt = engine.world.getEntityAt(newX, newY)
-                if (engine.world.map.tiles.get(newX, newY) === 1 && !entityAt && (Math.abs(this.taker.x - newX) <= 1 && Math.abs(this.taker.y - newY) <= 1)) {
+                if (engine.world.map.tiles.get(newX, newY) === 1 && !entityAt && (Math.abs(taker.x - newX) <= 1 && Math.abs(taker.y - newY) <= 1)) {
                     if (clientSide) {
-                        this.apply(engine)
+                        this.apply(taker, engine)
                         engine.screen.render(engine.world)
                     }
                     return true
@@ -60,9 +59,9 @@ function addMethods(action) {
                 }
             }
 
-            action.apply = function (engine) {
-                this.taker.x += this.dx
-                this.taker.y += this.dy
+            action.apply = function (taker, ) {
+                taker.x += this.dx
+                taker.y += this.dy
             }
             //end move block
             break

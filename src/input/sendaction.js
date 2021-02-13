@@ -4,7 +4,7 @@ module.exports.ActionHandler = function (engine) {
     this.engine = engine
 
     this.handle = (action) => {
-        if (action && action.validate(this.engine)) {
+        if (action && action.validate(this.engine.getPlayer(), this.engine)) {
             this.engine.connection.send(
                 JSON.stringify(
                     {
