@@ -16,10 +16,9 @@ class Engine {
     _spawnEntites(world) {
         for (const room of world.map.digger.getRooms()) {
             let b = world.validSpace(room)
-            let x = b[0], y = b[1]
             world.add(new entity.Entity(
                 Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp
-                , x, y))
+                , b[0], b[1]))
         }
     }
     //game logic zone

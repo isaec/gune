@@ -8,17 +8,17 @@ module.exports.GuiConsole = function () {
 
     this.lines = []
 
-    this.print = (ConsoleLine) => {
+    this.print = (consoleLine) => {
 
 
         if (this.lines.length > 0 &&
-            this.lines[this.lines.length - 1].message === ConsoleLine.message &&
+            this.lines[this.lines.length - 1].message === consoleLine.message &&
             this.lines[this.lines.length - 1].stack) {
 
             this.lines[this.lines.length - 1].addAmount()
         }
         else {
-            this.lines.push(ConsoleLine)
+            this.lines.push(consoleLine)
         }
         this._update()
     }
@@ -53,7 +53,9 @@ class ConsoleLine {
     get timeString() {
         return `${(this.time.getHours() % 12 || 12)
             .toLocaleString(undefined, { minimumIntegerDigits: 2, useGrouping: false })
-            }:${this.time.getMinutes()}`
+            }:${this.time.getMinutes()
+                .toLocaleString(undefined, { minimumIntegerDigits: 2, useGrouping: false })
+            }`
     }
 
     addAmount() {

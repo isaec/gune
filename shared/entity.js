@@ -9,6 +9,8 @@ module.exports.Entity = function (type, x, y, uuid = false, name = undefined) {
     this.type = type
     this.x = x
     this.y = y
+    // this.hp
+    // this.maxHp
 }
 
 module.exports.Type = Object.freeze({
