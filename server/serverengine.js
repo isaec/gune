@@ -39,6 +39,36 @@ class Engine {
         }
     }
 
+    clientAction(id, action, worldAction) {
+        let [, player] = this.world.getEntity(id)
+
+        if (player) {
+
+            let newX = player.x + action.data[0],
+                newY = player.y + action.data[1]
+
+            //if the move is valid
+            if (this.world.map.tiles.get(newX, newY) === 1 && !this.world.entityAt(newX, newY) &&
+                (Math.abs(player.x - newX) <= 1 && Math.abs(player.y - newY) <= 1)) {
+
+                //move the player
+                player.x += action.data[0]
+                player.y += action.data[1]
+
+                //log the change with the worldAction
+                worldAction.changedEntity(player)
+
+                this.npcTick(worldAction, player)
+
+            } else { //otherwise, remind clients where the misbehaving player is
+                //this needs to be reviewed - can cause rubberbanding
+                //worldAction.changedEntity(ent)
+            }
+
+
+        }
+    }
+
 
     //network zone
     sendFullWorld(ws) {

@@ -99,36 +99,10 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                let [, player] = engine.world.getEntity(ws.id)
-
+                
                 let worldAction = new WorldAction(engine.world)
-
-                if (player) {
-
-                    let newX = player.x + clientMsg.body.data[0],
-                        newY = player.y + clientMsg.body.data[1]
-
-                    //if the move is valid
-                    if (engine.world.map.tiles.get(newX, newY) === 1 && !engine.world.entityAt(newX, newY) &&
-                        (Math.abs(player.x - newX) <= 1 && Math.abs(player.y - newY) <= 1)) {
-
-                        //move the player
-                        player.x += clientMsg.body.data[0]
-                        player.y += clientMsg.body.data[1]
-
-                        //log the change with the worldAction
-                        worldAction.changedEntity(player)
-
-                        engine.npcTick(worldAction, player)
-
-                    } else { //otherwise, remind clients where the misbehaving player is
-                        //this needs to be reviewed - can cause rubberbanding
-                        //worldAction.changedEntity(ent)
-                    }
-
-
-                }
-
+                
+                engine.clientAction(ws.id, clientMsg.body, worldAction)
 
                 engine.updateClients(app, worldAction)
                 break
