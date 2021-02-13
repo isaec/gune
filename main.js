@@ -9,7 +9,6 @@ const decoder = new TextDecoder('utf-8')
 
 const WorldAction = require("./server/worldaction").WorldAction
 const entity = require("./shared/entity")
-const path = require("./shared/path")
 const Engine = require("./server/serverengine").Engine
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
@@ -128,20 +127,7 @@ app.ws("/ws", {
 
                 }
 
-                //jank zone
-                let dij = new path.Dij(engine.world.map.width, engine.world.map.tiles.get, [
-                    new path.Cord(player.x, player.y)
-                ], 25)
-                for (let ent of engine.world.entities) {
-                    if (ent.type === entity.Type.player) continue
-                    let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), engine.world.entityAt.bind(engine.world))
-                    if (moveCord) {
-                        ent.x += moveCord.x
-                        ent.y += moveCord.y
-                        worldAction.changedEntity(ent)
-                    }
-                }
-                //end of jank zone
+                engine.npcTick(worldAction, player)
 
 
                 engine.updateClients(app, worldAction)
