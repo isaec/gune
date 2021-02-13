@@ -24,7 +24,7 @@ module.exports.MouseHandler = function (engine) {
 
     this.click = (event) => {
 
-        const [x, y, adjX, adjY, player] = this.eventParse(event)
+        const [, , adjX, adjY, player] = this.eventParse(event)
         if (!player) return
 
         //this is basically a demo... its not well done and shouldnt hang around
@@ -59,9 +59,9 @@ module.exports.MouseHandler = function (engine) {
         // let oldTip = document.querySelector(".tooltip")
         // if (oldTip) oldTip.remove()
 
-        const [x, y, adjX, adjY, player] = this.eventParse(event)
+        const [x, y, adjX, adjY, ] = this.eventParse(event)
 
-        let entity = this.engine.world.getEntityAtConditional(adjX, adjY, (x, y) => this.engine.screen.lightMap.get(x, y) > 0.0)
+        let entity = this.engine.world.getEntityAtConditional(adjX, adjY, (xx, yy) => this.engine.screen.lightMap.get(xx, yy) > 0.0)
 
         if (!entity) {
             this.mouseout()
