@@ -39,17 +39,18 @@ module.exports.GuiConsole = function () {
     }
 }
 
+class ConsoleLine {
+    constructor(message, color = [5, 5, 5], temp = false, stack = true){
+        this.message = message
+        this.temp = temp
+        this.stack = stack
+        this.amount = 1
+        this.color = color
+        this.bg = false
+    }
+    
 
-module.exports.ConsoleLine = function (message, color = [5, 5, 5], temp = false, stack = true) {
-    this.message = message
-    this.temp = temp
-    this.stack = stack
-    this.amount = 1
-    this.color = color
-    this.bg = false
-
-
-    this.toString = () => {
+    toString() {
         return "<div>" + (this.amount > 1 ?
             HtmlColor(`(${this.amount}x) `, [3, 3, 3])
             + HtmlColor(this.message, this.color, this.bg)
@@ -57,3 +58,5 @@ module.exports.ConsoleLine = function (message, color = [5, 5, 5], temp = false,
             HtmlColor(this.message, this.color, this.bg)) + "</div>"
     }
 }
+
+module.exports.ConsoleLine = ConsoleLine
