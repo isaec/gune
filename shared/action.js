@@ -72,3 +72,4 @@ function addMethods(action) {
 
 
 module.exports.Move = Move
+module.exports.addMethods = addMethods
