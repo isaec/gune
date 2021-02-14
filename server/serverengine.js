@@ -5,6 +5,7 @@ const action = require("../shared/action")
 const path = require("../shared/path")
 
 const entity = require("../shared/entity")
+const entityTemplate = require("../server/entityTemplate")
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
@@ -16,9 +17,7 @@ class Engine {
     _spawnEntites(world) {
         for (const room of world.map.digger.getRooms()) {
             let b = world.validSpace(room)
-            world.add(new entity.Entity(
-                Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp
-                , b[0], b[1]))
+            world.add(entityTemplate[Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp](b[0], b[1]))
         }
     }
     //game logic zone
