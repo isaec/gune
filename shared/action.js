@@ -81,12 +81,13 @@ class Melee extends Action {
         addMethods(this)
     }
     static addMethods(melee) {
-        action.validate = function (taker, engine, clientSide = true) {
+        melee.validate = function (taker, engine, clientSide = true) {
             return true //actually write this later =P
         }
         melee.apply = function (taker, engine){
-            let target = engine.world.getEntityAt(taker.x + dx, taker.y + dy)
-            target.hp = Math.max(target.hp - 5, 0)
+            console.log("melee attack!")
+            //let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
+            //target.hp = Math.max(target.hp - 5, 0)
         }
     }
 }
