@@ -95,6 +95,8 @@ class Melee extends Action {
                 entityAt.alive
                 && //and if the location is only one tile away
                 totalDistLessThen(taker, newX, newY, 1)
+                && //and the combatents don't share a faction
+                taker.faction !== entityAt.faction
         }
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)

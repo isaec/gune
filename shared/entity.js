@@ -12,6 +12,7 @@ class Entity {
         this.y = y
         this.hp = hp
         this.maxHp = hp
+        this.faction = faction
         this.alive = true
     }
     static setAlive(entity){
