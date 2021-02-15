@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require("uuid")
 const playerName = require("../server/playerName")
 
 class Entity {
-    constructor(type, x, y, hp, uuid = false, name = undefined){
+    constructor(type, x, y, hp, faction, uuid = false, name = undefined){
         if (!uuid) uuid = uuidv4()
         //if (!name) name = playerName.randomName(type.charAt(0))
         this.id = uuid

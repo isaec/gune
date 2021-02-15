@@ -1,6 +1,7 @@
 const entity = require("../shared/entity")
 const Entity = entity.Entity
 const eType = entity.Type
+const faction = require("../shared/faction")
 
 const lootTable = require("../shared/lootTable")
 const hellSpawn = new lootTable([
@@ -10,8 +11,8 @@ const hellSpawn = new lootTable([
 
 
 const entityTemplate = {
-    [entity.Type.imp]: (x, y) => new Entity(eType.imp, x, y, 10),
-    [entity.Type.devil]: (x, y) => new Entity(eType.devil, x, y, 15),
+    [entity.Type.imp]: (x, y) => new Entity(eType.imp, x, y, 10, faction.hellSpawn),
+    [entity.Type.devil]: (x, y) => new Entity(eType.devil, x, y, 15, faction.hellSpawn),
     ["hellSpawn"]: (x, y) => entityTemplate[hellSpawn.elem](x, y)
 }
 module.exports = entityTemplate

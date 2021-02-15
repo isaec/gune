@@ -9,6 +9,7 @@ const decoder = new TextDecoder('utf-8')
 
 const WorldAction = require("./server/worldaction").WorldAction
 const entity = require("./shared/entity")
+const faction = require("./shared/faction")
 const Engine = require("./server/serverengine").Engine
 
 const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
@@ -78,7 +79,7 @@ app.ws("/ws", {
 
         //add this new connection as a player with a random position in the world
         const [tarX, tarY] = engine.world.validSpace(engine.world.randomRoom())
-        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, 25, ws.id, ws.username))
+        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, 25, faction.gune, ws.id, ws.username))
 
         //send the socket the entire world
         engine.sendFullWorld(ws)
