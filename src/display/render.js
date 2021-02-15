@@ -16,7 +16,7 @@ module.exports.Screen = function (engine) {
     this.entityGlyph = function (entityType) {
         const visuals = {
             [entityTypes.player]: { ch: '@', fg: new Color(5, 5, 2) },
-            [entityTypes.corpse]: { ch: '%', fg: new Color(3, 0, 0)},
+            [entityTypes.corpse]: { ch: '%', fg: new Color(3, 0, 0), bg: new Color(2, 0, 0) },
             [entityTypes.devil]: { ch: '&', fg: new Color(3, 0, 1) },
             [entityTypes.imp]: { ch: 'i', fg: new Color(5, 1, 0) },
         }
@@ -110,20 +110,25 @@ module.exports.Screen = function (engine) {
                     ||
                     (adjY > map.height || adjY < 0)) { continue }
 
-                const cordLight = this.lightMap.get(adjX, adjY)
-                const lit = cordLight > 0.0
+                const cordLight = this.lightMap.get(adjX, adjY),
 
-                const cordTile = this.mapGlyph[seenMap.get(adjX, adjY) ? map.tiles.get(adjX, adjY) : 0]
+                    cordTile = this.mapGlyph[
+                        seenMap.get(adjX, adjY) ?
+                            map.tiles.get(adjX, adjY) : 0
+                    ],
 
-                let ch = cordTile.ch,
-                    fg = cordTile.fg.truestring(cordLight),
-                    bg = cordTile.bg.truestring(cordLight),
                     glyph = this.glyphMap.get(adjX, adjY)
 
-                if (glyph && lit) {
+                let ch, fg, bg
+
+                if (!(glyph && cordLight > 0.0)) {
+                    ch = cordTile.ch
+                    fg = cordTile.fg.truestring(cordLight)
+                    bg = cordTile.bg.truestring(cordLight)
+                } else {
                     ch = glyph.ch
                     fg = glyph.fg.truestring(cordLight)
-                    bg = glyph.bg || bg
+                    bg = (glyph.bg || cordTile.bg).truestring(cordLight)
                 }
 
                 this.engine.display.draw(x, y, ch, fg, bg)
