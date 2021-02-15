@@ -85,7 +85,14 @@ class Melee extends Action {
     }
     static addMethods(melee) {
         melee.validate = function (taker, engine, clientSide = true) {
-            return true //actually write this later =P
+            const newX = taker.x + this.dx, newY = taker.y + this.dy
+            const entityAt = engine.world.getEntityAt(newX, newY)
+            //if there is an entity at this location
+            return entityAt 
+            && //and if its alive
+            entityAt.alive
+            && //and if the location is only one tile away
+            (Math.abs(taker.x - newX) <= 1 && Math.abs(taker.y - newY) <= 1)
         }
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
