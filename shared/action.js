@@ -89,6 +89,22 @@ class Melee extends Action {
         melee.validate = function (taker, engine, clientSide = true) {
             const newX = taker.x + this.dx, newY = taker.y + this.dy
             const entityAt = engine.world.getEntityAt(newX, newY)
+            if (clientSide) {
+                if (taker.faction === entityAt.faction) {
+                    engine.guiConsole.print(
+                        new guiconsole.ConsoleLine(`you can't attack someone if you share \
+                    a faction`, [4, 2, 4], true)
+                    )
+                    return false
+                }
+                if (!entityAt.alive) {
+                    engine.guiConsole.print(
+                        new guiconsole.ConsoleLine(`you can't attack an inanimate object`,
+                            [3, 2, 4], true)
+                    )
+                    return false
+                }
+            }
             //if there is an entity at this location
             return entityAt
                 && //and if its alive
