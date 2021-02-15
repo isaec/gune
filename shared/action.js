@@ -33,6 +33,8 @@ class Action {
     }
 }
 
+const totalDistLessThen = (taker, x, y, max) => (Math.abs(taker.x - x) <= max && Math.abs(taker.y - y) <= max)
+
 
 class Move extends Action {
     constructor(dx, dy) {
@@ -48,7 +50,7 @@ class Move extends Action {
                 && //if there is no entity in the way
                 !entityAt
                 && //if the distance being moved is only 1 tile
-                (Math.abs(taker.x - newX) <= 1 && Math.abs(taker.y - newY) <= 1)
+                totalDistLessThen(taker, newX, newY, 1)
             ) {
                 if (clientSide) {
                     this.apply(taker, engine)
@@ -88,11 +90,11 @@ class Melee extends Action {
             const newX = taker.x + this.dx, newY = taker.y + this.dy
             const entityAt = engine.world.getEntityAt(newX, newY)
             //if there is an entity at this location
-            return entityAt 
-            && //and if its alive
-            entityAt.alive
-            && //and if the location is only one tile away
-            (Math.abs(taker.x - newX) <= 1 && Math.abs(taker.y - newY) <= 1)
+            return entityAt
+                && //and if its alive
+                entityAt.alive
+                && //and if the location is only one tile away
+                totalDistLessThen(taker, newX, newY, 1)
         }
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
