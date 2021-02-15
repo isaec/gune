@@ -11,6 +11,7 @@ module.exports.Entity = function (type, x, y, hp, uuid = false, name = undefined
     this.y = y
     this.hp = hp
     this.maxHp = hp
+    this.alive = true
 }
 
 module.exports.Type = Object.freeze({
