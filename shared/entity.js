@@ -14,15 +14,20 @@ class Entity {
         this.maxHp = hp
         this.alive = true
     }
+    static setAlive(entity){
+        entity.alive = entity.hp > 0
+        if(!entity.alive) entity.type = Type.corpse
+    }
 }
 
 const Type = Object.freeze({
     player: "player",
+    corpse: "corpse",
     devil: "devil",
     imp: "imp"
 })
 
 module.exports = {
     Entity,
-    Type
+    Type,
 }

@@ -16,6 +16,7 @@ module.exports.Screen = function (engine) {
     this.entityGlyph = function (entityType) {
         const visuals = {
             [entityTypes.player]: { ch: '@', fg: new Color(5, 5, 2) },
+            [entityTypes.corpse]: { ch: '%', fg: new Color(3, 0, 0)},
             [entityTypes.devil]: { ch: '&', fg: new Color(3, 0, 1) },
             [entityTypes.imp]: { ch: 'i', fg: new Color(5, 1, 0) },
         }
@@ -25,11 +26,11 @@ module.exports.Screen = function (engine) {
 
     this.getPlayer = (world) => {
         for (const entity of world.entities) {
-                if (entity.id === this.engine.uuid) {
-                    this.player = entity
-                    return entity
-                }
+            if (entity.id === this.engine.uuid) {
+                this.player = entity
+                return entity
             }
+        }
         return null
     }
 

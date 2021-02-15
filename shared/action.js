@@ -7,6 +7,8 @@ try {
     //automatic but its good to be clear
 }
 
+const Entity = require("../shared/entity")
+
 const Type = Object.freeze({
     move: "move",
     melee: "melee",
@@ -88,6 +90,7 @@ class Melee extends Action {
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
             target.hp = Math.max(target.hp - 5, 0)
+            Entity.Entity.setAlive(target)
             if (worldAction) worldAction.changedEntity(target)
             //should check
             else { console.log("why has this happened?") }
