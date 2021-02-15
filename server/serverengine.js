@@ -17,7 +17,7 @@ class Engine {
     _spawnEntites(world) {
         for (const room of world.map.digger.getRooms()) {
             let b = world.validSpace(room)
-            world.add(entityTemplate[Math.floor(Math.random() * 2) == 1 ? entity.Type.devil : entity.Type.imp](b[0], b[1]))
+            world.add(entityTemplate["hellSpawn"](b[0], b[1]))
         }
     }
     //game logic zone
