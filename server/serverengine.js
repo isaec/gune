@@ -27,7 +27,7 @@ class Engine {
             new path.Cord(player.x, player.y)
         ], 25)
         for (let ent of this.world.entities) {
-            if (ent.type === entity.Type.player) continue
+            if (ent.type === entity.Type.player || ent.hp <= 0) continue
             let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), this.world.entityAt.bind(this.world))
             if (moveCord) {
                 ent.x += moveCord.x
