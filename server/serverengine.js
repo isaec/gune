@@ -47,8 +47,7 @@ class Engine {
             //if the move is valid
             if (act.validate(player, this, false)) {
 
-                act.apply(player, this)
-                worldAction.changedEntity(player)
+                act.apply(player, this, worldAction)
                 this.npcTick(worldAction, player)
 
             } else { //otherwise, remind clients where the misbehaving player is

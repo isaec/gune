@@ -23,7 +23,7 @@ class Action {
         console.log(`action of type ${this.type} has no validate function`)
         return true
     }
-    apply(taker, engine) {
+    apply(taker, engine, worldAction) {
         console.log(`action of type ${this.type} has no apply function`)
     }
     static addMethods(action) {
@@ -68,9 +68,10 @@ class Move extends Action {
             }
         }
 
-        action.apply = function (taker,) {
+        action.apply = function (taker, engine, worldAction = undefined) {
             taker.x += this.dx
             taker.y += this.dy
+            if(worldAction) worldAction.changedEntity(taker)
         }
     }
 }
@@ -84,10 +85,11 @@ class Melee extends Action {
         melee.validate = function (taker, engine, clientSide = true) {
             return true //actually write this later =P
         }
-        melee.apply = function (taker, engine){
+        melee.apply = function (taker, engine, worldAction = undefined){
             console.log("melee attack!")
             //let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
             //target.hp = Math.max(target.hp - 5, 0)
+            //if(worldAction) worldAction.changedEntity(target)
         }
     }
 }
