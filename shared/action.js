@@ -9,12 +9,15 @@ try {
 
 const Type = Object.freeze({
     move: "move",
+    melee: "melee",
 })
 module.exports.Type = Type
 
 class Action {
-    constructor(type) {
+    constructor(type, dx, dy) {
         this.type = type
+        this.dx = dx
+        this.dy = dy
     }
     validate(taker, engine, clientSide = true) {
         console.log(`action of type ${this.type} has no validate function`)
@@ -28,10 +31,14 @@ class Action {
 
 class Move extends Action {
     constructor(dx, dy) {
-        super(Type.move)
-        this.dx = dx
-        this.dy = dy
-        this.data = [dx, dy]
+        super(Type.move, dx, dy)
+        addMethods(this)
+    }
+}
+
+class Melee extends Action {
+    constructor(dx, dy) {
+        super(Type.melee, dx, dy)
         addMethods(this)
     }
 }
@@ -63,7 +70,7 @@ function addMethods(action) {
                 }
             }
 
-            action.apply = function (taker, ) {
+            action.apply = function (taker,) {
                 taker.x += this.dx
                 taker.y += this.dy
             }
