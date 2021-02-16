@@ -5,6 +5,7 @@ const key = require("/src/input/key")
 const mouse = require("/src/input/mouse")
 const sendAction = require("/src/input/sendaction")
 const rot = require("rot-js")
+const Bar = require("/src/display/bar")
 
 module.exports.Engine = function (connection) {
     //this block can be initialized right away
@@ -17,6 +18,10 @@ module.exports.Engine = function (connection) {
     })
     this.guiConsole = new guiconsole.GuiConsole()
     this.actionHandler = new sendAction.ActionHandler(this)
+
+    //bar block
+    this.healthBar = new Bar("#health", 45, 50, [5, 4, 3], [4, 3, 2], [2, 1, 1], "hp (mock)")
+    this.levelBar = new Bar("#level", 31, 50, [5, 3, 5], [2, 3, 5], [1, 1, 2], "xp (mock)")
 
     //this block can't be loaded without help from the server
     this.world = undefined
@@ -62,7 +67,7 @@ module.exports.Engine = function (connection) {
     //functions
     this.player = undefined
     this.getPlayer = () => {
-        if(this.player) return this.player
+        if (this.player) return this.player
         for (const entity of this.world.entities) {
             if (entity.id === this.uuid) {
                 this.player = entity
