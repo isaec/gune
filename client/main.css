@@ -35,6 +35,8 @@ pre {
     font-size: 1.8vmin;
     text-align: left;
     user-select: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 #console {
@@ -58,6 +60,7 @@ pre {
 .bar {
     background: black;
     color: white;
+    word-break: break-all;
 }
 
 @font-face {
