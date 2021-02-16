@@ -5,7 +5,7 @@ const HC = require("/src/display/color").Html
 class Bar {
     constructor(id, current, max, textColor, barColor, emptyColor, label) {
         this.id = id
-        this.value = current
+        this._value = Math.max(Math.min(current, max), 0)
         this.max = max
         this.textColor = textColor
         this.barColor = barColor
@@ -16,11 +16,16 @@ class Bar {
         window.addEventListener("resize", this.safeUpdate.bind(this))
         this.safeUpdate()
     }
-    get nonBarLength(){
-        return 7 + this.label.length
+    get nonBarLength() {
+        return 8 + this.label.length
+    }
+    get value() { return this._value }
+    set value(value) {
+        this._value = Math.max(0, value)
+        this._update()
     }
     makeBar(maxLength = this.max) {
-        let filled = "", empty = "", value = (this.value / this.max) * maxLength
+        let filled = "", empty = "", value = (this._value / this.max) * maxLength
         for (let i = 0; i < maxLength; i++) {
             if (value > i) filled += "*"
             else empty += "*"
@@ -38,7 +43,7 @@ class Bar {
 
         this.pre.innerHTML = `${HC("[", this.textColor)
             }${this.makeBar(charAmount - this.nonBarLength)
-            }${HC(`] ${Math.round((this.value / this.max) * 100)}% ${this.label}`, this.textColor)}`
+            }${HC(`]${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")}% ${this.label}`, this.textColor)}`
     }
 
 }
