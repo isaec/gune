@@ -8,7 +8,8 @@ module.exports.Screen = function (engine) {
     this.width = this.engine.display._options.width
     this.height = this.engine.display._options.height
 
-    this.scaleDisplay = () => this.engine.display.setOptions({ fontSize: Math.floor(window.innerHeight / 36) })
+
+    this.scaleDisplay = () => this.engine.display.setOptions({ fontSize: Math.floor((window.innerHeight - 10) / 35) })
     window.addEventListener("resize", this.scaleDisplay)
     this.scaleDisplay()
 
