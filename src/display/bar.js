@@ -44,8 +44,8 @@ class Bar {
             }${barStr
             //the number
             }${HC(`]${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")
-                //the % and label
-                }% ${this.label
+                //the %, space and label
+                }%${this.label === "" ? "" : " "}${this.label
                 }`, this.textColor)}`
     }
     safeUpdate() {
