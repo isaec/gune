@@ -43,29 +43,30 @@ body {
     display: none;
 }
 
-
 @font-face {
     font-family: Metrickal;
     src: url(../client/Metrickal-Regular.otf);
 }
 
-.tooltip {    
+.tooltip {
     position: absolute;
     background: #222222;
-    border-radius:2px;
+    border-radius: 2px;
     padding: 3px 6px;
     font-family: Metrickal;
     font-size: 16px;
     color: #b9b9b9;
-  }
+    user-select: none;
+}
+
 .tooltip:before {
-    content : " ";
+    content: " ";
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-top: 10px solid #222222;
-    position:absolute;
-    bottom:-5px;
-    left:5px;
+    position: absolute;
+    bottom: -5px;
+    left: 5px;
 }
