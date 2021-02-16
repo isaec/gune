@@ -17,8 +17,8 @@ class Bar {
         this.safeUpdate()
     }
     get nonBarLength() {
-        //5 is for brackets and % length
-        return 5
+        //6 is for brackets and % length
+        return 6
             //the length of the label
             + this.label.length
             //the space for the label, if it exists
