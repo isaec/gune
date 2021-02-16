@@ -1,6 +1,7 @@
 .noscript {
     background-color: white;
     text-align: center;
+    font-size: large;
 }
 
 body {
@@ -20,11 +21,20 @@ body {
     flex: 1;
 }
 
+#ui {
+    flex: 1;
+    display: flex;
+    gap: .1vh;
+    justify-content: flex-start;
+    align-content: stretch;
+    flex-direction: column;
+}
+
 #console {
     flex: 1;
     display: flex;
-    max-height: 35vh;
-    height: 35vh;
+    max-height: 100vh;
+    height: 100vh;
     flex-direction: column-reverse;
     font-family: "Metrickal";
     font-size: 1.8vmin;
