@@ -21,7 +21,7 @@ module.exports.Engine = function (connection) {
 
     //bar block
     this.healthBar = new Bar("#health", 45, 50, [5, 4, 3], [4, 3, 2], [2, 1, 1], "hp (mock)")
-    this.levelBar = new Bar("#level", 31, 50, [5, 3, 5], [2, 3, 5], [1, 1, 2], "xp (mock)")
+    this.levelBar = new Bar("#level", 31, 50, [4, 3, 5], [2, 3, 5], [1, 1, 2], "xp (mock)")
 
     //this block can't be loaded without help from the server
     this.world = undefined
