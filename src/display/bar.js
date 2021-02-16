@@ -17,7 +17,12 @@ class Bar {
         this.safeUpdate()
     }
     get nonBarLength() {
-        return 8 + this.label.length
+        //5 is for brackets and % length
+        return 5
+            //the length of the label
+            + this.label.length
+            //the space for the label, if it exists
+            + (this.label.length > 0 ? 1 : 0)
     }
     get value() { return this._value }
     set value(value) {
@@ -32,6 +37,17 @@ class Bar {
         }
         return HC(filled, this.barColor) + HC(empty, this.emptyColor)
     }
+    makeLabel(barStr) {
+        //opening bracket
+        return `${HC("[", this.textColor)
+            //the *s for the bar
+            }${barStr
+            //the number
+            }${HC(`]${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")
+                //the % and label
+                }% ${this.label
+                }`, this.textColor)}`
+    }
     safeUpdate() {
         window.setTimeout(this._update.bind(this), 100)
     }
@@ -41,9 +57,9 @@ class Bar {
         let fontSize = parseFloat(style.getPropertyValue("font-size"))
         let charAmount = Math.floor(width / (fontSize / 1.6))
 
-        this.pre.innerHTML = `${HC("[", this.textColor)
-            }${this.makeBar(charAmount - this.nonBarLength)
-            }${HC(`]${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")}% ${this.label}`, this.textColor)}`
+        this.pre.innerHTML = this.makeLabel(
+            this.makeBar(charAmount - this.nonBarLength)
+        )
     }
 
 }
