@@ -11,7 +11,6 @@ body {
 
 #viewport {
     display: flex;
-    gap: .5vw;
     justify-content: flex-start;
     align-content: stretch;
     flex-direction: row;
@@ -24,33 +23,41 @@ body {
 #ui {
     flex: 1;
     display: flex;
-    gap: .1vh;
     justify-content: flex-start;
     align-content: stretch;
     flex-direction: column;
 }
 
-#console {
-    flex: 1;
-    display: flex;
-    max-height: 100vh;
-    height: 100vh;
-    flex-direction: column-reverse;
+pre {
+    margin: 0em .5em .5em;
+    padding: 0.5em .75em;
     font-family: "Metrickal";
     font-size: 1.8vmin;
-    line-height: 130%;
-    background: black;
-    color: white;
-    padding: 0.5em 1em;
-    white-space: normal;
-    overflow-y: scroll;
-    scrollbar-width: none;
     text-align: left;
     user-select: none;
 }
 
+#console {
+    flex: 1;
+    display: flex;
+    max-height: 40vh;
+    height: 40vh;
+    flex-direction: column-reverse;
+    line-height: 130%;
+    background: black;
+    color: white;
+    white-space: normal;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
 #console::-webkit-scrollbar {
     display: none;
+}
+
+.bar {
+    background: black;
+    color: white;
 }
 
 @font-face {
