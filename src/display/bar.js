@@ -15,7 +15,7 @@ class Bar {
         if (this.pre === null) throw `invalid id ${this.id}`
         window.addEventListener("resize", this.safeUpdate.bind(this))
         //absolutly ensure that the bars never start at wrong length
-        window.addEventListener("load", this.safeUpdate.bind(this), 250)
+        window.addEventListener("load", this.safeUpdate.bind(this, undefined, 250))
     }
     get nonBarLength() {
         //6 is for brackets and % length
@@ -49,7 +49,8 @@ class Bar {
                 }%${this.label === "" ? "" : " "}${this.label
                 }`, this.textColor)}`
     }
-    safeUpdate(delay = 100) {
+    safeUpdate(event, delay = 100) {
+        console.log(delay)
         window.setTimeout(this._update.bind(this), delay)
     }
     _update() {
