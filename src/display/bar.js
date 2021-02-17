@@ -15,7 +15,7 @@ class Bar {
         if (this.pre === null) throw `invalid id ${this.id}`
         window.addEventListener("resize", this.safeUpdate.bind(this))
         //absolutly ensure that the bars never start at wrong length
-        window.addEventListener("load", this._update.bind(this))
+        window.addEventListener("load", this.safeUpdate.bind(this), 250)
     }
     get nonBarLength() {
         //6 is for brackets and % length
