@@ -50,7 +50,6 @@ class Bar {
                 }`, this.textColor)}`
     }
     safeUpdate(event, delay = 100) {
-        console.log(delay)
         window.setTimeout(this._update.bind(this), delay)
     }
     _update() {
