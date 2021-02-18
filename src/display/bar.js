@@ -30,8 +30,10 @@ class Bar {
     }
     get value() { return this._value }
     set value(value) {
-        this._value = Math.max(0, value)
-        this._update()
+        if(value !== this._value){
+            this._value = Math.max(0, value)
+            this._update()
+        }
     }
     makeBar(maxLength = this.max) {
         let filled = "", empty = "", value = (this._value / this.max) * maxLength

@@ -56,7 +56,7 @@ module.exports.Engine = function (connection) {
             this.levelBar = new Bar(
                 "#level", 69, 100,
                 [4, 3, 5], [2, 3, 5], [1, 1, 2],
-                "xp (mock)"
+                "xp"
             )
         }
     }
