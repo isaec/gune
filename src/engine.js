@@ -19,20 +19,23 @@ module.exports.Engine = function (connection) {
     this.guiConsole = new guiconsole.GuiConsole()
     this.actionHandler = new sendAction.ActionHandler(this)
 
-    //bar block
-    this.healthBar = new Bar("#health", 45, 50, [5, 4, 3], [4, 3, 2], [2, 1, 1], "hp (mock)")
-    this.levelBar = new Bar("#level", 69, 100, [4, 3, 5], [2, 3, 5], [1, 1, 2], "xp (mock)")
 
     //this block can't be loaded without help from the server
     this.world = undefined
     this.uuid = undefined
+
     this.screen = undefined
     this._screenReady = () => this.world && this.uuid
+
+    this.levelBar = undefined
+    this.healthBar = undefined
+    this._barsReady = () => this.world && this.uuid
+    //end block of objects that need help
 
     this._loaded = () => this.world && this.screen && this.uuid
 
     this.loadWorld = (world) => {
-        if (this._loaded()) return //this is not the best solution
+        if (this.world) return //this is not the best solution
         this.world = new clientworld.ClientWorld(world)
         this.loadIfReady()
     }
@@ -43,6 +46,19 @@ module.exports.Engine = function (connection) {
 
     this.loadIfReady = () => {
         if (this._screenReady() && !this.screen) this.screen = new render.Screen(this)
+        if (this._barsReady() && !(this.levelBar || this.healthBar)) {
+            const player = this.getPlayer()
+            this.healthBar = new Bar(
+                "#health", player.hp, player.maxHp,
+                [5, 4, 3], [4, 3, 2], [2, 1, 1],
+                "hp"
+            )
+            this.levelBar = new Bar(
+                "#level", 69, 100,
+                [4, 3, 5], [2, 3, 5], [1, 1, 2],
+                "xp (mock)"
+            )
+        }
     }
 
 
