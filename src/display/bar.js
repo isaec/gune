@@ -22,7 +22,7 @@ class Bar {
     }
     get nonBarLength() {
         //6 is for brackets and % length
-        return 6
+        return 7
             //the length of the label
             + this.label.length
             //the space for the label, if it exists
@@ -47,7 +47,7 @@ class Bar {
             //the *s for the bar
             }${barStr
             //the number
-            }${HC(`]${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")
+            }${HC(`] ${Math.round((this._value / this.max) * 100).toString().padStart(3, " ")
                 //the %, space and label
                 }%${this.label === "" ? "" : " "}${this.label
                 }`, this.textColor)}`
