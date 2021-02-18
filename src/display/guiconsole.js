@@ -51,10 +51,8 @@ class ConsoleLine {
     }
 
     get timeString() {
-        return `${(this.time.getHours() % 12 || 12)
-            .toLocaleString(undefined, { minimumIntegerDigits: 2, useGrouping: false })
-            }:${this.time.getMinutes()
-                .toLocaleString(undefined, { minimumIntegerDigits: 2, useGrouping: false })
+        return `${(this.time.getHours() % 12 || 12).toString().padStart(2, "0")
+            }:${this.time.getMinutes().toString().padStart(2, "0")
             }`
     }
 
