@@ -14,7 +14,10 @@ class Bar {
         this.pre = document.querySelector(this.id)
         if (this.pre === null) throw `invalid id ${this.id}`
         window.addEventListener("resize", this.safeUpdate.bind(this))
+        //if bars are made at a reasonable time, render them
+        this.safeUpdate()
         //absolutly ensure that the bars never start at wrong length
+        //this is useful if bars are made before page finishes loading
         window.addEventListener("load", this.safeUpdate.bind(this, undefined, 250))
     }
     get nonBarLength() {
