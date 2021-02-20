@@ -62,7 +62,7 @@ class Dij {
             for (let i = 0; i < frontier.length; i++) {
                 let curr = frontier[i]
                 for (let cord of neighbor(curr.x, curr.y)) {
-                    if (this.mapCallback(cord.x, cord.y) != 1) continue
+                    if (this.mapCallback(cord.x, cord.y) == 2) continue
                     if (this.distance.get(cord.x, cord.y) == undefined) {
                         newFrontier.push(cord)
                         if (this.distance.set(cord.x, cord.y, this.distance.get(curr.x, curr.y) + 1) > this.maxDistance) return
