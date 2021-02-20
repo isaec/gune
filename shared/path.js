@@ -35,6 +35,30 @@ function* emptyNeighbor(x, y, occCallback) {
     }
 }
 
+//shuffle code from stack overflow =P
+function inPlaceShuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function* fluidOffsets(x, y, occCallback) {
+    let cords = [
+        new Cord(x, y + -1),
+        new Cord(x, y + 1),
+        new Cord(x + 1, y),
+        new Cord(x + -1, y),
+        new Cord(x + -1, y + -1),
+        new Cord(x + -1, y + 1),
+        new Cord(x + 1, y + -1),
+        new Cord(x + 1, y + 1),
+    ]
+    inPlaceShuffle(cords)
+    if (!occCallback(x, y)) yield new Cord(x, y)
+    for (let cord of cords) if (!occCallback(cord.x, cord.y)) yield cord
+}
+
 /** 
  * returns a map of distances from goals
  * goalArray expects objects with x and y properites
@@ -75,9 +99,7 @@ class Dij {
     }
 }
 
-module.exports.Dij = Dij
-
-module.exports.rollDown = (dij, fromCord, occCallback) => {
+const rollDown = (dij, fromCord, occCallback) => {
     let lowest = fromCord
     let lowestVal = dij.get(fromCord.x, fromCord.y)
     for (let cord of emptyNeighbor(fromCord.x, fromCord.y, occCallback)) {
@@ -97,4 +119,10 @@ class Cord {
         this.y = y
     }
 } //didnt know i could do this
-module.exports.Cord = Cord
+module.exports = {
+    Cord,
+    Dij,
+    rollDown,
+    emptyNeighbor,
+    fluidOffsets
+}
