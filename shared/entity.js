@@ -15,7 +15,7 @@ class Entity {
         this.faction = faction
     }
     static setAlive(entity, worldAction) {
-        worldAction.setTile(entity.x, entity.y, 3)
+        worldAction.setTile(entity.x, entity.y, BloodInt[entity.type])
         if (!entity.hp > 0) worldAction.removeEntityId(entity.id)
         else worldAction.changedEntity(entity)
     }
@@ -26,6 +26,12 @@ const Type = Object.freeze({
     devil: "devil",
     imp: "imp"
 })
+
+const BloodInt = {
+    [Type.player]: 3,
+    [Type.devil]: 4,
+    [Type.imp]: 3 
+}
 
 module.exports = {
     Entity,
