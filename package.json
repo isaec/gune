@@ -26,7 +26,6 @@
     "postcss": "^8.2.4",
     "rot-js": "^2.1.5",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v18.13.0",
-    "uuid": "^8.3.2",
     "uuidv4": "^6.2.6"
   },
   "devDependencies": {
