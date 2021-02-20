@@ -1,5 +1,7 @@
 const FArray = require("/shared/array").FArray
-module.exports.ClientWorld = function (world) {
+const ConsoleLine = require("/src/display/guiconsole").ConsoleLine
+module.exports = function (engine, world) {
+    this.engine = engine
 
     this.map = {
         width: world.map.width,
@@ -61,6 +63,12 @@ module.exports.ClientWorld = function (world) {
                     break
                 }
             }
+        }
+
+        if (actions.logs) for (const log of actions.logs) {
+            this.engine.guiConsole.print(new ConsoleLine(
+                log.m, log.c, log.t, log.s
+            ))
         }
     }
 }

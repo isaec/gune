@@ -1,6 +1,6 @@
 const render = require("/src/display/render")
 const guiconsole = require("/src/display/guiconsole")
-const clientworld = require("/src/data/clientworld")
+const ClientWorld = require("/src/data/clientworld")
 const key = require("/src/input/key")
 const mouse = require("/src/input/mouse")
 const sendAction = require("/src/input/sendaction")
@@ -36,7 +36,7 @@ module.exports.Engine = function (connection) {
 
     this.loadWorld = (world) => {
         if (this.world) return //this is not the best solution
-        this.world = new clientworld.ClientWorld(world)
+        this.world = new ClientWorld(this, world)
         this.loadIfReady()
     }
     this.loadUuid = (uuid) => {
