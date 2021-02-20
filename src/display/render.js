@@ -17,7 +17,6 @@ module.exports.Screen = function (engine) {
     this.entityGlyph = function (entityType) {
         const visuals = {
             [entityTypes.player]: { ch: '@', fg: new Color(5, 5, 2) },
-            [entityTypes.corpse]: { ch: '%', fg: new Color(3, 0, 0), bg: new Color(2, 0, 0) },
             [entityTypes.devil]: { ch: '&', fg: new Color(3, 0, 1) },
             [entityTypes.imp]: { ch: 'i', fg: new Color(5, 1, 0) },
         }
@@ -55,6 +54,16 @@ module.exports.Screen = function (engine) {
             ch: "#",
             fg: new Color(4, 2, 2),
             bg: new Color(3, 1, 1)
+        },
+        3: { //red bloody floor
+            ch: ".",
+            fg: new Color(4, 2, 2),
+            bg: new Color(2, 1, 1)
+        },
+        4: { //blue bloody floor
+            ch: ".",
+            fg: new Color(2, 2, 4),
+            bg: new Color(1, 1, 2)
         }
     }
 
@@ -81,7 +90,7 @@ module.exports.Screen = function (engine) {
         //NOTE this should be verified serverside later
         //should also not remake the object every render
         let fov = new rot.FOV.PreciseShadowcasting(
-            (x, y) => map.tiles.get(x, y) === 1
+            (x, y) => map.tiles.get(x, y) !== 2
         )
 
 

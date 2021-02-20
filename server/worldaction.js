@@ -15,14 +15,14 @@ module.exports.WorldAction = function (world) {
         this.world.entities.splice(index, 1)
     }
     this.removeEntityId = (id) => {
-        const [index, ] = this.world.getEntity(id)
+        const [index,] = this.world.getEntity(id)
         this.removeEntityIndex(index)
     }
 
     this.changedEntity = (entity) => this.actions.push(entity)
 
     this.setTile = (x, y, value) => {
-        this.world.map.tiles[y][x] = value
+        this.world.map.tiles.set(x, y, value)
         this.tileActions.push(
             {
                 x: x,

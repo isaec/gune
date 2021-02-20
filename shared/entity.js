@@ -15,6 +15,7 @@ class Entity {
         this.faction = faction
     }
     static setAlive(entity, worldAction) {
+        worldAction.setTile(entity.x, entity.y, 3)
         if (!entity.hp > 0) worldAction.removeEntityId(entity.id)
         else worldAction.changedEntity(entity)
     }
@@ -22,7 +23,6 @@ class Entity {
 
 const Type = Object.freeze({
     player: "player",
-    corpse: "corpse",
     devil: "devil",
     imp: "imp"
 })

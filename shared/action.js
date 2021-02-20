@@ -46,7 +46,7 @@ class Move extends Action {
             const newX = taker.x + this.dx, newY = taker.y + this.dy
             const entityAt = engine.world.getEntityAt(newX, newY)
             if ( //if the move is to an open tile
-                engine.world.map.tiles.get(newX, newY) === 1
+                engine.world.map.tiles.get(newX, newY) !== 2
                 && //if there is no entity in the way
                 !entityAt
                 && //if the distance being moved is only 1 tile
