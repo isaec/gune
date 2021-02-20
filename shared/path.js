@@ -44,7 +44,7 @@ function inPlaceShuffle(array) {
 }
 
 function* fluidOffsets(x, y, occCallback) {
-    let cords = [
+    let innerCords = [
         new Cord(x, y + -1),
         new Cord(x, y + 1),
         new Cord(x + 1, y),
@@ -54,9 +54,29 @@ function* fluidOffsets(x, y, occCallback) {
         new Cord(x + 1, y + -1),
         new Cord(x + 1, y + 1),
     ]
-    inPlaceShuffle(cords)
+    inPlaceShuffle(innerCords)
     if (!occCallback(x, y)) yield new Cord(x, y)
-    for (let cord of cords) if (!occCallback(cord.x, cord.y)) yield cord
+    for (let cord of innerCords) if (!occCallback(cord.x, cord.y)) yield cord
+    let outerCords = [
+        new Cord(x + -2, y + -2),
+        new Cord(x + -2, y + -1),
+        new Cord(x + -2, y),
+        new Cord(x + -2, y + 1),
+        new Cord(x + -2, y + 2),
+        new Cord(x + -1, y + -2),
+        new Cord(x + -1, y + 2),
+        new Cord(x, y + -2),
+        new Cord(x, y + 2),
+        new Cord(x + 1, y + -2),
+        new Cord(x + 1, y + 2),
+        new Cord(x + 2, y + -2),
+        new Cord(x + 2, y + -1),
+        new Cord(x + 2, y),
+        new Cord(x + 2, y + 1),
+        new Cord(x + 2, y + 2),
+    ]
+    inPlaceShuffle(outerCords)
+    for (let cord of outerCords) if (!occCallback(cord.x, cord.y)) yield cord
 }
 
 /** 
