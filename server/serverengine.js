@@ -51,8 +51,6 @@ class Engine {
                 act.apply(player, this, worldAction)
                 this.npcTick(worldAction, player)
 
-                //worldAction.addLog("test")
-
             } else { //otherwise, remind clients where the misbehaving player is
                 //this needs to be reviewed - can cause rubberbanding
                 //worldAction.changedEntity(ent)

@@ -43,7 +43,7 @@ module.exports.WorldAction = function (world) {
     */
 
     this.addLog = (message, color, temp, stack) => this.logs.push(
-        {
+        { //bitmap with templates would be much smaller
             m: message,
             c: color,
             t: temp,

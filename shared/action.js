@@ -108,7 +108,11 @@ class Melee extends Action {
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
             target.hp = Math.max(target.hp - 5, 0)
-            if (worldAction) Entity.Entity.setAlive(target, worldAction)
+            if (worldAction) {
+                Entity.Entity.setAlive(target, worldAction)
+                worldAction.addLog(`${taker.name ? taker.name : taker.type} slaps \
+                ${target.name ? target.name : target.type} for 5 damage`,[4,2,3])
+            }
             //should check
             else { console.log("why has this happened?") }
         }
