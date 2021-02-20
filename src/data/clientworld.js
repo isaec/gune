@@ -38,8 +38,7 @@ module.exports.ClientWorld = function (world) {
         return undefined
     }
     this.applyActions = (actions) => {
-        //console.log(actions)
-        for (const action of actions.actions) {
+        if (actions.actions) for (const action of actions.actions) {
             let done = false
             for (const [index, entity] of this.entities.entries()) {
                 if (entity.id === action.id) {
@@ -51,11 +50,11 @@ module.exports.ClientWorld = function (world) {
             if (!done) this.entities.push(action)
 
         }
-        for (const tileAction of actions.tileActions) {
+        if (actions.tileActions) for (const tileAction of actions.tileActions) {
             this.map.tiles.set(tileAction.x, tileAction.y, tileAction.value)
         }
         //delete any elements that were deleted
-        for (const uuid of actions.delete) {
+        if (actions.delete) for (const uuid of actions.delete) {
             for (const [index, entity] of this.entities.entries()) {
                 if (entity.id === uuid) {
                     this.entities.splice(index, 1)

@@ -1,4 +1,6 @@
-const e = require("express")
+
+
+const undef = (array) => array.length > 0 ? array : undefined
 
 module.exports.WorldAction = function (world) {
     this.world = world
@@ -35,9 +37,9 @@ module.exports.WorldAction = function (world) {
 
     this.publish = () => {
         return {
-            actions: this.actions,
-            tileActions: this.tileActions,
-            delete: this.delete
+            actions: undef(this.actions),
+            tileActions: undef(this.tileActions),
+            delete: undef(this.delete)
         }
     }
 }
