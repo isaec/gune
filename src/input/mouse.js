@@ -28,17 +28,19 @@ module.exports.MouseHandler = function (engine) {
         if (!player) return
 
         //this is basically a demo... its not well done and shouldnt hang around
-        if (this.knownTile(adjX, adjY) !== 1) {
+        if (this.knownTile(adjX, adjY) === 2) {
             this.engine.guiConsole.print(
                 new guiconsole.ConsoleLine("that pathing goal is obstructed", [5, 3, 2], true)
             )
             return
         }
 
-
+        //console.log((player.x, adjX) * (player.x, adjX) + (player.y, adjY) * (player.y, adjY))
         this.dij = new path.Dij(this.engine.world.map.width, this.knownTile, [
             new path.Cord(adjX, adjY)
-        ], 140)
+        ],
+            140
+        )
 
         this.startInterval()
 
@@ -59,7 +61,7 @@ module.exports.MouseHandler = function (engine) {
         // let oldTip = document.querySelector(".tooltip")
         // if (oldTip) oldTip.remove()
 
-        const [x, y, adjX, adjY, ] = this.eventParse(event)
+        const [x, y, adjX, adjY,] = this.eventParse(event)
 
         let entity = this.engine.world.getEntityAtConditional(adjX, adjY, (xx, yy) => this.engine.screen.lightMap.get(xx, yy) > 0.0)
 
@@ -101,7 +103,7 @@ module.exports.MouseHandler = function (engine) {
                 new action.Move(moveCord.x, moveCord.y)
             )) {
                 let target = this.dij.goalArray[0]
-                if (this.knownTile(target.x, target.y) !== 1) {
+                if (this.knownTile(target.x, target.y) === 2) {
                     this.engine.guiConsole.print(
                         new guiconsole.ConsoleLine("that pathing goal has been revealed to be obstructed", [3, 1, 2], true)
                     )
