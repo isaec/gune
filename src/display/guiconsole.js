@@ -1,4 +1,8 @@
-const HtmlColor = require("/src/display/color").Html
+//this import is an ugly mess but ill fix it *later*
+let HtmlColor
+try {
+    HtmlColor = require("/src/display/color").Html
+} catch (e) { }
 
 module.exports.GuiConsole = function () {
     this.maxLines = 100

@@ -7,6 +7,9 @@ const path = require("../shared/path")
 const entity = require("../shared/entity")
 const entityTemplate = require("../server/entityTemplate")
 
+//not kosher to reach into non shared files but whatever
+const ConsoleLine = require("../src/display/guiconsole")
+
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
 class Engine {
@@ -49,6 +52,8 @@ class Engine {
 
                 act.apply(player, this, worldAction)
                 this.npcTick(worldAction, player)
+
+                worldAction.addLog()
 
             } else { //otherwise, remind clients where the misbehaving player is
                 //this needs to be reviewed - can cause rubberbanding

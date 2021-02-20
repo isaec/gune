@@ -7,6 +7,7 @@ module.exports.WorldAction = function (world) {
     this.actions = []
     this.delete = []
     this.tileActions = []
+    this.logs = [] //use bitmask eventually
     this.addEntity = (entity) => {
         this.world.entities.push(entity)
         this.actions.push(entity)
@@ -33,13 +34,17 @@ module.exports.WorldAction = function (world) {
             }
         )
     }
+
+    this.addLog = (consoleLine) => this.logs.push(consoleLine)
+
     this.empty = () => this.actions.length + this.delete.length + this.tileActions.length === 0
 
     this.publish = () => {
         return {
             actions: undef(this.actions),
             tileActions: undef(this.tileActions),
-            delete: undef(this.delete)
+            delete: undef(this.delete),
+            logs: undef(this.logs),
         }
     }
 }
