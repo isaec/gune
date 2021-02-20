@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require("uuid")
 const playerName = require("../server/playerName")
 
 class Entity {
-    constructor(type, x, y, hp, faction, uuid = false, name = undefined){
+    constructor(type, x, y, hp, faction, uuid = false, name = undefined) {
         if (!uuid) uuid = uuidv4()
         //if (!name) name = playerName.randomName(type.charAt(0))
         this.id = uuid
@@ -13,11 +13,10 @@ class Entity {
         this.hp = hp
         this.maxHp = hp
         this.faction = faction
-        this.alive = true
     }
-    static setAlive(entity){
-        entity.alive = entity.hp > 0
-        if(!entity.alive) entity.type = Type.corpse
+    static setAlive(entity, worldAction) {
+        if (!entity.hp > 0) worldAction.removeEntityId(entity.id)
+        else worldAction.changedEntity(entity)
     }
 }
 

@@ -120,7 +120,7 @@ app.ws("/ws", {
         const [index, ent] = engine.world.getEntity(ws.id)
         if (ent) {
             let worldAction = new WorldAction(engine.world)
-            worldAction.removeEntity(index)
+            worldAction.removeEntityIndex(index)
             engine.updateClients(app, worldAction)
         }
 

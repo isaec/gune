@@ -1,3 +1,5 @@
+const e = require("express")
+
 module.exports.WorldAction = function (world) {
     this.world = world
     this.actions = []
@@ -8,9 +10,13 @@ module.exports.WorldAction = function (world) {
         this.actions.push(entity)
     }
 
-    this.removeEntity = (index) => {
+    this.removeEntityIndex = (index) => {
         this.delete.push(this.world.entities[index].id)
         this.world.entities.splice(index, 1)
+    }
+    this.removeEntityId = (id) => {
+        const [index, ] = this.world.getEntity(id)
+        this.removeEntityIndex(index)
     }
 
     this.changedEntity = (entity) => this.actions.push(entity)

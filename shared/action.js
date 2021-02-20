@@ -97,18 +97,16 @@ class Melee extends Action {
                     )
                     return false
                 }
-                if (!entityAt.alive) {
-                    engine.guiConsole.print(
-                        new guiconsole.ConsoleLine(`you can't attack an inanimate object`,
-                            [3, 2, 4], true)
-                    )
-                    return false
-                }
+                // if (!entityAt.alive) {
+                //     engine.guiConsole.print(
+                //         new guiconsole.ConsoleLine(`you can't attack an inanimate object`,
+                //             [3, 2, 4], true)
+                //     )
+                //     return false
+                // }
             }
             //if there is an entity at this location
             return entityAt
-                && //and if its alive
-                entityAt.alive
                 && //and if the location is only one tile away
                 totalDistLessThen(taker, newX, newY, 1)
                 && //and the combatents don't share a faction
@@ -117,8 +115,7 @@ class Melee extends Action {
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)
             target.hp = Math.max(target.hp - 5, 0)
-            Entity.Entity.setAlive(target)
-            if (worldAction) worldAction.changedEntity(target)
+            if (worldAction) Entity.Entity.setAlive(target, worldAction)
             //should check
             else { console.log("why has this happened?") }
         }
