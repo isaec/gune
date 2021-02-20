@@ -79,6 +79,10 @@ function* fluidOffsets(x, y, occCallback) {
     for (let cord of outerCords) if (!occCallback(cord.x, cord.y)) yield cord
 }
 
+function distance(cord1, cord2) {
+    return Math.sqrt((cord1.x - cord2.x) * (cord1.x - cord2.x) + (cord1.y - cord2.y) * (cord1.y - cord2.y))
+}
+
 /** 
  * returns a map of distances from goals
  * goalArray expects objects with x and y properites
@@ -144,5 +148,6 @@ module.exports = {
     Dij,
     rollDown,
     emptyNeighbor,
-    fluidOffsets
+    fluidOffsets,
+    distance
 }

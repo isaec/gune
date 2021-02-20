@@ -34,12 +34,11 @@ module.exports.MouseHandler = function (engine) {
             )
             return
         }
-
-        //console.log((player.x, adjX) * (player.x, adjX) + (player.y, adjY) * (player.y, adjY))
+        console.log(Math.round(path.distance(player, new path.Cord(adjX, adjY)) * 3))
         this.dij = new path.Dij(this.engine.world.map.width, this.knownTile, [
             new path.Cord(adjX, adjY)
         ],
-            140
+            Math.round(path.distance(player, new path.Cord(adjX, adjY)) * 5)
         )
 
         this.startInterval()
