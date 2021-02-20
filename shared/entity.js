@@ -17,8 +17,12 @@ class Entity {
     }
     static setAlive(entity, worldAction) {
         this.bleed(entity, worldAction)
-        if (!entity.hp > 0) worldAction.removeEntityId(entity.id)
-        else worldAction.changedEntity(entity)
+        if (!entity.hp > 0) {
+            worldAction.removeEntityId(entity.id)
+            return false
+        }
+        worldAction.changedEntity(entity)
+        return true
     }
     static bleed(entity, worldAction) {
         //this bleeding code is really convoluted
