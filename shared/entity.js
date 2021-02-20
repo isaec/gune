@@ -15,9 +15,18 @@ class Entity {
         this.faction = faction
     }
     static setAlive(entity, worldAction) {
-        worldAction.setTile(entity.x, entity.y, BloodInt[entity.type])
+        //this bleeding code is really convoluted
+        const curr = worldAction.world.map.tiles.get(entity.x, entity.y)
+        this.bleedTile(entity.x, entity.y, BloodInt[entity.type], curr, worldAction)
         if (!entity.hp > 0) worldAction.removeEntityId(entity.id)
         else worldAction.changedEntity(entity)
+    }
+    static bleedTile(x, y, color, tile, worldAction) {
+        if (tile === 5 || tile === color) return false
+        worldAction.setTile(x, y,
+            tile !== color && (tile === 3 || tile === 4) ? 5 : color
+        )
+        return true
     }
 }
 
@@ -30,7 +39,7 @@ const Type = Object.freeze({
 const BloodInt = {
     [Type.player]: 3,
     [Type.devil]: 4,
-    [Type.imp]: 3 
+    [Type.imp]: 3
 }
 
 module.exports = {
