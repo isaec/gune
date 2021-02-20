@@ -35,7 +35,21 @@ module.exports.WorldAction = function (world) {
         )
     }
 
-    this.addLog = (consoleLine) => this.logs.push(consoleLine)
+    /*
+    values will be undefined if nothing is passed
+    undefined values will be stripped from JSON
+    on clientside, default object value is used
+    if undefined is passed for a param
+    */
+
+    this.addLog = (message, color, temp, stack) => this.logs.push(
+        {
+            m: message,
+            c: color,
+            t: temp,
+            s: stack
+        }
+    )
 
     this.empty = () => this.actions.length + this.delete.length + this.tileActions.length === 0
 
