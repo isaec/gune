@@ -117,7 +117,7 @@ app.ws("/ws", {
         app.SOCKETS.find((socket, i) => { //removes socket
             if (socket && socket.id === ws.id) app.SOCKETS.splice(i, 1)
         })
-        const [index, ent] = engine.world.getEntity(ws.id)
+        const [index, ent] = engine.world.getE(ws.id)
         if (ent) {
             let worldAction = new WorldAction(engine.world)
             worldAction.removeEntityIndex(index)

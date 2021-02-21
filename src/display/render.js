@@ -100,9 +100,8 @@ module.exports.Screen = function (engine) {
         )
 
 
-        for (const entity of this.engine.world.entities) {
-            if (entity.type !== entityTypes.player) continue
-            fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
+        for (const eplayer of this.engine.world.players) {
+            fov.compute(eplayer.x, eplayer.y, 10, (x, y, r, visibility) => {
                 seenMap.set(x, y, true)
                 if (this.lightMap.get(x, y) < visibility ||
                     this.lightMap.get(x, y) == undefined) {
@@ -112,8 +111,11 @@ module.exports.Screen = function (engine) {
             })
         }
 
-        for (let entity of this.engine.world.entities.values()) {
+        for (let entity of this.engine.world.entities) {
             this.glyphMap.set(entity.x, entity.y, this.entityGlyph(entity.type))
+        }
+        for (let eplayer of this.engine.world.players) {
+            this.glyphMap.set(eplayer.x, eplayer.y, this.entityGlyph(eplayer.type))
         }
 
 
