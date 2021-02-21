@@ -93,7 +93,6 @@ module.exports.Engine = function (connection) {
                 return this.world.players[i]
             }
         }
-        console.log("this should not have happened.")
         return undefined
     }
 
@@ -108,7 +107,7 @@ module.exports.Engine = function (connection) {
     }
 
     this.playerDead = () => {
-        this.guiConsole.print(new guiconsole.ConsoleLine("death"))
+        this.guiConsole.print(new guiconsole.ConsoleLine("connection to your gune has been lost", [4, 1, 1]))
         this._pIndex = undefined
         this.getPlayer = () => undefined
         window.removeEventListener("keydown", this.keyHandler.keydown)
