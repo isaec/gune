@@ -10,6 +10,7 @@ module.exports = function (engine, world) {
     }
 
     this.entities = world.entities
+    this.players = world.players
 
     this.seenMap = {
         width: world.map.width,
@@ -25,6 +26,7 @@ module.exports = function (engine, world) {
         this.map.tiles = new FArray(updatedWorld.map.width, updatedWorld.map.tiles._data)
 
         this.entities = updatedWorld.entities
+        this.players = updatedWorld.players
     }
     this.entityUpdate = (entities) => this.entities = entities
     this.entityAt = (x, y) => {
@@ -40,7 +42,7 @@ module.exports = function (engine, world) {
         return undefined
     }
     this.applyActions = (actions) => {
-        if (actions.actions) for (const action of actions.actions) {
+        if (actions.eActions) for (const action of actions.eActions) {
             let done = false
             for (const [index, entity] of this.entities.entries()) {
                 if (entity.id === action.id) {
@@ -54,14 +56,36 @@ module.exports = function (engine, world) {
             if (!done) this.entities.push(action)
 
         }
+        if (actions.pActions) for (const action of actions.pActions) {
+            let done = false
+            for (const [index, player] of this.players.entries()) {
+                if (player.id === action.id) {
+                    //the entity has been found, so update it
+                    this.players[index] = action
+                    done = true
+                    break
+                }
+            }
+            //if the entity did not exist, add it
+            if (!done) this.players.push(action)
+
+        }
         if (actions.tileActions) for (const tileAction of actions.tileActions) {
             this.map.tiles.set(tileAction.x, tileAction.y, tileAction.value)
         }
         //delete any elements that were deleted
-        if (actions.delete) for (const uuid of actions.delete) {
+        if (actions.eDelete) for (const uuid of actions.eDelete) {
             for (const [index, entity] of this.entities.entries()) {
                 if (entity.id === uuid) {
                     this.entities.splice(index, 1)
+                    break
+                }
+            }
+        }
+        if (actions.pDelete) for (const uuid of actions.pDelete) {
+            for (const [index, entity] of this.players.entries()) {
+                if (entity.id === uuid) {
+                    this.players.splice(index, 1)
                     break
                 }
             }

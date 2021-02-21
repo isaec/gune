@@ -94,7 +94,8 @@ class Engine {
                                 height: this.world.map.height,
                                 tiles: this.world.map.tiles,
                             },
-                            entities: this.world.entities
+                            entities: this.world.entities,
+                            players: this.world.players
                         }
                     }
                 }
