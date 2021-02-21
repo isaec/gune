@@ -83,7 +83,7 @@ module.exports.Engine = function (connection) {
     //functions
     this._pIndex = undefined
     this.getPlayer = () => {
-        if (this._pIndex) return this.world.players[this._pIndex]
+        if (this.world.players[this._pIndex] && this.world.players[this._pIndex].id === this.uuid) return this.world.players[this._pIndex]
         for (let i = 0; i < this.world.players.length; i++) {
             if (this.world.players[i].id === this.uuid) {
                 this._pIndex = i
@@ -101,8 +101,8 @@ module.exports.Engine = function (connection) {
     }
 
     this.playerDead = () => {
-        this.guiConsole.print( new guiconsole.ConsoleLine("death"))
-        this.player = undefined
+        this.guiConsole.print(new guiconsole.ConsoleLine("death"))
+        this._pIndex = undefined
         this.getPlayer = () => undefined
         window.removeEventListener("keydown", this.keyHandler.keydown)
         window.removeEventListener("keyup", this.keyHandler.keyup)
