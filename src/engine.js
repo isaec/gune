@@ -90,12 +90,12 @@ module.exports.Engine = function (connection) {
                 return entity
             }
         }
-        alert("this should not have happened.")
+        console.log("this should not have happened.")
         return undefined
     }
 
-    this.playerSync = (player) => {
-        this.player = player
+    this.playerSync = () => {
+        const player = this.getPlayer()
         this.healthBar.max = player.maxHp
         this.healthBar.value = player.hp
     }

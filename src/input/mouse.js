@@ -34,7 +34,6 @@ module.exports.MouseHandler = function (engine) {
             )
             return
         }
-        console.log(Math.round(path.distance(player, new path.Cord(adjX, adjY)) * 3))
         this.dij = new path.Dij(this.engine.world.map.width, this.knownTile, [
             new path.Cord(adjX, adjY)
         ],

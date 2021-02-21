@@ -50,8 +50,6 @@ module.exports = function (engine, world) {
                     break
                 }
             }
-            //if the action is about the player, update references to player
-            if (action.id === this.engine.uuid) this.engine.playerSync(action)
             //if the entity did not exist, add it
             if (!done) this.entities.push(action)
 
@@ -67,8 +65,6 @@ module.exports = function (engine, world) {
                     break
                 }
             }
-            //if the player has been removed, destroy references to the player
-            if (uuid === this.engine.uuid) this.engine.playerDead()
         }
 
         if (actions.logs) for (const log of actions.logs) {
