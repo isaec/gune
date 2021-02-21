@@ -42,7 +42,7 @@ class Engine {
                 let target = this.world.getPlayerAt(ent.x + moveCord.x, ent.y + moveCord.y)
                 if(target) {
                     target.hp --
-                    worldAction.changedEntity(target)
+                    worldAction.changedP(target)
                     if (entity.Entity.setAlive(target, worldAction)) {
                         worldAction.addLog(`${ent.name ? ent.name : ent.type} harms \
                         ${target.name ? target.name : target.type} for 1 damage`, [4, 2, 2])

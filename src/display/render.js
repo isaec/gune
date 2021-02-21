@@ -24,15 +24,6 @@ module.exports.Screen = function (engine) {
         return visuals[entityType]
     }
 
-    this.getPlayer = (world) => {
-        for (const entity of world.entities) {
-            if (entity.id === this.engine.uuid) {
-                this.player = entity
-                return entity
-            }
-        }
-        return null
-    }
 
     this.mapGlyph = {
         0: { //unknown

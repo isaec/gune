@@ -70,7 +70,7 @@ class Move extends Action {
         action.apply = function (taker, engine, worldAction = undefined) {
             taker.x += this.dx
             taker.y += this.dy
-            if (worldAction) worldAction.changedEntity(taker)
+            if (worldAction) worldAction.changedP(taker)
         }
     }
 }
