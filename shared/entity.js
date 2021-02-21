@@ -21,7 +21,7 @@ class Entity {
             worldAction.removeAnyId(entity.id, entity.type)
             return false
         }
-        worldAction.changedE(entity)
+        worldAction.changedAny(entity)
         return true
     }
     static bleed(entity, worldAction) {

@@ -83,6 +83,11 @@ module.exports.Engine = function (connection) {
     //functions
     this.player = undefined
     this.getPlayer = () => {
+        for (const player of this.world.entities) {
+            if (player.id === this.uuid) {
+                alert("oh god")
+            }
+        }
         if (this.player) return this.player
         for (const player of this.world.players) {
             if (player.id === this.uuid) {

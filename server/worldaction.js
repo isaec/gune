@@ -43,6 +43,7 @@ module.exports.WorldAction = function (world) {
 
     this.changedE = (entity) => this.eActions.push(entity)
     this.changedP = (player) => this.pActions.push(player)
+    this.changedAny = (any) => any.type === eType.player ? this.changedP(any) : this.changedE(any)
 
     this.setTile = (x, y, value) => {
         this.world.map.tiles.set(x, y, value)
