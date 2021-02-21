@@ -17,7 +17,7 @@ class World {
                 return [index, entity]
             }
         }
-        return null
+        return [undefined, undefined]
     }
     add(entity) { this.entities.push(entity) }
     entityAt(x, y) {
