@@ -73,7 +73,7 @@ module.exports.Engine = function (connection) {
 
     window.addEventListener("keydown", this.keyHandler.keydown)
     window.addEventListener("keyup", this.keyHandler.keyup)
-    window.addEventListener("blur", () => { this.keyHandler.pressed.clear() })
+    window.addEventListener("blur", this.keyHandler.clearPressed)
     const canvas = this.display.getContainer()
     canvas.addEventListener("click", this.mouseHandler.click)
     canvas.addEventListener("mousemove", this.mouseHandler.mousemove)
@@ -92,6 +92,27 @@ module.exports.Engine = function (connection) {
         }
         alert("this should not have happened.")
         return undefined
+    }
+
+    this.playerSync = (player) => {
+        this.player = player
+        this.healthBar.max = player.maxHp
+        this.healthBar.value = player.hp
+    }
+
+    this.playerDead = () => {
+        this.guiConsole.print( new guiconsole.ConsoleLine("death"))
+        this.player = undefined
+        this.getPlayer = () => undefined
+        window.removeEventListener("keydown", this.keyHandler.keydown)
+        window.removeEventListener("keyup", this.keyHandler.keyup)
+        window.removeEventListener("blur", this.keyHandler.clearPressed)
+        canvas.removeEventListener("click", this.mouseHandler.click)
+        canvas.removeEventListener("mousemove", this.mouseHandler.mousemove)
+        canvas.removeEventListener("mouseout", this.mouseHandler.mouseout)
+        clearInterval(this.keyHandler.interval)
+        this.mouseHandler = undefined
+        this.keyHandler = undefined
     }
 
 }
