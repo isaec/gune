@@ -29,11 +29,32 @@ class Engine {
         ], 25)
         for (let ent of this.world.entities) {
             if (ent.type === entity.Type.player || ent.hp <= 0) continue
-            let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y), this.world.entityAt.bind(this.world))
+            let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y),
+                (
+                    (x, y) => {
+                        const enAt = this.world.getEntityAt(x, y)
+                        return (enAt && (enAt.faction === ent.faction))
+                    }
+                ).bind(this.world)
+            )
             if (moveCord) {
-                ent.x += moveCord.x
-                ent.y += moveCord.y
-                worldAction.changedEntity(ent)
+                let target = this.world.getEntityAt(ent.x + moveCord.x, ent.y + moveCord.y)
+                if(target) {
+                    target.hp --
+                    worldAction.changedEntity(target)
+                    if (entity.Entity.setAlive(target, worldAction)) {
+                        worldAction.addLog(`${ent.name ? ent.name : ent.type} harms \
+                        ${target.name ? target.name : target.type} for 1 damage`, [4, 2, 2])
+                    } else {
+                        worldAction.addLog(`${ent.name ? ent.name : ent.type} ends \
+                        the life of ${target.name ? target.name : target.type}`, [5, 3, 1])
+                    }
+                } else {
+                    ent.x += moveCord.x
+                    ent.y += moveCord.y
+                    worldAction.changedEntity(ent)
+                }
+                
             }
         }
     }
@@ -81,7 +102,7 @@ class Engine {
     }
     updateClients(app, worldAction) {
         if (!worldAction) throw "need world action"
-        if(worldAction.empty()) return //dont send empty action
+        if (worldAction.empty()) return //dont send empty action
         app.publish(MESSAGE_ENUM.SERVER_ACTION,
             JSON.stringify(
                 {
