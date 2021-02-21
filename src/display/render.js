@@ -90,7 +90,7 @@ module.exports.Screen = function (engine) {
         const map = this.engine.world.map
         let seenMap = this.engine.world.seenMap.tiles
 
-        const player = this.getPlayer(this.engine.world)
+        const player = this.engine.getPlayer()//this.getPlayer(this.engine.world)
         if (player == undefined) {//dont render if the world doesnt have the player in it
             this.engine.display.drawText(
                 this._errorPos % 5, this._errorPos++, 
