@@ -77,9 +77,11 @@ module.exports.Screen = function (engine) {
     //values of [char, fg, and optional bg]
     this.glyphMap = new FArray(this.engine.world.map.width)
 
+    //keep track of position on screen for joke error
+    this._errorPos = 0
+
 
     this.render = function (world) {
-        this.engine.display.clear() //clear screen
 
         //clear arrays
         this.lightMap.clean()
@@ -89,7 +91,15 @@ module.exports.Screen = function (engine) {
         let seenMap = this.engine.world.seenMap.tiles
 
         const player = this.getPlayer(this.engine.world)
-        if (player === null) console.log("woah")//return //dont render if the world doesnt have the player in it
+        if (player == undefined) {//dont render if the world doesnt have the player in it
+            this.engine.display.drawText(
+                this._errorPos % 5, this._errorPos++, 
+                `error: you have become %c{rgb(${['200,0,0','200,100,0','200,0,100'][this._errorPos % 3]})}dead`
+            )
+            return
+        }
+
+        this.engine.display.clear() //clear screen
 
         //calculate light levels and such
         //NOTE this should be verified serverside later

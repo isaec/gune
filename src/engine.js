@@ -91,7 +91,7 @@ module.exports.Engine = function (connection) {
             }
         }
         alert("this should not have happened.")
-        return null
+        return undefined
     }
 
 }
