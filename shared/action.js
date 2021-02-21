@@ -48,8 +48,7 @@ class Move extends Action {
                 taker.hp > 0
             ) {
                 if (clientSide) {
-                    //this.apply(taker, engine)
-                    engine.screen.render(engine.world)
+                    this.apply(taker, engine)
                 }
                 return true
             } else {

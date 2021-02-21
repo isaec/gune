@@ -45,7 +45,10 @@ module.exports.Engine = function (connection) {
     }
 
     this.loadIfReady = () => {
-        if (this._screenReady() && !this.screen) this.screen = new render.Screen(this)
+        if (this._screenReady() && !this.screen) {
+            this.screen = new render.Screen(this)
+            this.screen.beginRender()
+        }
         if (this._barsReady() && !(this.levelBar || this.healthBar)) {
             const player = this.getPlayer()
             this.healthBar = new Bar(

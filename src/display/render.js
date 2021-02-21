@@ -71,9 +71,11 @@ module.exports.Screen = function (engine) {
     //keep track of position on screen for joke error
     this._errorPos = 0
 
+    this.beginRender = function () {
+        window.requestAnimationFrame(this._render.bind(this))
+    }
 
-    this.render = function (world) {
-
+    this._render = function () {
         //clear arrays
         this.lightMap.clean()
         this.glyphMap.clean()
@@ -152,5 +154,7 @@ module.exports.Screen = function (engine) {
                 this.engine.display.draw(x, y, ch, fg, bg)
             }
         }
+
+        window.requestAnimationFrame(this._render.bind(this))
     }
 }
