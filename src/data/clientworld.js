@@ -88,8 +88,8 @@ module.exports = function (engine, world) {
             }
         }
         if (actions.pDelete) for (const uuid of actions.pDelete) {
-            for (const [index, entity] of this.players.entries()) {
-                if (entity.id === uuid) {
+            for (const [index, player] of this.players.entries()) {
+                if (player.id === uuid) {
                     this.players.splice(index, 1)
                     break
                 }
