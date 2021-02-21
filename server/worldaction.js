@@ -6,7 +6,8 @@ module.exports.WorldAction = function (world) {
     this.world = world
     this.eActions = []
     this.pActions = []
-    this.delete = []
+    this.eDelete = []
+    this.pDelete = []
     this.tileActions = []
     this.logs = [] //use bitmask eventually
     this.addE = (entity) => {
@@ -19,16 +20,25 @@ module.exports.WorldAction = function (world) {
         this.pActions.push(player)
     }
 
-    this.removeEntityIndex = (index) => {
-        this.delete.push(this.world.entities[index].id)
+    this.removeEIndex = (index) => {
+        this.eDelete.push(this.world.entities[index].id)
         this.world.entities.splice(index, 1)
     }
-    this.removeEntityId = (id) => {
-        const [index,] = this.world.getEntity(id)
-        this.removeEntityIndex(index)
+    this.removePIndex = (index) => {
+        this.pDelete.push(this.world.players[index].id)
+        this.world.players.splice(index, 1)
+    }
+    this.removeEId = (id) => {
+        const [index,] = this.world.getE(id)
+        this.removeEIndex(index)
+    }
+    this.removePId = (id) => {
+        const [index,] = this.world.getP(id)
+        this.removePIndex(index)
     }
 
-    this.changedEntity = (entity) => this.actions.push(entity)
+    this.changedE = (entity) => this.eActions.push(entity)
+    this.changedP = (player) => this.pActions.push(player)
 
     this.setTile = (x, y, value) => {
         this.world.map.tiles.set(x, y, value)
@@ -57,14 +67,20 @@ module.exports.WorldAction = function (world) {
         }
     )
 
-    this.empty = () => this.pActions.length + this.eActions.length + this.delete.length + this.tileActions.length === 0
+    this.empty = () =>
+        this.pActions.length +
+        this.eActions.length +
+        this.pDelete.length +
+        this.eDelete.length +
+        this.tileActions.length === 0
 
     this.publish = () => {
         return {
             eActions: undef(this.eActions),
             pActions: undef(this.pActions),
             tileActions: undef(this.tileActions),
-            delete: undef(this.delete),
+            pDelete: undef(this.pDelete),
+            eDelete: undef(this.eDelete),
             logs: undef(this.logs),
         }
     }
