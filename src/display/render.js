@@ -71,6 +71,14 @@ module.exports.Screen = function (engine) {
     //keep track of position on screen for joke error
     this._errorPos = 0
 
+    this._drawError = function () {
+        this.engine.display.drawText(
+            this._errorPos % 5, this._errorPos++,
+            `error: you have become %c{rgb(${['200,0,0', '200,100,0', '200,0,100'][this._errorPos % 3]})}dead`
+        )
+        if (this._errorPos < 35) window.setTimeout(this._drawError.bind(this), Math.floor(Math.random() * 3500))
+    }
+
     this.beginRender = function () {
         window.requestAnimationFrame(this._render.bind(this))
     }
@@ -85,10 +93,7 @@ module.exports.Screen = function (engine) {
 
         const player = this.engine.getPlayer()//this.getPlayer(this.engine.world)
         if (player == undefined) {//dont render if the world doesnt have the player in it
-            this.engine.display.drawText(
-                this._errorPos % 5, this._errorPos++, 
-                `error: you have become %c{rgb(${['200,0,0','200,100,0','200,0,100'][this._errorPos % 3]})}dead`
-            )
+            this._drawError()
             return
         }
 
