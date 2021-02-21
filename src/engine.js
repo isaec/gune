@@ -81,18 +81,13 @@ module.exports.Engine = function (connection) {
 
 
     //functions
-    this.player = undefined
+    this._pIndex = undefined
     this.getPlayer = () => {
-        for (const player of this.world.entities) {
-            if (player.id === this.uuid) {
-                alert("oh god")
-            }
-        }
-        if (this.player) return this.player
-        for (const player of this.world.players) {
-            if (player.id === this.uuid) {
-                this.player = player
-                return player
+        if (this._pIndex) return this.world.players[this._pIndex]
+        for (let i = 0; i < this.world.players.length; i++) {
+            if (this.world.players[i].id === this.uuid) {
+                this._pIndex = i
+                return this.world.players[i]
             }
         }
         console.log("this should not have happened.")
