@@ -41,6 +41,11 @@ module.exports = function (engine, world) {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return conditional(entity.x, entity.y) ? entity : undefined
         return undefined
     }
+    this.getAnyAtConditional = (x, y, conditional) => {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return conditional(entity.x, entity.y) ? entity : undefined
+        for (const player of this.players) if (player.x === x && player.y === y) return conditional(player.x, player.y) ? player : undefined
+        return undefined
+    }
     this.applyActions = (actions) => {
         if (actions.eActions) for (const action of actions.eActions) {
             let done = false
