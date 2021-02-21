@@ -96,6 +96,10 @@ module.exports.Engine = function (connection) {
 
     this.playerSync = () => {
         const player = this.getPlayer()
+        if (!player) {
+            this.playerDead()
+            return
+        }
         this.healthBar.max = player.maxHp
         this.healthBar.value = player.hp
     }

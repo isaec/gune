@@ -61,19 +61,22 @@ module.exports = function (engine, world) {
             if (!done) this.entities.push(action)
 
         }
-        if (actions.pActions) for (const action of actions.pActions) {
-            let done = false
-            for (const [index, player] of this.players.entries()) {
-                if (player.id === action.id) {
-                    //the entity has been found, so update it
-                    this.players[index] = action
-                    done = true
-                    break
+        if (actions.pActions) {
+            for (const action of actions.pActions) {
+                let done = false
+                for (const [index, player] of this.players.entries()) {
+                    if (player.id === action.id) {
+                        //the entity has been found, so update it
+                        this.players[index] = action
+                        done = true
+                        break
+                    }
                 }
-            }
-            //if the entity did not exist, add it
-            if (!done) this.players.push(action)
+                //if the entity did not exist, add it
+                if (!done) this.players.push(action)
 
+            }
+            this.engine.playerSync()
         }
         if (actions.tileActions) for (const tileAction of actions.tileActions) {
             this.map.tiles.set(tileAction.x, tileAction.y, tileAction.value)
@@ -87,13 +90,16 @@ module.exports = function (engine, world) {
                 }
             }
         }
-        if (actions.pDelete) for (const uuid of actions.pDelete) {
-            for (const [index, player] of this.players.entries()) {
-                if (player.id === uuid) {
-                    this.players.splice(index, 1)
-                    break
+        if (actions.pDelete) {
+            for (const uuid of actions.pDelete) {
+                for (const [index, player] of this.players.entries()) {
+                    if (player.id === uuid) {
+                        this.players.splice(index, 1)
+                        break
+                    }
                 }
             }
+            this.engine.playerSync()
         }
 
         if (actions.logs) for (const log of actions.logs) {
