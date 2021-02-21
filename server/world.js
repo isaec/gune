@@ -13,7 +13,7 @@ class World {
         //long term, a different data solution would be better
     }
 
-    getEntity(uuid) {
+    getE(uuid) {
         for (const [index, entity] of this.entities.entries()) {
             if (entity.id === uuid) {
                 return [index, entity]
@@ -21,7 +21,7 @@ class World {
         }
         return [undefined, undefined]
     }
-    getPlayer(uuid) {
+    getP(uuid) {
         for (const [index, player] of this.players.entries()) {
             if (player.id === uuid) {
                 return [index, player]

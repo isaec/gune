@@ -1,5 +1,5 @@
 
-
+const eType = require("../shared/entity").Type
 const undef = (array) => array.length > 0 ? array : undefined
 
 module.exports.WorldAction = function (world) {
@@ -35,6 +35,10 @@ module.exports.WorldAction = function (world) {
     this.removePId = (id) => {
         const [index,] = this.world.getP(id)
         this.removePIndex(index)
+    }
+    this.removeAnyId = (id, type) => {
+        if (type === eType.player) this.removePId(id)
+        else this.removeEId(id)
     }
 
     this.changedE = (entity) => this.eActions.push(entity)

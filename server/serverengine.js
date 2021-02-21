@@ -61,7 +61,7 @@ class Engine {
     }
 
     clientAction(id, act, worldAction) {
-        let [, player] = this.world.getPlayer(id)
+        let [, player] = this.world.getP(id)
 
         if (player) {
 

@@ -18,7 +18,7 @@ class Entity {
     static setAlive(entity, worldAction) {
         this.bleed(entity, worldAction)
         if (!entity.hp > 0) {
-            worldAction.removeEntityId(entity.id)
+            worldAction.removeAnyId(entity.id, entity.type)
             return false
         }
         worldAction.changedE(entity)
