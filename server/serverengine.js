@@ -18,7 +18,7 @@ class Engine {
     _spawnEntites(world) {
         for (const room of world.map.digger.getRooms()) {
             let b = world.validSpace(room)
-            world.add(entityTemplate["hellSpawn"](b[0], b[1]))
+            world.addE(entityTemplate["hellSpawn"](b[0], b[1]))
         }
     }
     //game logic zone
@@ -32,13 +32,14 @@ class Engine {
             let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y),
                 (
                     (x, y) => {
-                        const enAt = this.world.getEntityAt(x, y)
+                        const enAt = this.world.getAnyAt(x, y)
                         return (enAt && (enAt.faction === ent.faction))
                     }
                 ).bind(this.world)
             )
             if (moveCord) {
-                let target = this.world.getEntityAt(ent.x + moveCord.x, ent.y + moveCord.y)
+                //CHANGE TO ANY IF NPC COULD ATTACK NPC
+                let target = this.world.getPlayerAt(ent.x + moveCord.x, ent.y + moveCord.y)
                 if(target) {
                     target.hp --
                     worldAction.changedEntity(target)
@@ -60,7 +61,7 @@ class Engine {
     }
 
     clientAction(id, act, worldAction) {
-        let [, player] = this.world.getEntity(id)
+        let [, player] = this.world.getPlayer(id)
 
         if (player) {
 

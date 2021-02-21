@@ -9,6 +9,8 @@ class World {
     constructor(width = 60, height = 35) {
         this.map = new gamemap.Map(width, height)
         this.entities = [] //new array
+        this.players = [] //keeping in own array speeds lookup
+        //long term, a different data solution would be better
     }
 
     getEntity(uuid) {
@@ -19,13 +21,40 @@ class World {
         }
         return [undefined, undefined]
     }
-    add(entity) { this.entities.push(entity) }
+    getPlayer(uuid) {
+        for (const [index, player] of this.players.entries()) {
+            if (player.id === uuid) {
+                return [index, player]
+            }
+        }
+        return [undefined, undefined]
+    }
+    addE(entity) { this.entities.push(entity) }
+    addP(player) { this.players.push(player) }
     entityAt(x, y) {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
         return false
     }
+    playerAt(x, y) {
+        for (const player of this.players) if (player.x === x && player.y === y) return true
+        return false
+    }
+    anyAt(x, y) {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return true
+        for (const player of this.players) if (player.x === x && player.y === y) return true
+        return false
+    }
     getEntityAt(x, y) {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
+        return undefined
+    }
+    getPlayerAt(x, y) {
+        for (const player of this.players) if (player.x === x && player.y === y) return player
+        return undefined
+    }
+    getAnyAt(x, y) {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
+        for (const player of this.players) if (player.x === x && player.y === y) return player
         return undefined
     }
     validSpace(room) {
