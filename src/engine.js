@@ -84,10 +84,10 @@ module.exports.Engine = function (connection) {
     this.player = undefined
     this.getPlayer = () => {
         if (this.player) return this.player
-        for (const entity of this.world.entities) {
-            if (entity.id === this.uuid) {
-                this.player = entity
-                return entity
+        for (const player of this.world.players) {
+            if (player.id === this.uuid) {
+                this.player = player
+                return player
             }
         }
         console.log("this should not have happened.")
