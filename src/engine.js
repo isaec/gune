@@ -107,6 +107,7 @@ module.exports.Engine = function (connection) {
     }
 
     this.playerDead = () => {
+        this.playerSync = () => undefined
         this.guiConsole.print(new guiconsole.ConsoleLine("connection to your gune has been lost", [4, 1, 1]))
         this._pIndex = undefined
         this.getPlayer = () => undefined
@@ -119,6 +120,7 @@ module.exports.Engine = function (connection) {
         clearInterval(this.keyHandler.interval)
         this.mouseHandler = undefined
         this.keyHandler = undefined
+        this.playerDead = () => undefined
     }
 
 }
