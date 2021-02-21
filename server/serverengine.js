@@ -53,7 +53,7 @@ class Engine {
                 } else {
                     ent.x += moveCord.x
                     ent.y += moveCord.y
-                    worldAction.changedEntity(ent)
+                    worldAction.changedE(ent)
                 }
                 
             }
@@ -102,7 +102,6 @@ class Engine {
         )
     }
     updateClients(app, worldAction) {
-        if (!worldAction) throw "need world action"
         if (worldAction.empty()) return //dont send empty action
         app.publish(MESSAGE_ENUM.SERVER_ACTION,
             JSON.stringify(

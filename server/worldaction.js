@@ -79,8 +79,8 @@ module.exports.WorldAction = function (world) {
             eActions: undef(this.eActions),
             pActions: undef(this.pActions),
             tileActions: undef(this.tileActions),
-            pDelete: undef(this.pDelete),
             eDelete: undef(this.eDelete),
+            pDelete: undef(this.pDelete),
             logs: undef(this.logs),
         }
     }
