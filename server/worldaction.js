@@ -4,13 +4,19 @@ const undef = (array) => array.length > 0 ? array : undefined
 
 module.exports.WorldAction = function (world) {
     this.world = world
-    this.actions = []
+    this.eActions = []
+    this.pActions = []
     this.delete = []
     this.tileActions = []
     this.logs = [] //use bitmask eventually
-    this.addEntity = (entity) => {
+    this.addE = (entity) => {
         this.world.entities.push(entity)
-        this.actions.push(entity)
+        this.eActions.push(entity)
+    }
+
+    this.addP = (player) => {
+        this.world.players.push(player)
+        this.pActions.push(player)
     }
 
     this.removeEntityIndex = (index) => {
@@ -51,11 +57,12 @@ module.exports.WorldAction = function (world) {
         }
     )
 
-    this.empty = () => this.actions.length + this.delete.length + this.tileActions.length === 0
+    this.empty = () => this.pActions.length + this.eActions.length + this.delete.length + this.tileActions.length === 0
 
     this.publish = () => {
         return {
-            actions: undef(this.actions),
+            eActions: undef(this.eActions),
+            pActions: undef(this.pActions),
             tileActions: undef(this.tileActions),
             delete: undef(this.delete),
             logs: undef(this.logs),
