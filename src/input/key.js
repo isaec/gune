@@ -5,6 +5,7 @@ module.exports.KeyHandler = function (engine) {
     this.engine = engine
 
     this.pressed = new Set()
+    this.clearPressed = (event) => {this.pressed.clear()}
     this.buffer = new Set()
     this.validmoves = new Set([
         "w", "a", "s", "d",

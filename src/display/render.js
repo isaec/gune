@@ -24,15 +24,6 @@ module.exports.Screen = function (engine) {
         return visuals[entityType]
     }
 
-    this.getPlayer = (world) => {
-        for (const entity of world.entities) {
-            if (entity.id === this.engine.uuid) {
-                this.player = entity
-                return entity
-            }
-        }
-        return null
-    }
 
     this.mapGlyph = {
         0: { //unknown
@@ -77,10 +68,22 @@ module.exports.Screen = function (engine) {
     //values of [char, fg, and optional bg]
     this.glyphMap = new FArray(this.engine.world.map.width)
 
+    //keep track of position on screen for joke error
+    this._errorPos = 0
 
-    this.render = function (world) {
-        this.engine.display.clear() //clear screen
+    this._drawError = function () {
+        this.engine.display.drawText(
+            this._errorPos % 5, this._errorPos++,
+            `error: you have become %c{rgb(${['200,0,0', '200,100,0', '200,0,100'][this._errorPos % 3]})}dead`
+        )
+        if (this._errorPos < 35) window.setTimeout(this._drawError.bind(this), Math.floor(Math.random() * 3500))
+    }
 
+    this.beginRender = function () {
+        window.requestAnimationFrame(this._render.bind(this))
+    }
+
+    this._render = function () {
         //clear arrays
         this.lightMap.clean()
         this.glyphMap.clean()
@@ -88,8 +91,13 @@ module.exports.Screen = function (engine) {
         const map = this.engine.world.map
         let seenMap = this.engine.world.seenMap.tiles
 
-        const player = this.getPlayer(this.engine.world)
-        if (player === null) console.log("woah")//return //dont render if the world doesnt have the player in it
+        const player = this.engine.getPlayer()//this.getPlayer(this.engine.world)
+        if (player == undefined) {//dont render if the world doesnt have the player in it
+            this._drawError()
+            return
+        }
+
+        this.engine.display.clear() //clear screen
 
         //calculate light levels and such
         //NOTE this should be verified serverside later
@@ -99,9 +107,8 @@ module.exports.Screen = function (engine) {
         )
 
 
-        for (const entity of this.engine.world.entities) {
-            if (entity.type !== entityTypes.player) continue
-            fov.compute(entity.x, entity.y, 10, (x, y, r, visibility) => {
+        for (const eplayer of this.engine.world.players) {
+            fov.compute(eplayer.x, eplayer.y, 10, (x, y, r, visibility) => {
                 seenMap.set(x, y, true)
                 if (this.lightMap.get(x, y) < visibility ||
                     this.lightMap.get(x, y) == undefined) {
@@ -111,8 +118,11 @@ module.exports.Screen = function (engine) {
             })
         }
 
-        for (let entity of this.engine.world.entities.values()) {
+        for (let entity of this.engine.world.entities) {
             this.glyphMap.set(entity.x, entity.y, this.entityGlyph(entity.type))
+        }
+        for (let eplayer of this.engine.world.players) {
+            this.glyphMap.set(eplayer.x, eplayer.y, this.entityGlyph(eplayer.type))
         }
 
 
@@ -149,5 +159,7 @@ module.exports.Screen = function (engine) {
                 this.engine.display.draw(x, y, ch, fg, bg)
             }
         }
+
+        window.requestAnimationFrame(this._render.bind(this))
     }
 }

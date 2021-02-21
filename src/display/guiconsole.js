@@ -39,7 +39,7 @@ module.exports.GuiConsole = function () {
         displayLines.reverse()
         this.messages.innerHTML = displayLines.join("\n")
 
-        //this.messages.scrollTop = this.messages.scrollHeight
+        //this.messages.scrollTo({top: this.messages.scrollHeight - 5, behavior: 'smooth'})
     }
 }
 

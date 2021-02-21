@@ -44,10 +44,11 @@ class Move extends Action {
                 !entityAt
                 && //if the distance being moved is only 1 tile
                 totalDistLessThen(taker, newX, newY, 1)
+                && //and the taker is alive
+                taker.hp > 0
             ) {
                 if (clientSide) {
                     this.apply(taker, engine)
-                    engine.screen.render(engine.world)
                 }
                 return true
             } else {
@@ -68,7 +69,7 @@ class Move extends Action {
         action.apply = function (taker, engine, worldAction = undefined) {
             taker.x += this.dx
             taker.y += this.dy
-            if (worldAction) worldAction.changedEntity(taker)
+            if (worldAction) worldAction.changedP(taker)
         }
     }
 }
@@ -104,6 +105,8 @@ class Melee extends Action {
                 totalDistLessThen(taker, newX, newY, 1)
                 && //and the combatents don't share a faction
                 taker.faction !== entityAt.faction
+                && //and the taker is alive
+                taker.hp > 0
         }
         melee.apply = function (taker, engine, worldAction = undefined) {
             let target = engine.world.getEntityAt(taker.x + this.dx, taker.y + this.dy)

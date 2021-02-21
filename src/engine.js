@@ -45,7 +45,10 @@ module.exports.Engine = function (connection) {
     }
 
     this.loadIfReady = () => {
-        if (this._screenReady() && !this.screen) this.screen = new render.Screen(this)
+        if (this._screenReady() && !this.screen) {
+            this.screen = new render.Screen(this)
+            this.screen.beginRender()
+        }
         if (this._barsReady() && !(this.levelBar || this.healthBar)) {
             const player = this.getPlayer()
             this.healthBar = new Bar(
@@ -73,7 +76,7 @@ module.exports.Engine = function (connection) {
 
     window.addEventListener("keydown", this.keyHandler.keydown)
     window.addEventListener("keyup", this.keyHandler.keyup)
-    window.addEventListener("blur", () => { this.keyHandler.pressed.clear() })
+    window.addEventListener("blur", this.keyHandler.clearPressed)
     const canvas = this.display.getContainer()
     canvas.addEventListener("click", this.mouseHandler.click)
     canvas.addEventListener("mousemove", this.mouseHandler.mousemove)
@@ -81,17 +84,41 @@ module.exports.Engine = function (connection) {
 
 
     //functions
-    this.player = undefined
+    this._pIndex = undefined
     this.getPlayer = () => {
-        if (this.player) return this.player
-        for (const entity of this.world.entities) {
-            if (entity.id === this.uuid) {
-                this.player = entity
-                return entity
+        if (this.world.players[this._pIndex] && this.world.players[this._pIndex].id === this.uuid) return this.world.players[this._pIndex]
+        for (let i = 0; i < this.world.players.length; i++) {
+            if (this.world.players[i].id === this.uuid) {
+                this._pIndex = i
+                return this.world.players[i]
             }
         }
-        alert("this should not have happened.")
-        return null
+        return undefined
+    }
+
+    this.playerSync = () => {
+        const player = this.getPlayer()
+        if (!player) {
+            this.playerDead()
+            return
+        }
+        this.healthBar.max = player.maxHp
+        this.healthBar.value = player.hp
+    }
+
+    this.playerDead = () => {
+        this.guiConsole.print(new guiconsole.ConsoleLine("connection to your gune has been lost", [4, 1, 1]))
+        this._pIndex = undefined
+        this.getPlayer = () => undefined
+        window.removeEventListener("keydown", this.keyHandler.keydown)
+        window.removeEventListener("keyup", this.keyHandler.keyup)
+        window.removeEventListener("blur", this.keyHandler.clearPressed)
+        canvas.removeEventListener("click", this.mouseHandler.click)
+        canvas.removeEventListener("mousemove", this.mouseHandler.mousemove)
+        canvas.removeEventListener("mouseout", this.mouseHandler.mouseout)
+        clearInterval(this.keyHandler.interval)
+        this.mouseHandler = undefined
+        this.keyHandler = undefined
     }
 
 }

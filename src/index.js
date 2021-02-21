@@ -12,9 +12,6 @@ const engine = new eng.Engine(connection)
 const MESSAGE_ENUM = require("/server/message").MESSAGE_ENUM
 
 
-//stupid fix to redraw world when font is ready
-window.addEventListener("load", () => { engine.screen.render(engine.world) })
-
 
 connection.onopen = () => {
     engine.guiConsole.print(
@@ -39,13 +36,11 @@ connection.onmessage = msg => {
 
         case MESSAGE_ENUM.SERVER_ENTITYUPDATE: {
             engine.world.entityUpdate(srvMsg.body.entities)
-            engine.screen.render(engine.world)
             break
         }
 
         case MESSAGE_ENUM.SERVER_ACTION: {
             engine.world.applyActions(srvMsg.body.action)
-            engine.screen.render(engine.world)
             break
         }
 

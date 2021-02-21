@@ -1,28 +1,49 @@
 
-
+const eType = require("../shared/entity").Type
 const undef = (array) => array.length > 0 ? array : undefined
 
 module.exports.WorldAction = function (world) {
     this.world = world
-    this.actions = []
-    this.delete = []
+    this.eActions = []
+    this.pActions = []
+    this.eDelete = []
+    this.pDelete = []
     this.tileActions = []
     this.logs = [] //use bitmask eventually
-    this.addEntity = (entity) => {
+    this.addE = (entity) => {
         this.world.entities.push(entity)
-        this.actions.push(entity)
+        this.eActions.push(entity)
     }
 
-    this.removeEntityIndex = (index) => {
-        this.delete.push(this.world.entities[index].id)
+    this.addP = (player) => {
+        this.world.players.push(player)
+        this.pActions.push(player)
+    }
+
+    this.removeEIndex = (index) => {
+        this.eDelete.push(this.world.entities[index].id)
         this.world.entities.splice(index, 1)
     }
-    this.removeEntityId = (id) => {
-        const [index,] = this.world.getEntity(id)
-        this.removeEntityIndex(index)
+    this.removePIndex = (index) => {
+        this.pDelete.push(this.world.players[index].id)
+        this.world.players.splice(index, 1)
+    }
+    this.removeEId = (id) => {
+        const [index,] = this.world.getE(id)
+        this.removeEIndex(index)
+    }
+    this.removePId = (id) => {
+        const [index,] = this.world.getP(id)
+        this.removePIndex(index)
+    }
+    this.removeAnyId = (id, type) => {
+        if (type === eType.player) this.removePId(id)
+        else this.removeEId(id)
     }
 
-    this.changedEntity = (entity) => this.actions.push(entity)
+    this.changedE = (entity) => this.eActions.push(entity)
+    this.changedP = (player) => this.pActions.push(player)
+    this.changedAny = (any) => any.type === eType.player ? this.changedP(any) : this.changedE(any)
 
     this.setTile = (x, y, value) => {
         this.world.map.tiles.set(x, y, value)
@@ -51,13 +72,20 @@ module.exports.WorldAction = function (world) {
         }
     )
 
-    this.empty = () => this.actions.length + this.delete.length + this.tileActions.length === 0
+    this.empty = () =>
+        this.pActions.length +
+        this.eActions.length +
+        this.pDelete.length +
+        this.eDelete.length +
+        this.tileActions.length === 0
 
     this.publish = () => {
         return {
-            actions: undef(this.actions),
+            eActions: undef(this.eActions),
+            pActions: undef(this.pActions),
             tileActions: undef(this.tileActions),
-            delete: undef(this.delete),
+            eDelete: undef(this.eDelete),
+            pDelete: undef(this.pDelete),
             logs: undef(this.logs),
         }
     }

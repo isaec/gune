@@ -79,7 +79,7 @@ app.ws("/ws", {
 
         //add this new connection as a player with a random position in the world
         const [tarX, tarY] = engine.world.validSpace(engine.world.randomRoom())
-        worldAction.addEntity(new entity.Entity(entity.Type.player, tarX, tarY, 25, faction.gune, ws.id, ws.username))
+        worldAction.addP(new entity.Entity(entity.Type.player, tarX, tarY, 25, faction.gune, ws.id, ws.username))
 
         //send the socket the entire world
         engine.sendFullWorld(ws)
@@ -117,10 +117,10 @@ app.ws("/ws", {
         app.SOCKETS.find((socket, i) => { //removes socket
             if (socket && socket.id === ws.id) app.SOCKETS.splice(i, 1)
         })
-        const [index, ent] = engine.world.getEntity(ws.id)
+        const [index, ent] = engine.world.getP(ws.id)
         if (ent) {
             let worldAction = new WorldAction(engine.world)
-            worldAction.removeEntityIndex(index)
+            worldAction.removePIndex(index)
             engine.updateClients(app, worldAction)
         }
 
