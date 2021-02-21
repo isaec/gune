@@ -37,6 +37,11 @@ module.exports = function (engine, world) {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
         return undefined
     }
+    this.getAnyAt = (x, y) => {
+        for (const entity of this.entities) if (entity.x === x && entity.y === y) return entity
+        for (const player of this.players) if (player.x === x && player.y === y) return player
+        return undefined
+    }
     this.getEntityAtConditional = (x, y, conditional) => {
         for (const entity of this.entities) if (entity.x === x && entity.y === y) return conditional(entity.x, entity.y) ? entity : undefined
         return undefined
