@@ -49,7 +49,7 @@ module.exports.Screen = function (engine) {
         3: { //red bloody floor
             ch: ".",
             fg: new Color(4, 2, 2),
-            bg: new Color(2, 1, 1)
+            bg: new Color(2, 0, 0)
         },
         4: { //blue bloody floor
             ch: ".",
