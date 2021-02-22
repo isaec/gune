@@ -12,6 +12,7 @@ class Bar {
         this.emptyColor = emptyColor
         this.label = label
         this.charAmount = 0
+        this._boundRedrawText = this._redrawText.bind(this)
         this.pre = document.querySelector(this.id)
         if (this.pre === null) throw `invalid id ${this.id}`
         window.addEventListener("resize", this.safeUpdate.bind(this))
@@ -33,7 +34,7 @@ class Bar {
     set value(value) {
         if (value !== this._value) {
             this._value = Math.max(0, value)
-            this._redrawText()
+            this.redrawText()
         }
     }
     makeBar(maxLength = this.max) {
@@ -63,9 +64,9 @@ class Bar {
         let width = parseFloat(style.getPropertyValue("width"))
         let fontSize = parseFloat(style.getPropertyValue("font-size"))
         this.charAmount = Math.floor(width / (fontSize / 1.6))
-
-        this._redrawText()
+        this.redrawText()
     }
+    redrawText() { window.requestAnimationFrame(this._boundRedrawText) }
     _redrawText() {
         this.pre.innerHTML = this.makeLabel(
             this.makeBar(this.charAmount - this.nonBarLength)

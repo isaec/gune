@@ -24,7 +24,7 @@ module.exports.GuiConsole = function () {
         else {
             this.lines.push(consoleLine)
         }
-        this._update()
+        this.update()
     }
 
     this._update = () => {
@@ -41,6 +41,7 @@ module.exports.GuiConsole = function () {
 
         //this.messages.scrollTo({top: this.messages.scrollHeight - 5, behavior: 'smooth'})
     }
+    this.update = () => { window.requestAnimationFrame(this._update) }
 }
 
 class ConsoleLine {
