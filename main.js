@@ -78,7 +78,7 @@ app.ws("/ws", {
         let worldAction = new WorldAction(engine.world)
 
         //add this new connection as a player with a random position in the world
-        const [tarX, tarY] = engine.world.validSpace(engine.world.randomRoom())
+        const [tarX, tarY] = engine.world.playerSpawn()
         worldAction.addP(new entity.Entity(entity.Type.player, tarX, tarY, 25, faction.gune, ws.id, ws.username))
 
         //send the socket the entire world

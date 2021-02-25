@@ -65,11 +65,17 @@ class World {
             if (!this.entityAt(x, y)) { return [x, y] }
             else { tries++ }
         }
-        return null
+        return [undefined, undefined]
     }
     randomRoom() {
         const rooms = this.map.digger._rooms
         return rooms[Math.floor(Math.random() * rooms.length)]
+    }
+    //recursive and gross but really easy to write (=
+    playerSpawn(room = 0) {
+        let [x, y] = this.validSpace(this.map.digger._rooms[room])
+        if(x != undefined) return [x, y]
+        else return this.playerSpawn(room + 1)
     }
 }
 
