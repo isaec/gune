@@ -28,20 +28,20 @@ class Engine {
             new path.Cord(player.x, player.y)
         ], 25)
         for (let ent of this.world.entities) {
-            if (ent.type === entity.Type.player || ent.hp <= 0) continue
+            //if (ent.type === entity.Type.player || ent.hp <= 0) continue
             let moveCord = path.rollDown(dij.distance, new path.Cord(ent.x, ent.y),
                 (
                     (x, y) => {
                         const enAt = this.world.getAnyAt(x, y)
-                        return (enAt && (enAt.faction === ent.faction))
+                        return (enAt && (enAt.id !== player.id))
                     }
                 ).bind(this.world)
             )
             if (moveCord) {
                 //CHANGE TO ANY IF NPC COULD ATTACK NPC
                 let target = this.world.getPlayerAt(ent.x + moveCord.x, ent.y + moveCord.y)
-                if(target) {
-                    target.hp --
+                if (target) {
+                    target.hp--
                     worldAction.changedP(target)
                     if (entity.Entity.setAlive(target, worldAction)) {
                         worldAction.addLog(`${ent.name ? ent.name : ent.type} harms \
@@ -55,7 +55,6 @@ class Engine {
                     ent.y += moveCord.y
                     worldAction.changedE(ent)
                 }
-                
             }
         }
     }
