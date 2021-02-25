@@ -62,7 +62,7 @@ class World {
         while (tries < 50) {
             const y = randint(room.getLeft(), room.getRight()),
                 x = randint(room.getTop(), room.getBottom())
-            if (!this.entityAt(x, y)) { return [x, y] }
+            if (!this.anyAt(x, y)) { return [x, y] }
             else { tries++ }
         }
         return [undefined, undefined]
