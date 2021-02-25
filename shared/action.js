@@ -82,7 +82,7 @@ class Melee extends Action {
     static addMethods(melee) {
         melee.validate = function (taker, engine, clientSide = true) {
             const newX = taker.x + this.dx, newY = taker.y + this.dy
-            const entityAt = engine.world.getEntityAt(newX, newY)
+            const entityAt = engine.world.getAnyAt(newX, newY)
             if (clientSide) {
                 if (taker.faction === entityAt.faction) {
                     engine.guiConsole.print(
