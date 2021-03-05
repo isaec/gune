@@ -20,6 +20,7 @@ connection.onopen = () => {
 }
 
 connection.onclose = () => {
+    console.log("websocket connection closed")
     engine.guiConsole.print(
         new guiconsole.ConsoleLine("websocket closed (server disconnect)", [5, 2, 2])
     )
@@ -73,6 +74,9 @@ connection.onmessage = msg => {
 
 connection.onerror = error => {
     console.log(`WebSocket error: ${error}`)
+    engine.guiConsole.print(
+        new guiconsole.ConsoleLine(`WebSocket error: ${error}`, [2, 4, 4])
+    )
 }
 
 window.setInterval(function () {
