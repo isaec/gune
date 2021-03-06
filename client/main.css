@@ -63,6 +63,30 @@ pre {
     word-break: break-all;
 }
 
+button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 1.5vh 3vw;
+    margin: 0em .5em .5em;
+    outline: none;
+    font-family: Metrickal;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.8vmin;
+    transition-duration: 0.3s;
+}
+
+button:hover {
+    background-color: rgb(51, 0, 51);
+}
+
+button:active {
+    background-color: rgb(102, 0, 51);
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
 @font-face {
     font-family: Metrickal;
     src: url(../client/Metrickal-Regular.otf);
