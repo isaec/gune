@@ -73,6 +73,7 @@ button {
     font-family: Metrickal;
     text-align: center;
     text-decoration: none;
+    user-select: none;
     display: inline-block;
     font-size: 1.8vmin;
     transition-duration: 0.3s;
