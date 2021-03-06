@@ -79,7 +79,7 @@ module.exports.WorldAction = function (world) {
         this.eDelete.length +
         this.tileActions.length === 0
 
-    this.publish = () => {
+    this.toJSON = () => {
         return {
             eActions: undef(this.eActions),
             pActions: undef(this.pActions),

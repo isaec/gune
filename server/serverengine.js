@@ -108,7 +108,7 @@ class Engine {
                 {
                     type: MESSAGE_ENUM.SERVER_ACTION,
                     body: {
-                        action: worldAction.publish()
+                        action: worldAction
                     }
                 }
             )
