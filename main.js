@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid")
 const playerName = require("./server/playerName")
 const port = parseInt(process.env.PORT, 10) || 4141
 
-const { StringDecoder } = require('string_decoder')
+//const { StringDecoder } = require('string_decoder')
 const decoder = new TextDecoder('utf-8')
 
 const WorldAction = require("./server/worldaction").WorldAction

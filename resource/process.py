@@ -1,9 +1,6 @@
-from progress.bar import IncrementalBar as Bar
 import json
 
 # functions
-
-
 def count_char(str, chr):
     count = 0
     for char in str:

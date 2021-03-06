@@ -1,4 +1,3 @@
-const rot = require("rot-js")
 const action = require("/shared/action")
 
 module.exports.KeyHandler = function (engine) {

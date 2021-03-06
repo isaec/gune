@@ -1,7 +1,5 @@
-const rot = require("rot-js")
 const path = require("/shared/path")
 const guiconsole = require("/src/display/guiconsole")
-const FArray = require("/shared/array").FArray
 const action = require("/shared/action")
 
 module.exports.MouseHandler = function (engine) {

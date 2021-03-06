@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid")
-const playerName = require("../server/playerName")
+//const playerName = require("../server/playerName")
 const path = require("../shared/path")
 
 class Entity {
@@ -17,7 +17,7 @@ class Entity {
     }
     static setAlive(entity, worldAction) {
         this.bleed(entity, worldAction)
-        if (!entity.hp > 0) {
+        if (entity.hp <= 0) {
             worldAction.removeAnyId(entity.id, entity.type)
             return false
         }

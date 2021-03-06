@@ -1,7 +1,7 @@
-const render = require("/src/display/render")
+//const render = require("/src/display/render")
 //const color = require("/src/color")
 const guiconsole = require("/src/display/guiconsole")
-const clientworld = require("/src/data/clientworld")
+//const clientworld = require("/src/data/clientworld")
 const eng = require("/src/engine")
 const url = location.origin.replace(/^http/, 'ws') + "/ws"
 const connection = new WebSocket(url)

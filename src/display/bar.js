@@ -1,5 +1,3 @@
-const { mod } = require("rot-js/lib/util");
-
 const HC = require("/src/display/color").Html
 
 class Bar {
