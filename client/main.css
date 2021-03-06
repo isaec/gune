@@ -63,7 +63,7 @@ pre {
     word-break: break-all;
 }
 
-button {
+.button {
     background-color: black;
     border: none;
     color: white;
@@ -79,13 +79,16 @@ button {
     transition-duration: 0.3s;
 }
 
-button:hover {
+.button:active {
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.button-pink:hover {
     background-color: rgb(51, 0, 51);
 }
 
-button:active {
+.button-pink:active {
     background-color: rgb(102, 0, 51);
-    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 @font-face {
