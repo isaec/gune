@@ -1,7 +1,7 @@
 const rot = require("rot-js")
 
 //takes values 0 to 5, and then scales them based on light levels
-module.exports.Color = function (r, g, b) {
+const Color = function (r, g, b) {
     this.r = r
     this.g = g
     this.b = b
@@ -31,7 +31,13 @@ module.exports.Color = function (r, g, b) {
 
 //terribad spaggetii but works gud
 const rgbstring = (color) => `rgb(${color[0] * 51},${color[1] * 51},${color[2] * 51});`
-module.exports.Html = (text, color, bg = false) => !bg ?
+const Html = (text, color, bg = false) => !bg ?
     `<span style="color:${rgbstring(color)}">${text}</span>`
     : //pray you never debug this
     `<span style="color:${rgbstring(color)}background-color:${rgbstring(bg)}">${text}</span>`
+
+module.exports = {
+    Color,
+    rgbstring,
+    Html
+}
