@@ -6,6 +6,7 @@ const mouse = require("/src/input/mouse")
 const sendAction = require("/src/input/sendaction")
 const rot = require("rot-js")
 const Bar = require("/src/display/bar")
+const Button = require("/src/display/button")
 
 module.exports.Engine = function (connection) {
     //this block can be initialized right away
@@ -19,6 +20,7 @@ module.exports.Engine = function (connection) {
     this.guiConsole = new guiconsole.GuiConsole()
     this.actionHandler = new sendAction.ActionHandler(this)
 
+    this.musicButton = new Button("#music","test")
 
     //this block can't be loaded without help from the server
     this.world = undefined
