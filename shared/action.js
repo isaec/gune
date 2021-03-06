@@ -47,9 +47,19 @@ class Move extends Action {
                 && //and the taker is alive
                 taker.hp > 0
             ) {
-                if (clientSide) {
-                    this.apply(taker, engine)
-                }
+                /* 
+                this is clientside prediction for move
+                given all the new calculations, and how unrealistic <16 ms ping is
+                it can cause graphical glitches
+                ive elected to turn it off for the time being
+                in the future, this sort of thing should be a setting
+                it makes the game more responsive if your connection is bad
+                and still helps at bit at the cost of graphical glitch (flicker)
+                if your network is only meh (50-200ms) 
+                */
+                // if (clientSide) {
+                //     this.apply(taker, engine)
+                // }
                 return true
             } else {
                 if (clientSide) {
