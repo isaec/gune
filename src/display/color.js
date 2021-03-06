@@ -30,11 +30,11 @@ const Color = function (r, g, b) {
 }
 
 //terribad spaggetii but works gud
-const rgbstring = (color) => `rgb(${color[0] * 51},${color[1] * 51},${color[2] * 51});`
+const rgbstring = (color) => `rgb(${color[0] * 51},${color[1] * 51},${color[2] * 51})`
 const Html = (text, color, bg = false) => !bg ?
-    `<span style="color:${rgbstring(color)}">${text}</span>`
+    `<span style="color:${rgbstring(color)};">${text}</span>`
     : //pray you never debug this
-    `<span style="color:${rgbstring(color)}background-color:${rgbstring(bg)}">${text}</span>`
+    `<span style="color:${rgbstring(color)};background-color:${rgbstring(bg)};">${text}</span>`
 
 module.exports = {
     Color,

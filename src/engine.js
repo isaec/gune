@@ -20,7 +20,7 @@ module.exports.Engine = function (connection) {
     this.guiConsole = new guiconsole.GuiConsole()
     this.actionHandler = new sendAction.ActionHandler(this)
 
-    this.musicButton = new Button("#music","test")
+    this.musicButton = new Button("#music", "test", [1, 0, 1], [2, 0, 1])
 
     //this block can't be loaded without help from the server
     this.world = undefined
