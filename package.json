@@ -25,7 +25,6 @@
   "dependencies": {
     "postcss": "^8.2.4",
     "rot-js": "^2.1.5",
-    "tone": "^14.7.77",
     "uuidv4": "^6.2.6",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v18.13.0"
   },
