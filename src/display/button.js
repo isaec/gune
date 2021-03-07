@@ -1,11 +1,14 @@
 const rgbstring = require("/src/display/color").rgbstring
 
 class Button {
-    constructor(id, text) {
+    constructor(id, text, clickHandler) {
         this.id = id
         this._text = text
         this.button = document.querySelector(this.id)
         if (this.button === null) throw `invalid id ${this.id}`
+        if (clickHandler) {
+            this.button.addEventListener("click", clickHandler)
+        }
         this._boundUpdate = this._update.bind(this)
         this.update()
     }
