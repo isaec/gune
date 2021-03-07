@@ -9,6 +9,13 @@ class Button {
         this._boundUpdate = this._update.bind(this)
         this.update()
     }
+    set text(text) {
+        if (this._text !== text) {
+            this._text = text
+            this._update()
+        }
+    }
+    get text() { return this._text }
     _update() {
         this.button.innerHTML = this._text
     }
