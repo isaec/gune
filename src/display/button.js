@@ -8,6 +8,8 @@ class Button {
             this.button.addEventListener("click", clickHandler)
         }
         this._boundUpdate = this._update.bind(this)
+        this._boundDisable = this._disable.bind(this)
+        this._boundEnable = this._enable.bind(this)
         this.update()
     }
     set text(text) {
@@ -17,6 +19,20 @@ class Button {
         }
     }
     get text() { return this._text }
+    get disabled() {
+        return this.button.disabled
+    }
+    set disabled(bool) {
+        window.requestAnimationFrame(bool ? this._boundDisable : this._boundEnable)
+    }
+
+    _disable() {
+        this.button.disabled = true
+    }
+    _enable() {
+        this.button.disabled = false
+    }
+
     _update() {
         this.button.innerHTML = this._text
     }

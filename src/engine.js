@@ -26,6 +26,8 @@ module.exports.Engine = function (connection) {
         if(this.audioStarted) return
         console.log("audiostart has happened")
         this.audioStarted = true
+        this.musicButton.disabled = true
+        this.musicButton.text = "audio playback has started"
     }
 
     this.musicButton = new Button("#music", "start audio playback", this.audioStart)
