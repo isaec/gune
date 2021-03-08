@@ -1,5 +1,3 @@
-const rgbstring = require("/src/display/color").rgbstring
-
 class Button {
     constructor(id, text, clickHandler) {
         this.id = id

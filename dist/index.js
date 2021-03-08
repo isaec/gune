@@ -776,9 +776,9 @@ eval("const HC = __webpack_require__(/*! ../../../../src/display/color */ \"./sr
 /*!*******************************!*\
   !*** ./src/display/button.js ***!
   \*******************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module) => {
 
-eval("const rgbstring = __webpack_require__(/*! ../../../../src/display/color */ \"./src/display/color.js\").rgbstring\n\nclass Button {\n    constructor(id, text, clickHandler) {\n        this.id = id\n        this._text = text\n        this.button = document.querySelector(this.id)\n        if (this.button === null) throw `invalid id ${this.id}`\n        if (clickHandler) {\n            this.button.addEventListener(\"click\", clickHandler)\n        }\n        this._boundUpdate = this._update.bind(this)\n        this.update()\n    }\n    set text(text) {\n        if (this._text !== text) {\n            this._text = text\n            this._update()\n        }\n    }\n    get text() { return this._text }\n    _update() {\n        this.button.innerHTML = this._text\n    }\n    update() {\n        window.requestAnimationFrame(this._boundUpdate)\n    }\n}\n\nmodule.exports = Button\n\n//# sourceURL=webpack://gune/./src/display/button.js?");
+eval("class Button {\n    constructor(id, text, clickHandler) {\n        this.id = id\n        this._text = text\n        this.button = document.querySelector(this.id)\n        if (this.button === null) throw `invalid id ${this.id}`\n        if (clickHandler) {\n            this.button.addEventListener(\"click\", clickHandler)\n        }\n        this._boundUpdate = this._update.bind(this)\n        this.update()\n    }\n    set text(text) {\n        if (this._text !== text) {\n            this._text = text\n            this._update()\n        }\n    }\n    get text() { return this._text }\n    _update() {\n        this.button.innerHTML = this._text\n    }\n    update() {\n        window.requestAnimationFrame(this._boundUpdate)\n    }\n}\n\nmodule.exports = Button\n\n//# sourceURL=webpack://gune/./src/display/button.js?");
 
 /***/ }),
 
