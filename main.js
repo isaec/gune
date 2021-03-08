@@ -17,24 +17,29 @@ const MESSAGE_ENUM = require("./server/message").MESSAGE_ENUM
 const app = uWS.App()
 let engine = new Engine()
 
-const addFile = (targetApp, urlPath, filePath = urlPath) => {
-    targetApp.get(urlPath, (res, req) => {
-        let file = fs.readFileSync(__dirname + filePath, function (err, data) {
-            if (err) {
-                res.end(`Error getting the file: ${err}.`)
-            } else {
-                res.end(data)
-            }
-        });
-        res.end(file)
+const addPath = (urlPath, filePath = false) => {
+    app.get(urlPath, (res, req) => {
+        try {
+            let file = fs.readFileSync(__dirname + (filePath || req.getUrl()),
+                (err, data) => {
+                    if (err) {
+                        res.end("Error getting the file.")
+                    } else {
+                        res.end(data)
+                    }
+                }
+            )
+            res.end(file)
+        } catch (e) {
+            res.end("File does not exist. =P")
+        }
     })
 }
 
-addFile(app, "/", "/client/index.html")
-addFile(app, "/client/main.css")
-addFile(app, "/dist/index.js")
-addFile(app, "/client/Metrickal-Regular.otf")
-addFile(app, "/favicon.ico", "/client/favicon.ico")
+addPath("/", "/client/index.html")
+addPath("/client/*")
+addPath("/dist/*")
+addPath("/favicon.ico", "/client/favicon.ico")
 
 
 app.SOCKETS = []
@@ -100,9 +105,9 @@ app.ws("/ws", {
             }
 
             case MESSAGE_ENUM.CLIENT_ACTION: {
-                
+
                 let worldAction = new WorldAction(engine.world)
-                
+
                 engine.clientAction(ws.id, clientMsg.body, worldAction)
 
                 engine.updateClients(app, worldAction)
