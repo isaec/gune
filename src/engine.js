@@ -27,10 +27,10 @@ module.exports.Engine = function (connection) {
         console.log("audiostart has happened")
         this.audioStarted = true
         this.musicButton.disabled = true
-        this.musicButton.text = "audio playback has started"
+        this.musicButton.text = "audio playback has started (mock)"
     }
 
-    this.musicButton = new Button("#music", "start audio playback", this.audioStart)
+    this.musicButton = new Button("#music", "start audio playback (mock)", this.audioStart)
 
     //this block can't be loaded without help from the server
     this.world = undefined
