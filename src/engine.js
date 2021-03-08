@@ -20,7 +20,15 @@ module.exports.Engine = function (connection) {
     this.guiConsole = new guiconsole.GuiConsole()
     this.actionHandler = new sendAction.ActionHandler(this)
 
-    this.musicButton = new Button("#music", "test")
+    //calls all audio stuff that needs to be user triggered
+    this.audioStarted = false
+    this.audioStart = async () => {
+        if(this.audioStarted) return
+        console.log("audiostart has happened")
+        this.audioStarted = true
+    }
+
+    this.musicButton = new Button("#music", "start audio playback", this.audioStart)
 
     //this block can't be loaded without help from the server
     this.world = undefined
@@ -124,5 +132,4 @@ module.exports.Engine = function (connection) {
         this.keyHandler = undefined
         this.playerDead = () => undefined
     }
-
 }
