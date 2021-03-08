@@ -66,7 +66,7 @@ pre {
 .button {
     background-color: black;
     border: none;
-    color: white;
+    color: rgb(204, 204, 204);
     padding: 1.5vh 1.5vw;
     margin: 0em .5em .5em;
     outline: none;
@@ -83,7 +83,11 @@ pre {
     transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.button-pink:hover {
+.button:disabled {
+    color: rgb(102, 102, 102);
+}
+
+.button-pink:hover:enabled {
     background-color: rgb(51, 0, 51);
 }
 
