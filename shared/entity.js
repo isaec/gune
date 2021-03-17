@@ -3,12 +3,13 @@ const { v4: uuidv4 } = require("uuid")
 const path = require("../shared/path")
 
 class Entity {
-    constructor(type, x, y, hp, faction, uuid = false, name = undefined) {
+    constructor(type, x, y, hp, faction, aiType, uuid = false, name = undefined) {
         if (!uuid) uuid = uuidv4()
         //if (!name) name = playerName.randomName(type.charAt(0))
         this.id = uuid
         this.name = name
         this.type = type
+        this.aiType = aiType
         this.x = x
         this.y = y
         this.hp = hp
