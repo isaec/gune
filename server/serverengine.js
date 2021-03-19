@@ -7,6 +7,7 @@ const path = require("../shared/path")
 const entity = require("../shared/entity")
 const entityTemplate = require("../server/entityTemplate")
 
+const aiEngine = require("../server/ai/aiEngine")
 
 const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 
