@@ -14,7 +14,7 @@ const MESSAGE_ENUM = require("./message").MESSAGE_ENUM
 class Engine {
     constructor() {
         this.world = new World(100, 100)
-        this.aiEngine = new aiEngine()
+        this.aiEngine = new aiEngine(this)
         this._spawnEntites(this.world)
     }
     _spawnEntites(world) {
