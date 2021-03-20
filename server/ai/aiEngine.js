@@ -1,4 +1,4 @@
-//const aiType = require("../shared/aiType.js")
+const aiType = require("@project/shared/aiType.js")
 const ai = require("./ai")
 
 class aiEngine{
