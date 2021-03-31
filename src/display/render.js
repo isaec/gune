@@ -110,7 +110,7 @@ module.exports.Screen = function (engine) {
         for (const eplayer of this.engine.world.players) {
             fov.compute(eplayer.x, eplayer.y, 10, (x, y, _r, visibility) => {
                 seenMap.set(x, y, true)
-                if (this.lightMap.get(x, y) || 0 < visibility) {
+                if ((this.lightMap.get(x, y) || 0) < visibility) {
                     this.lightMap.set(x, y, visibility)
                 }
             })
