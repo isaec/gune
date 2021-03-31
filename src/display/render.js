@@ -103,16 +103,14 @@ module.exports.Screen = function (engine) {
         //NOTE this should be verified serverside later
         //should also not remake the object every render
         let fov = new rot.FOV.PreciseShadowcasting(
-            (x, y) => map.tiles.get(x, y) !== 2
+            (x, y) => (map.tiles.get(x, y) || 2) !== 2
         )
 
 
         for (const eplayer of this.engine.world.players) {
-            fov.compute(eplayer.x, eplayer.y, 10, (x, y, r, visibility) => {
+            fov.compute(eplayer.x, eplayer.y, 10, (x, y, _r, visibility) => {
                 seenMap.set(x, y, true)
-                if (this.lightMap.get(x, y) < visibility ||
-                    this.lightMap.get(x, y) == undefined) {
-
+                if (this.lightMap.get(x, y) || 0 < visibility) {
                     this.lightMap.set(x, y, visibility)
                 }
             })
